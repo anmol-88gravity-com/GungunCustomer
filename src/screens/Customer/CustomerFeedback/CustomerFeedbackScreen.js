@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommu
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './CustomerFeedbackScreen.styles';
 import { images } from '../../../utils/Images';
+import Header from '../../../components/header/Header';
 
 
 
@@ -63,6 +64,7 @@ const CustomerFeedback = () => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
+            <Header headerTitle={"Customer Feedback"} />
                 <View style={styles.container}>
                     <View style={{ marginHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={styles.title} >Good Afternoon, Vishnu</Text>

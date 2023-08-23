@@ -7,7 +7,7 @@ import { Colors } from "../../utils/Colors";
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'#FFFFFF'
+        // backgroundColor:'#FFFFFF'
     },
     icon:{
         marginTop:Platform.OS === 'android' ? '5%' : 0,

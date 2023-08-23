@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, ScrollView, Image, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './CustomerFeedbackScreen.styles';
+import Header from '../../../components/header/Header';
 
 
 
@@ -14,6 +15,7 @@ const FeedbackForm = () => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
+            <Header headerTitle={"Customer Feedback"} />
                 <View style={styles.container}>
                     <View style={styles.mainfeedbackForm}>
                         <View style={styles.feedbackForm}>

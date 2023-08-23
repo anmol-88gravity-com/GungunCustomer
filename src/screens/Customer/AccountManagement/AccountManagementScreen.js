@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { styles } from './AccountManagementScreen.styles';
 import { images } from '../../../utils/Images';
 import ScreenHeader from '../../../components/header/ScreenHeader';
+import Header from '../../../components/header/Header';
 
 
 
@@ -18,6 +19,7 @@ const AccountManagement = () => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
+            <Header headerTitle={"Account Management"} />
                 <View style={styles.container}>
                     <View style={{ marginHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={styles.title} >Recent Address and Delivery</Text>

@@ -8,6 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommu
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './ProfileScreen.styles';
 import { images } from '../../utils/Images';
+import Header from '../../components/header/Header';
 
 
 
@@ -21,9 +22,10 @@ const Profile = () => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
+                <Header headerTitle={"Profile"} />
                 <View style={styles.container}>
-                    <View style={{ marginHorizontal: 20, }}>
-                        <Ionicons name="arrow-back" size={20} onPress={() => navigation.goBack()} color='#000000' style={styles.icon} />
+                    <View style={{ marginHorizontal: 20, marginTop:'2%'}}>
+                        {/* <Ionicons name="arrow-back" size={20} onPress={() => navigation.goBack()} color='#000000' style={styles.icon} /> */}
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <Image source={images.profile} />
                             <View style={styles.profileView}>
