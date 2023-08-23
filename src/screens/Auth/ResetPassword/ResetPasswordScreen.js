@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, TextInput, TouchableOpacity,ImageBackground } from 'react-native';
+import { SafeAreaView, View, Text, TextInput, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
 import { styles } from './ResetPasswordScreen.styles';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
@@ -44,12 +44,13 @@ const ResetPassword = () => {
                 </ImageBackground>
             </View>
             <View style={styles.loginView}>
+                <ScrollView>
                     <Formik
                         initialValues={{ phoneNumber: '' }}
                         validationSchema={validationSchema}
                         // onSubmit={(values)=>console.log(values)}
                         onSubmit={handleLogin}
-                        
+
                     >
                         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                             <View style={{ marginHorizontal: 20 }}>
@@ -62,26 +63,28 @@ const ResetPassword = () => {
                                         style={styles.input}
                                         placeholder="Phone Number"
                                         keyboardType="phone-pad"
+                                        maxLength={10}
                                         onChangeText={handleChange('phoneNumber')}
                                         onBlur={handleBlur('phoneNumber')}
                                         value={values.phoneNumber}
                                     />
                                 </View>
                                 {touched.phoneNumber && errors.phoneNumber && <Text style={styles.errors}>{errors.phoneNumber}</Text>}
-                                
-                                
-                               
+
+
+
                                 <TouchableOpacity style={styles.btnView} onPress={handleSubmit}>
                                     <Text style={styles.textSignIn}>Get OTP</Text>
                                 </TouchableOpacity>
-                               
+
                             </View>
                         )}
-                    </Formik> 
+                    </Formik>
+                </ScrollView>
             </View>
 
         </SafeAreaView>
-   
+
     )
 }
 export default ResetPassword;

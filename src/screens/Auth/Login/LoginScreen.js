@@ -68,6 +68,7 @@ const LoginScreen = () => {
                                     <TextInput
                                         style={styles.input}
                                         placeholder="Phone Number"
+                                        maxLength={10}
                                         keyboardType="phone-pad"
                                         onChangeText={handleChange('phoneNumber')}
                                         onBlur={handleBlur('phoneNumber')}

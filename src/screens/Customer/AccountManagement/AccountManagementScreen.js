@@ -3,11 +3,13 @@ import { SafeAreaView, View, Text, TextInput, TouchableOpacity, ScrollView, Imag
 
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import Octicons from 'react-native-vector-icons/dist/Octicons';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './AccountManagementScreen.styles';
 import { images } from '../../../utils/Images';
+import ScreenHeader from '../../../components/header/ScreenHeader';
 
 
 
@@ -121,12 +123,12 @@ const AccountManagement = () => {
                     <View style={{ marginHorizontal: 10, padding: 10 }}>
                         <View style={styles.mainView}>
                             <View style={styles.innerView}>
-                                <AntDesign name="customerservice" size={20} color='#000000' />
+                                <AntDesign name="user" size={20} color='#000000' />
                                 <Text style={styles.customerText}>User Profile</Text>
                             </View>
                             <View style={styles.horizontalLine}></View>
                             <View style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '5%' }}>
-                                <AntDesign name="wechat" size={20} color='#000000' />
+                                <AntDesign name="Safety" size={20} color='#000000' />
                                 <Text style={styles.customerText}>Change Password</Text>
                             </View>
                             <View style={styles.horizontalLine}></View>
@@ -136,20 +138,20 @@ const AccountManagement = () => {
 
                             </View>
                             <View style={styles.horizontalLine}></View>
-                            <View style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '5%' }}>
-                                <AntDesign name="customerservice" size={20} color='#000000' />
+                            <TouchableOpacity style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '5%' }} onPress={() => navigation.navigate('Customer Feedback')}>
+                                <AntDesign name="wechat" size={20} color='#000000' />
                                 <Text style={styles.customerText}>Send Feedbacks</Text>
 
-                            </View>
+                            </TouchableOpacity>
                             <View style={styles.horizontalLine}></View>
-                            <TouchableOpacity style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '5%' }} onPress={()=>navigation.navigate('CustomerSupport')}>
+                            <TouchableOpacity style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '5%' }} onPress={() => navigation.navigate('CustomerSupport')}>
                                 <AntDesign name="customerservice" size={20} color='#000000' />
                                 <Text style={styles.customerText}>Customer Support </Text>
 
                             </TouchableOpacity>
                             <View style={styles.horizontalLine}></View>
                             <View style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '5%' }}>
-                                <AntDesign name="customerservice" size={20} color='#000000' />
+                                <AntDesign name="questioncircleo" size={20} color='#000000' />
                                 <Text style={styles.customerText}>FAQ</Text>
 
                             </View>
