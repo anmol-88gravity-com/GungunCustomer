@@ -3,7 +3,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import Profile from '../screens/Profile/ProfileScreen';
 import AccountManagement from '../screens/Customer/AccountManagement/AccountManagementScreen';
 import HomeStack from './HomeStack';
-import CustomerFeedback from '../screens/Customer/CustomerFeedback/CustomerFeedbackScreen';
 import { Font_Family } from '../utils/Fontfamily';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Platform } from 'react-native';
@@ -69,15 +68,6 @@ function TabNavigator() {
                 tabBarLabel: 'Settings',
                 tabBarIcon: ({ color }) => (
                     <Feather name="settings" color={color === Colors.primary ? Colors.primary : '#B3B3B3'} size={23} />
-                ),
-            }} />
-
-            <Tab.Screen name="Profile" 
-            component={Profile} 
-            options={{
-                tabBarLabel: 'Profile',
-                tabBarIcon: ({ color }) => (
-                    <Feather name="users" color={color === Colors.primary ? Colors.primary : '#B3B3B3'} size={23} />
                 ),
             }} />
 

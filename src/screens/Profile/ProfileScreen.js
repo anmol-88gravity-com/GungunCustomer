@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
-import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import Feather from 'react-native-vector-icons/dist/Feather';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import Octicons from 'react-native-vector-icons/dist/Octicons';
 import Entypo from 'react-native-vector-icons/dist/Entypo';
@@ -34,7 +34,7 @@ const Profile = () => {
                             <Text style={styles.changeImgText}>Change Image</Text>
                         </View>
                         <View style={styles.inputContainer}>
-                            <Octicons name="person" size={18} color="#DEA812" />
+                            <Octicons name="person" size={18} color="#DEA812" style={styles.imageIcon}/>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Enter full name"
@@ -42,7 +42,7 @@ const Profile = () => {
 
                         </View>
                         <View style={styles.inputContainer}>
-                            <Entypo name="email" size={18} color="#DEA812" />
+                            <Entypo name="email" size={18} color="#DEA812" style={styles.imageIcon}/>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Enter Email Address"
@@ -50,7 +50,7 @@ const Profile = () => {
 
                         </View>
                         <View style={styles.inputContainer}>
-                            <FontAwesome name="mobile-phone" size={20} color="#DEA812" />
+                            <Feather name="smartphone" size={18} color="#DEA812" style={styles.imageIcon}/>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Phone Number"
@@ -58,7 +58,7 @@ const Profile = () => {
 
                         </View>
                         <View style={styles.inputContainer}>
-                            <FontAwesome name="transgender-alt" size={18} color="#DEA812" />
+                            <FontAwesome name="transgender-alt" size={18} color="#DEA812" style={styles.imageIcon}/>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Gender"
@@ -68,7 +68,7 @@ const Profile = () => {
                         <Text style={styles.profileTitle}>Special Dates<Text style={styles.profileOptTitle}>(Optionals)</Text></Text>
 
                         <View style={styles.inputContainer}>
-                            <FontAwesome name="birthday-cake" size={18} color="#DEA812" />
+                            <FontAwesome name="birthday-cake" size={18} color="#DEA812" style={styles.imageIcon}/>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Birthday"
@@ -77,7 +77,7 @@ const Profile = () => {
 
 
                         <View style={styles.inputContainer}>
-                            <MaterialCommunityIcons name="candelabra-fire" size={20} color="#DEA812" />
+                            <MaterialCommunityIcons name="candelabra-fire" size={20} color="#DEA812" style={styles.imageIcon}/>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Anniversary"

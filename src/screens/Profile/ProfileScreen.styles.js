@@ -13,6 +13,9 @@ export const styles = StyleSheet.create({
         marginTop:Platform.OS === 'android' ? '5%' : 0,
     
     },
+    imageIcon:{
+        left: Platform.OS === 'android' ? '10%': 0,
+      },
     title: {
         marginVertical: '10%',
         fontSize: FONT_SIZES.fifteen,

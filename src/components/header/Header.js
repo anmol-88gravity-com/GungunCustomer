@@ -10,14 +10,14 @@ const Header = ({ headerTitle }) => {
 
   return (
     <View style={styles.mainHeaderView}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent:'space-between'}}>
         <Pressable onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back-outline" size={24} color="black" />
         </Pressable>
         <Text style={styles.headerText}>{headerTitle}</Text>
-        {/* <Pressable style={{ marginLeft: 2 }} >
+        <Pressable style={{ marginLeft: 2, }} onPress={() => navigation.toggleDrawer()}>
           <Ionicons name="menu" size={28} color="black" />
-        </Pressable> */}
+        </Pressable>
       </View>
     </View>
   );
@@ -33,10 +33,7 @@ const styles = StyleSheet.create({
     elevation:4,
     backgroundColor: '#fff',
     padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    // justifyContent: 'space-between'
   },
-  headerText: { fontFamily: Font_Family.semiBold, marginLeft: 8, 
+  headerText: { fontFamily: Font_Family.semiBold, marginLeft: 8,
     fontSize: FONT_SIZES.sixteen, color: '#000000', }
 })

@@ -16,11 +16,11 @@ function HomeStack() {
             screenOptions={{ headerShown: false }}
         >
             <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Profile" component={Profile} />
-            <Stack.Screen name="CustomerSupport" component={CustomerSupport} />
-            <Stack.Screen name="Customer Feedback" component={CustomerFeedback} />
-            <Stack.Screen name="FeedbackForm" component={FeedbackForm} />
-            <Stack.Screen name="AccountManagement" component={AccountManagement} />
+             <Stack.Screen name="Profile" component={Profile} /> 
+             <Stack.Screen name="AccountManagement" component={AccountManagement} /> 
+             <Stack.Screen name="CustomerSupport" component={CustomerSupport} />
+             <Stack.Screen name="FeedbackForm" component={FeedbackForm}/>
+             <Stack.Screen name="Customer Feedback" component={CustomerFeedback} />
         </Stack.Navigator>
 
     );

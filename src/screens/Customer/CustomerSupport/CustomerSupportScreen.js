@@ -5,6 +5,7 @@ import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './CustomerSupportScreen.styles';
+import Header from '../../../components/header/Header';
 
 
 
@@ -14,11 +15,12 @@ const CustomerSupport = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <Header headerTitle={"CustomerSupport"} />
             <ScrollView>
                 <View style={styles.container}>
                     <View style={{ marginHorizontal: 20, }}>
-                        <Ionicons name="arrow-back" size={20} onPress={() => navigation.goBack()} color='#000000' style={styles.icon} />
-                        <Text style={styles.title} onPress={()=>navigation.navigate('CustomerFeedback')}>Hey Vishnu, How can we help you.</Text>
+                        {/* <Ionicons name="arrow-back" size={20} onPress={() => navigation.goBack()} color='#000000' style={styles.icon} /> */}
+                        <Text style={styles.title} onPress={() => navigation.navigate('CustomerFeedback')}>Hey Vishnu, How can we help you.</Text>
                     </View>
 
                     <View style={{ marginHorizontal: 10, padding: 10 }}>
