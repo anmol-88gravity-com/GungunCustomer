@@ -26,7 +26,7 @@ const AccountManagement = () => {
                     </View>
 
                     <View style={{ marginHorizontal: 20, marginTop: '5%' }}>
-                        <View style={{ backgroundColor: '#FFFFFF', borderRadius: 10 }}>
+                        <View style={styles.deliveryView}>
                             <Text style={[styles.title, { color: '#005C79', marginHorizontal: 20 }]}>Home</Text>
                             <Text style={[styles.address, { marginHorizontal: 20 }]}>A38 Gali No 2 Harijan Basti Patel Vihar Karawal Nagar,Patel Vihar, New Delhi, Delhi-110094 </Text>
                             <View style={styles.horizontalLine}></View>
@@ -128,10 +128,10 @@ const AccountManagement = () => {
                                 <Text style={styles.customerText}>User Profile</Text>
                             </View>
                             <View style={styles.horizontalLine}></View>
-                            <View style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '5%' }}>
+                            <TouchableOpacity style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '5%' }} onPress={() => navigation.navigate('ChangePass')}>
                                 <AntDesign name="Safety" size={20} color='#000000' />
                                 <Text style={styles.customerText}>Change Password</Text>
-                            </View>
+                            </TouchableOpacity>
                             <View style={styles.horizontalLine}></View>
                             <View style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '5%' }}>
                                 <AntDesign name="wallet" size={20} color='#000000' />

@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Font_Family } from "../../utils/Fontfamily";
 import { FONT_SIZES } from "../../utils/FontSize";
+import { Colors } from "../../utils/Colors";
 
 
 export const styles = StyleSheet.create({
@@ -120,5 +121,23 @@ export const styles = StyleSheet.create({
         fontFamily: Font_Family.semiBold,
         color: '#000000',
         textAlign: 'center'
+    },
+    // Modal Css
+    modalView: {
+        backgroundColor: 'pink', height: 500, marginTop: '100%', borderTopEndRadius: 20, borderTopStartRadius: 10,
+
+    },
+    modalInnerView: {
+        backgroundColor: Colors.white, marginTop: 20, marginHorizontal: 10, padding: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25, shadowRadius: 2,
+        elevation: 4,
     }
+
+
+
+
+
+
 })

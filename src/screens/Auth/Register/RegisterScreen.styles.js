@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
     // backgroundColor:'red',
     borderColor: '#ccc',
     borderRadius: 10,
-    padding:Platform.OS == 'ios' ? 10 : 5
+    padding:Platform.OS == 'ios' ? 8 : 5
   },
   icon: {
     width: 20,

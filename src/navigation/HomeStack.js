@@ -6,6 +6,7 @@ import CustomerSupport from '../screens/Customer/CustomerSupport/CustomerSupport
 import CustomerFeedback from '../screens/Customer/CustomerFeedback/CustomerFeedbackScreen';
 import FeedbackForm from '../screens/Customer/CustomerFeedback/FeedbackForm';
 import AccountManagement from '../screens/Customer/AccountManagement/AccountManagementScreen';
+import ChangePassword from '../screens/ChangePassword/ChangePasswordScreen';
 
 
 const Stack = createStackNavigator();
@@ -20,6 +21,7 @@ function HomeStack() {
              <Stack.Screen name="AccountManagement" component={AccountManagement} /> 
              <Stack.Screen name="CustomerSupport" component={CustomerSupport} />
              <Stack.Screen name="FeedbackForm" component={FeedbackForm}/>
+             <Stack.Screen name="ChangePass" component={ChangePassword}/>
              <Stack.Screen name="Customer Feedback" component={CustomerFeedback} />
         </Stack.Navigator>
 
