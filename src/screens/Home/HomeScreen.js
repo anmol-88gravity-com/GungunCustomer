@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, ScrollView, TextInput, TouchableOpacity, Image, FlatList, Platform,  } from 'react-native';
+import { SafeAreaView, View, Text, ScrollView, TextInput, TouchableOpacity, Image, FlatList, Platform, Modal, ImageBackground } from 'react-native';
 import { styles } from './HomeScreen.styles';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons'
@@ -57,23 +57,36 @@ const Home = () => {
         )
     }
 
+    const data = [1, 2, 3, 4, 5];
+
+    const renderItem = ({ item }) => {
+        return (
+            <View style={{ flexDirection: 'row' }}>
+                <MaterialCommunityIcons
+                    name={'star-outline'}
+                    size={20}
+                    color={Colors.black}
+                />
+            </View>
+        );
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <ScreenHeader
                 headerTitle={"Let's Find \nFood Near You"}
             />
             <View style={[styles.container]}>
-                <View style={styles.searchView}>
+                <TouchableOpacity style={styles.searchView} onPress={()=>navigation.navigate('Search')}>
                     <AntDesign name="search1" size={20} color="#aaaaaa" style={styles.icon} />
                     <TextInput
                         style={styles.input}
                         placeholder="Search here"
                         placeholderTextColor="#aaaaaa"
+                        editable={false}
 
                     />
-                    <MaterialCommunityIcons name="tune-vertical" size={20} color="#005C79" style={styles.sideIcon} />
-
-                </View>
+                     </TouchableOpacity>
 
                 <View style={styles.btnItems}>
                     <TouchableOpacity
@@ -127,46 +140,7 @@ const Home = () => {
             </View>
 
 
-            {/* <Modal
-                animationType="slide"
-                transparent={true}
-                // opacity={0.5}
-                visible={isModalVisible}
-                onRequestClose={() => {
-                    toggleModal();
-                }}
-            >
-                <View style={styles.modalView}>
-                    <ScrollView>
-                        <View style={styles.modalInnerView}>
-                            <View style={{ width: '100%', height: 200, backgroundColor: Colors.white, padding: 10 }} >
-                                <Image source={images.vadaFood} style={{ width: '100%', height: '100%', resizeMode: 'stretch', borderRadius: 10 }} />
-
-                            </View>
-                            <View style={{ flexDirection: 'row' }}>
-                                <MaterialCommunityIcons name="square-circle" size={18} color={Colors.green} />
-                                <View style={{ backgroundColor: '#f29652', borderRadius: 5, left: '5%', alignSelf: 'center', padding: 2 }}>
-                                    <Text style={{ textAlign: 'center', fontFamily: Font_Family.regular, fontSize: FONT_SIZES.tweleve, color: Colors.white }}>Bestseller</Text>
-                                </View>
-                            </View>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', top: '2%' }}>
-                                <View>
-                                    <Text style={{ fontFamily: Font_Family.medium, fontSize: FONT_SIZES.fifteen, color: Colors.black }}>Rava Masala Dosa</Text>
-
-                                </View>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                                    <MaterialCommunityIcons name="heart-circle-outline" size={25} color='#f29652' />
-                                    <MaterialCommunityIcons name="share-circle" size={25} color='#f29652' />
-                                </View>
-
-                            </View>
-                        </View>
-                        <TouchableOpacity onPress={() => toggleModal()}>
-                            <Text> Close Modal</Text>
-                        </TouchableOpacity>
-                    </ScrollView>
-                </View>
-            </Modal> */}
+            
 
         </SafeAreaView>
     )

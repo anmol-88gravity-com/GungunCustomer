@@ -124,11 +124,16 @@ export const styles = StyleSheet.create({
     },
     // Modal Css
     modalView: {
-        backgroundColor: 'pink', height: 500, marginTop: '100%', borderTopEndRadius: 20, borderTopStartRadius: 10,
+        backgroundColor: '#f2f2f2', height: 500, marginTop: '100%', borderTopEndRadius: 20, borderTopStartRadius: 10,
 
     },
     modalInnerView: {
-        backgroundColor: Colors.white, marginTop: 20, marginHorizontal: 10, padding: 10,
+        backgroundColor: Colors.white,
+        borderRadius:10,
+         marginTop: 20, 
+        //  opacity:0.5,
+        marginHorizontal: 10,
+         padding: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25, shadowRadius: 2,
