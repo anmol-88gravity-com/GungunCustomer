@@ -5,35 +5,52 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ImageBackground,
   ScrollView,
 } from 'react-native';
-import {styles} from '../ForgotPassword/ForgotPasswordScreen.styles';
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 
-import {images} from '../../../utils/Images';
+import {styles} from './ChangePasswordScreen.styles';
 
-export const ResetPassword = () => {
+export const ChangePasswordScreen = ({navigation}) => {
   const [phone, setPhone] = useState('');
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{flex: 1}}>
-        <ImageBackground
-          source={images.backgroundImg}
-          style={styles.backgroundImage}>
-          <View style={styles.overlay}>
-            <Text style={styles.text}>Hello, Customer!</Text>
-            <Text style={styles.subTitle}>Please Reset your Password</Text>
+      {/* <Header headerTitle={"CustomerSupport"}/> */}
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={{marginHorizontal: 20, marginTop: '10%'}}>
+            <Ionicons
+              name="arrow-back"
+              size={20}
+              onPress={() => navigation.goBack()}
+              color="#000000"
+              style={styles.icon}
+            />
+            <Text
+              style={styles.title}
+              onPress={() => navigation.navigate('CustomerFeedback')}>
+              Reset Password
+            </Text>
           </View>
-        </ImageBackground>
-      </View>
-      <View style={styles.loginView}>
-        <ScrollView>
+
           <View style={{marginHorizontal: 20}}>
-            <View style={{marginTop: '15%'}}>
-              <Text style={styles.headingText}>Reset Password</Text>
+            <View style={styles.inputContainer}>
+              <FontAwesome
+                name="lock"
+                size={18}
+                color="#DEA812"
+                style={styles.imageIcon}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Current Password"
+                keyboardType="phone-pad"
+              />
             </View>
+            <Text style={styles.forgotText}>Forgot Your Password?</Text>
+
             <View style={styles.inputContainer}>
               <FontAwesome
                 name="lock"
@@ -47,7 +64,6 @@ export const ResetPassword = () => {
                 keyboardType="phone-pad"
               />
             </View>
-
             <View style={[styles.inputContainer, {marginVertical: 0}]}>
               <FontAwesome
                 name="lock"
@@ -66,8 +82,8 @@ export const ResetPassword = () => {
               <Text style={styles.textSignIn}>Submit</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

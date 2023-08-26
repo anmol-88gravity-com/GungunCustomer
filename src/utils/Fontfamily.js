@@ -9,7 +9,7 @@ export const Font_Family = {
   medium: 'Metropolis-Medium',
   mediumItalic: 'Metropolis-MediumItalic',
   semiBold: 'Metropolis-SemiBold',
-  semiBolditalic: 'Metropolis-SemiBoldItalic',
+  semiBoldItalic: 'Metropolis-SemiBoldItalic',
   thin: 'Metropolis-Thin',
   thinItalic: 'Metropolis-ThinItalic',
 };

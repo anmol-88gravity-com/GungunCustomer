@@ -1,22 +1,12 @@
 import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import {SafeAreaView, View, Text, ScrollView} from 'react-native';
 
-import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
-import {useNavigation} from '@react-navigation/native';
 import {styles} from './CustomerSupportScreen.styles';
 import Header from '../../../components/header/Header';
 
-const CustomerSupport = () => {
+export const CustomerSupportScreen = ({navigation}) => {
   const [phone, setPhone] = useState('');
-  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,4 +60,3 @@ const CustomerSupport = () => {
     </SafeAreaView>
   );
 };
-export default CustomerSupport;

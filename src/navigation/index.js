@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import AuthStackNavigation from './AuthStackNavigator';
+// import AuthStackNavigation from './AuthStackNavigator';
 import DrawerNavigation from './DrawerNavigator';
 
 export default function Navigation() {
@@ -8,7 +8,8 @@ export default function Navigation() {
 
   return (
     <NavigationContainer>
-      {isLoggedIn ? <DrawerNavigation /> : <AuthStackNavigation />}
+      {/*{isLoggedIn ? <DrawerNavigation /> : <AuthStackNavigation />}*/}
+      <DrawerNavigation />
     </NavigationContainer>
   );
 }

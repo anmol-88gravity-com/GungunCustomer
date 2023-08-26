@@ -1,98 +1,123 @@
-import React, { useState } from 'react';
-import { SafeAreaView, View, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
-import Feather from 'react-native-vector-icons/dist/Feather';
-import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
-import Octicons from 'react-native-vector-icons/dist/Octicons';
-import Entypo from 'react-native-vector-icons/dist/Entypo';
-import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import { useNavigation } from '@react-navigation/native';
-import { styles } from './ProfileScreen.styles';
-import { images } from '../../utils/Images';
-import Header from '../../components/header/Header';
+import React from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Pressable,
+} from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Octicons from 'react-native-vector-icons/Octicons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import {styles} from './ProfileScreen.styles';
+import {images} from '../../utils/Images';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Colors} from '../../utils/Colors';
 
+export const ProfileScreen = ({navigation}) => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <KeyboardAwareScrollView>
+        <View style={styles.container}>
+          <View style={{marginHorizontal: 20, marginTop: '2%'}}>
+            <View
+              style={{
+                width: 120,
+                height: 120,
+                alignSelf: 'center',
+                marginBottom: 20,
+              }}>
+              <Image
+                source={images.profile}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: 100,
+                  borderWidth: 2,
+                  borderColor: Colors.secondary,
+                }}
+              />
+              <Pressable style={styles.profileView}>
+                <FontAwesome name="camera" size={18} color={Colors.white} />
+              </Pressable>
+            </View>
+            <View style={styles.inputContainer}>
+              <Octicons
+                name="person"
+                size={18}
+                color="#DEA812"
+                style={styles.imageIcon}
+              />
+              <TextInput style={styles.input} placeholder="Enter full name" />
+            </View>
+            <View style={styles.inputContainer}>
+              <Entypo
+                name="email"
+                size={18}
+                color="#DEA812"
+                style={styles.imageIcon}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Email Address"
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Feather
+                name="smartphone"
+                size={18}
+                color="#DEA812"
+                style={styles.imageIcon}
+              />
+              <TextInput style={styles.input} placeholder="Phone Number" />
+            </View>
+            <View style={styles.inputContainer}>
+              <FontAwesome
+                name="transgender-alt"
+                size={18}
+                color="#DEA812"
+                style={styles.imageIcon}
+              />
+              <TextInput style={styles.input} placeholder="Gender" />
+            </View>
+            <Text style={styles.profileTitle}>
+              Special Dates
+              <Text style={styles.profileOptTitle}> (Optional)</Text>
+            </Text>
 
+            <View style={styles.inputContainer}>
+              <FontAwesome
+                name="birthday-cake"
+                size={18}
+                color="#DEA812"
+                style={styles.imageIcon}
+              />
+              <TextInput style={styles.input} placeholder="Birthday" />
+            </View>
 
+            <View style={styles.inputContainer}>
+              <MaterialCommunityIcons
+                name="candelabra-fire"
+                size={20}
+                color="#DEA812"
+                style={styles.imageIcon}
+              />
+              <TextInput style={styles.input} placeholder="Anniversary" />
+            </View>
 
-
-const Profile = () => {
-    const [phone, setPhone] = useState('');
-    const navigation = useNavigation();
-
-    return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <Header headerTitle={"Profile"} />
-                <View style={styles.container}>
-                    <View style={{ marginHorizontal: 20, marginTop:'2%'}}>
-                        {/* <Ionicons name="arrow-back" size={20} onPress={() => navigation.goBack()} color='#000000' style={styles.icon} /> */}
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Image source={images.profile} />
-                            <View style={styles.profileView}>
-                                <FontAwesome name="edit" size={12} color="#FFFFFF" style={{ justifyContent: 'center', alignSelf: 'center', margin: '20%' }} />
-                            </View>
-                            <Text style={styles.changeImgText}>Change Image</Text>
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <Octicons name="person" size={18} color="#DEA812" style={styles.imageIcon}/>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Enter full name"
-                            />
-
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <Entypo name="email" size={18} color="#DEA812" style={styles.imageIcon}/>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Enter Email Address"
-                            />
-
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <Feather name="smartphone" size={18} color="#DEA812" style={styles.imageIcon}/>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Phone Number"
-                            />
-
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <FontAwesome name="transgender-alt" size={18} color="#DEA812" style={styles.imageIcon}/>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Gender"
-                            />
-
-                        </View>
-                        <Text style={styles.profileTitle}>Special Dates<Text style={styles.profileOptTitle}>(Optionals)</Text></Text>
-
-                        <View style={styles.inputContainer}>
-                            <FontAwesome name="birthday-cake" size={18} color="#DEA812" style={styles.imageIcon}/>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Birthday"
-                            />
-                        </View>
-
-
-                        <View style={styles.inputContainer}>
-                            <MaterialCommunityIcons name="candelabra-fire" size={20} color="#DEA812" style={styles.imageIcon}/>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Anniversary"
-                            />
-
-                        </View>
-
-                        <TouchableOpacity style={styles.btnView} onPress={()=>navigation.navigate('CustomerSupport')}>
-                            <Text style={styles.textSignIn}>Submit</Text>
-                        </TouchableOpacity>
-
-                    </View>
-                </View>
-            </ScrollView>
-        </SafeAreaView>
-    )
-}
-export default Profile;
+            <TouchableOpacity
+              style={styles.btnView}
+              onPress={() => navigation.navigate('CustomerSupport')}>
+              <Text style={styles.textSignIn}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
+  );
+};
