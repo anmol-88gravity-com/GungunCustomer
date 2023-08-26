@@ -2,23 +2,72 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
-import CustomerSupport from '../screens/Customer/CustomerSupport/CustomerSupportScreen';
-import CustomerFeedback from '../screens/Customer/CustomerFeedback/CustomerFeedbackScreen';
-import FeedbackForm from '../screens/Customer/CustomerFeedback/FeedbackForm';
-import TabNavigator from './BottomTabNavigator';
-import { SearchScreen } from '../screens/Home/Search/SearchScreen';
+import {SearchScreen} from '../screens/Home/Search/SearchScreen';
+import {MyOrdersScreen} from '../screens/Orders/MyOrders';
+import {OrderDetailScreen} from '../screens/Orders/OrderDetail';
+import {AccountManagement} from '../screens/Settings/AccountManagement';
+import {ChangePasswordScreen} from '../screens/Settings/ChangePassword';
+import SendFeedbackScreen from '../screens/Settings/SendFeedback/SendFeedbackScreen';
+import {CustomerSupportScreen} from '../screens/Settings/CustomerSupport';
+import {AddressScreen} from '../screens/Address/AddressScreen';
+import {UpdateAddressScreen} from '../screens/Address/UpdateAddress';
+import Home from '../screens/Home/HomeScreen';
 
 const Stack = createStackNavigator();
 
-function RootStackNavigator() {
+export function DashboardNavigator() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="TabNavigator" component={TabNavigator} />
-      <Stack.Screen name="CustomerSupport" component={CustomerSupport} />
-      <Stack.Screen name="FeedbackForm" component={FeedbackForm} />
-      <Stack.Screen name="Customer Feedback" component={CustomerFeedback} />
+      <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Search" component={SearchScreen} />
     </Stack.Navigator>
   );
 }
-export default RootStackNavigator;
+
+const AddressStack = createStackNavigator();
+
+export function AddressNavigator() {
+  return (
+    <AddressStack.Navigator screenOptions={{}}>
+      <AddressStack.Screen name="Address" component={AddressScreen} />
+      <AddressStack.Screen
+        name="UpdateAddress"
+        component={UpdateAddressScreen}
+      />
+    </AddressStack.Navigator>
+  );
+}
+
+const OrderStack = createStackNavigator();
+
+export function OrdersNavigator() {
+  return (
+    <OrderStack.Navigator screenOptions={{}}>
+      <OrderStack.Screen name="MyOrders" component={MyOrdersScreen} />
+      <OrderStack.Screen name="OrderDetails" component={OrderDetailScreen} />
+    </OrderStack.Navigator>
+  );
+}
+
+const SettingStack = createStackNavigator();
+
+export function SettingsNavigator() {
+  return (
+    <SettingStack.Navigator screenOptions={{}}>
+      <SettingStack.Screen
+        name="AccountManagement"
+        component={AccountManagement}
+        options={{headerShown: false}}
+      />
+      <SettingStack.Screen
+        name="ChangePassword"
+        component={ChangePasswordScreen}
+      />
+      <SettingStack.Screen name="SendFeedback" component={SendFeedbackScreen} />
+      <SettingStack.Screen
+        name="CustomerSupport"
+        component={CustomerSupportScreen}
+      />
+    </SettingStack.Navigator>
+  );
+}
