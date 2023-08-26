@@ -9,7 +9,7 @@ import {Font_Family} from '../utils/Fontfamily';
 import {Colors} from '../utils/Colors';
 import {FONT_SIZES} from '../utils/FontSize';
 import NoPageFound from '../screens/NoPageFound';
-import Home from '../screens/Home/HomeScreen';
+import Home from '../screens/Dashboard/HomeScreen/HomeScreen';
 
 const Tab = createBottomTabNavigator();
 

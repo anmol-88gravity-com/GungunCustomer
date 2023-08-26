@@ -6,4 +6,5 @@ export const images = {
     kadaiPaneer:require('../assets/auth/kadaiPaneer.png'),
     choleBhatoore:require('../assets/auth/choleBhatoore.png'),
     vadaFood:require('../assets/auth/vadaFood.png'),
+    bannerImg:require('../assets/dashboardImages/bannerImage.png'),
   };

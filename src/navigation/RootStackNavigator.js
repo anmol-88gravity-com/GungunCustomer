@@ -6,7 +6,7 @@ import CustomerSupport from '../screens/Customer/CustomerSupport/CustomerSupport
 import CustomerFeedback from '../screens/Customer/CustomerFeedback/CustomerFeedbackScreen';
 import FeedbackForm from '../screens/Customer/CustomerFeedback/FeedbackForm';
 import TabNavigator from './BottomTabNavigator';
-import { SearchScreen } from '../screens/Home/Search/SearchScreen';
+import { SearchScreen } from '../screens/Dashboard/Search/SearchScreen';
 
 const Stack = createStackNavigator();
 

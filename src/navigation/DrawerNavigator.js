@@ -8,7 +8,7 @@ import {CustomDrawerContent} from './components/CustomDrawerContent';
 import NoPageFound from '../screens/NoPageFound';
 import ChangePassword from '../screens/ChangePassword/ChangePasswordScreen';
 // import RootStackNavigator from './RootStackNavigator';
-import Home from '../screens/Home/HomeScreen';
+import Home from '../screens/Dashboard/HomeScreen/HomeScreen';
 
 const Drawer = createDrawerNavigator();
 function DrawerNavigation() {

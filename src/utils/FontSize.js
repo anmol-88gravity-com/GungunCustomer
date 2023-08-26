@@ -3,6 +3,7 @@ export const FONT_SIZES = {
   thirteen: 13,
   fifteen: 15,
   sixteen: 16,
+  eighteen:18,
   twenty: 20,
   twentyFive: 25,
   thirty: 30,
