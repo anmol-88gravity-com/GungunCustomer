@@ -20,7 +20,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommu
 import { images } from '../../../utils/Images';
 import { useNavigation } from '@react-navigation/native';
 import ScreenHeader from '../../../components/header/ScreenHeader';
-import { PopularItems, RecomendedItem, ResturantTopPlaces } from './PopularItems';
+import { PopularItems, RecomendedItem, ResturantTopPlaces } from './components';
+
 
 
 
