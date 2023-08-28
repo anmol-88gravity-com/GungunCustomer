@@ -7,4 +7,6 @@ export const images = {
     choleBhatoore:require('../assets/auth/choleBhatoore.png'),
     vadaFood:require('../assets/auth/vadaFood.png'),
     bannerImg:require('../assets/dashboardImages/bannerImage.png'),
+    pizza:require('../assets/dashboardImages/pizza.png'),
+    burger:require('../assets/dashboardImages/burger.png'),
   };

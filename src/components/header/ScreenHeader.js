@@ -31,17 +31,12 @@ export default ScreenHeader;
 const styles = StyleSheet.create({
     mainHeaderView: {
         paddingHorizontal: 20,
-        padding: Platform.OS === 'android' ? 20: 0,
+        // padding: Platform.OS === 'android' ? 20: 0,
         marginTop:Platform.OS === 'android' ? 20 : -40,
         backgroundColor: 'white',
+        // backgroundColor:'red',
         shadowColor: '#000',
-        // shadowOffset: {
-        //     width: 0, height: 2
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 3.84,
-        // elevation: 5,
-        height:Platform.OS === 'ios' ? 130 : 90,
+        height:Platform.OS === 'ios' ? '18%' : '6%',
 
     },
     middleHeaderView: {

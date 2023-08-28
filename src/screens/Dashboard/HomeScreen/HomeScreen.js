@@ -13,11 +13,15 @@ import {
 } from 'react-native';
 import {styles} from './HomeScreen.styles';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 
 import {images} from '../../../utils/Images';
 import {useNavigation} from '@react-navigation/native';
 import ScreenHeader from '../../../components/header/ScreenHeader';
-import {PopularItems} from './PopularItems';
+import { PopularItems, RecomendedItem, ResturantTopPlaces } from './PopularItems';
+import { Colors } from '../../../utils/Colors';
+
+
 
 export const HomeScreen = () => {
   const navigation = useNavigation();
@@ -26,40 +30,6 @@ export const HomeScreen = () => {
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
-  };
-
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      image: images.choleBhatoore,
-      title: 'Chole Bhatoore',
-      subTitle: 'Prem Di Hatti',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      image: images.momos,
-      title: 'Momos',
-      subTitle: 'dolma Aunty Momo`s',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      image: images.kadaiPaneer,
-      title: 'kadai Paneer',
-      subTitle: 'Prem Di Hatti',
-    },
-  ];
-
-  const popularRenderitem = ({item}) => {
-    return (
-      <View style={styles.popularitems}>
-        <View style={styles.imgView}>
-          <Image source={item.image} style={{height: '100%', width: '100%'}} />
-        </View>
-        <Text style={styles.Itemtitle}>Chole {'\n'}Bhatoore</Text>
-        <Text style={styles.subItemtitle}>Prem Di hatti</Text>
-        <Text style={styles.pricetitle}>₹ 249</Text>
-      </View>
-    );
   };
 
   return (
@@ -81,7 +51,7 @@ export const HomeScreen = () => {
           editable={false}
         />
       </TouchableOpacity>
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <View style={styles.container}>
           <View style={{marginHorizontal: 10}}>
             <View
@@ -92,20 +62,52 @@ export const HomeScreen = () => {
                 justifyContent: 'center',
               }}>
               <Image source={images.bannerImg} style={styles.bannerImg} />
-              <Text style={styles.textImg}>
-                lowest delivery {'\n'} charges ever
-              </Text>
+              <Text style={styles.textImg}>lowest delivery {"\n"} charges ever</Text>
+              <TouchableOpacity style={styles.orderNowButton}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.orderText}>Order Now </Text>
+                  <AntDesign name="arrowright" size = {15} color='#ffffff' style={styles.arrowIcon}/>
+                </View>
+              </TouchableOpacity>
+
             </View>
             <Text style={styles.title}>Popular Items</Text>
-            <PopularItems
-              source={images.kadaiPaneer}
-              title="Chole Bhatoore"
-              subTitle="Prem Di hatti"
-              price="₹ 249"
-            />
-            <Text style={[styles.title, {bottom: '10%'}]}>
-              What's on your mind
-            </Text>
+            <View style={{ height:Platform.OS === 'ios' ? '18%' : '19%' }}>
+              <PopularItems
+                source={images.kadaiPaneer}
+                title="Chole Bhatoore"
+                subTitle="Prem Di hatti"
+                price="₹ 249"
+              />
+            </View>
+            <View style={{ height: '20%' }}>
+              <Text style={[styles.title, { marginVertical: 0 }]}>What's On your mind ?</Text>
+              <RecomendedItem
+                source={images.burger}
+                title="Pizza"
+
+              />
+            </View>
+
+            <View style={{ flexDirection: 'row', bottom: '8%' }}>
+              <MaterialIcons name="location-on" size={25} color="#000000" style={{ top: Platform.OS === 'ios' ? '4%' : '5%' }} />
+              <Text style={[styles.title,]}>Top places near you</Text>
+            </View>
+            <View style={{ top: -30 }}>
+              <ResturantTopPlaces
+                source={images.momos}
+                resturantName="Manorama"
+                resturentRatting="3.8(10K+) . 29 mins"
+                restDishType="North Indian, Chinese,Biryani"
+                restAddress="DLF Phase 3 . 4.3 km"
+                restType="FLAT DEAL"
+                resturentOffer="₹125 OFF"
+                resturentMaxOffer="ABOVE ₹249"
+
+              />
+            </View>
+
+
           </View>
         </View>
       </ScrollView>
