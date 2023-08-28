@@ -62,26 +62,42 @@ export const PopularItems = ({ source, title, subTitle, price }) => {
 
             <View style={styles.modalInnerView}>
               <View style={{ backgroundColor: Colors.white }} >
-                {/* <ImageBackground source={images.vadaFood} style={{ width: '100%', height: '100%', resizeMode: 'stretch', borderRadius: 20 }} >
-                      <View style={{ alignItems: 'flex-end', marginTop: '2%' }}>
-                        <MaterialCommunityIcons name="heart-circle-outline" size={30} color='#000000' />
-                        <MaterialCommunityIcons name="share-circle" size={30} color='#000000' />
-                      </View>
-                    </ImageBackground> */}
                 <View style={{ height: 200, width: '100%', borderRadius: 20 }}>
                   <Image source={images.vadaFood} style={{ height: '100%', width: '100%', borderRadius: 10 }} />
-                  <View style={{ position:'absolute', alignSelf:'flex-end'}}>
-                  <MaterialCommunityIcons name="heart-circle-outline" size={30} color='#000000' />
-                  <MaterialCommunityIcons name="share-circle" size={30} color='#000000' />
+                  <View style={{ position: 'absolute', alignSelf: 'flex-end' }}>
+                    <MaterialCommunityIcons name="heart-circle-outline" size={30} color='#000000' />
+                    <MaterialCommunityIcons name="share-circle" size={30} color='#000000' />
                   </View>
                 </View>
               </View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row', marginTop: 10 }}>
                 <MaterialCommunityIcons name="square-circle" size={18} color={Colors.green} />
-                <View style={{ backgroundColor: '#f29652', borderRadius: 5, left: '5%', alignSelf: 'center', padding: 2 }}>
+                <View style={{ backgroundColor: '#f29652', borderRadius: 5, marginLeft: 5, alignSelf: 'center', padding: 2 }}>
                   <Text style={{ textAlign: 'center', fontFamily: Font_Family.regular, fontSize: FONT_SIZES.tweleve, color: Colors.white }}>Bestseller</Text>
                 </View>
               </View>
+
+              <View style={{ marginTop: '2%' }}>
+                <Text style={{ fontFamily: Font_Family.medium, fontSize: FONT_SIZES.fifteen, color: Colors.black }}>Rava Masala Dosa</Text>
+                
+                <FlatList
+                  data={data}
+                  horizontal={true}
+                  renderItem={({ item }) => (
+                    <View style={{ flexDirection: 'row' }}>
+                      <MaterialCommunityIcons name="star-outline" size={30} color="black" />
+
+                    </View>
+                  )}
+                  keyExtractor={(item) => item.id}
+                />
+                <Text style={{ fontSize: FONT_SIZES.tweleve, fontFamily: Font_Family.medium, top: '3%', left: '5%', color: Colors.black }}>8 ratings</Text>
+
+
+
+              </View>
+
+
 
               <Text style={{ marginTop: '3%', fontFamily: Font_Family.regular, fontSize: FONT_SIZES.tweleve }}>Currently rava masala dosa made of rava batter filled with mash potatoes and spices served with tangy sambar and chutney.</Text>
             </View>
