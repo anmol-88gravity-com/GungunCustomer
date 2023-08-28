@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         // backgroundColor:'red',
         shadowColor: '#000',
-        height:Platform.OS === 'ios' ? '18%' : '6%',
+        // height:Platform.OS === 'ios' ? '18%' : '6%',
+        height:Platform.OS === 'ios' ? 130 : 50,
 
     },
     middleHeaderView: {
