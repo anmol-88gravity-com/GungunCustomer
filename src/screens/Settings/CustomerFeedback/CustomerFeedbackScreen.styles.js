@@ -1,4 +1,4 @@
-import {Platform, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {FONT_SIZES} from '../../../utils/FontSize';
 import {Font_Family} from '../../../utils/Fontfamily';
 import {Colors} from '../../../utils/Colors';
@@ -68,12 +68,15 @@ export const styles = StyleSheet.create({
     width: '100%',
     padding: 20,
     borderRadius: 10,
-    marginTop: '20%',
-    shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 4},
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 4,
+    marginTop: '10%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   txtForm: {
     height: 150,

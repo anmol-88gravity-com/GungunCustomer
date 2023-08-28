@@ -22,11 +22,11 @@ const App = () => {
       primary: 'rgb(0,92,121)',
       onPrimary: 'rgb(255, 255, 255)',
       primaryContainer: 'rgb(0,92,121)',
-      onPrimaryContainer: 'rgb(12, 32, 0)',
+      onPrimaryContainer: 'rgb(255,255,255)', // for textColor/iconColor
       secondary: 'rgb(222,168,18)',
       onSecondary: 'rgb(255, 255, 255)',
       secondaryContainer: 'rgb(222,168,18)',
-      onSecondaryContainer: 'rgb(150,114,12)',
+      onSecondaryContainer: 'rgb(150,114,12)', // for textColor/iconColor
       tertiary: 'rgb(56, 102, 101)',
       onTertiary: 'rgb(255, 255, 255)',
       tertiaryContainer: 'rgb(187, 236, 234)',

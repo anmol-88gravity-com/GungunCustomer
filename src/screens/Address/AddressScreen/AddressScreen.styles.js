@@ -32,6 +32,7 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.medium,
     fontSize: FONT_SIZES.fifteen,
     lineHeight: 28,
+    color: Colors.black,
   },
   addAddressText: {
     fontFamily: Font_Family.medium,
@@ -48,5 +49,9 @@ export const styles = StyleSheet.create({
     padding: 15,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  addressTitle: {
+    color: Colors.black,
+    fontFamily: Font_Family.regular,
   },
 });

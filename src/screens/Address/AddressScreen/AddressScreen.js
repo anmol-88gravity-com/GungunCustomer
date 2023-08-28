@@ -14,7 +14,7 @@ export const AddressScreen = ({navigation}) => {
       onPress={() => navigation.navigate('MapScreen', {name: 'edit'})}
       style={[styles.addressCard, {marginTop: index === 0 ? 20 : 0}]}>
       <Pressable style={styles.titleStyles}>
-        <Text>📍 Home</Text>
+        <Text style={styles.addressTitle}>📍 Home</Text>
         <AntDesign name="arrowright" size={18} color={Colors.primary} />
       </Pressable>
       <Text style={styles.addressText}>

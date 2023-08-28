@@ -1,7 +1,6 @@
 import {Platform, StyleSheet} from 'react-native';
 import {FONT_SIZES} from '../../../utils/FontSize';
 import {Font_Family} from '../../../utils/Fontfamily';
-import {Colors} from '../../../utils/Colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -9,10 +8,10 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   icon: {
-    marginTop: Platform.OS === 'android' ? '5%' : 0,
+    marginTop: Platform.OS === 'android' ? 5 : 0,
   },
   title: {
-    marginVertical: '10%',
+    marginVertical: 20,
     fontSize: FONT_SIZES.fifteen,
     fontFamily: Font_Family.semiBold,
     color: '#000000',
@@ -36,11 +35,14 @@ export const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     width: '100%',
     borderRadius: 10,
-    shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 3},
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   innerView: {flexDirection: 'row', marginTop: '5%', marginLeft: '5%'},
   customerText: {

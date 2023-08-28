@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
 import Header from '../components/header/Header';
@@ -8,8 +8,6 @@ import {HomeScreen} from '../screens/Dashboard/HomeScreen';
 import {SearchScreen} from '../screens/Dashboard/Search/SearchScreen';
 
 import {AddressScreen} from '../screens/Address/AddressScreen';
-import {AddAddressScreen} from '../screens/Address/AddAddress';
-import {UpdateAddressScreen} from '../screens/Address/UpdateAddress';
 import {MapScreen} from '../screens/Address/Map';
 
 import {MyOrdersScreen} from '../screens/Orders/MyOrders';
@@ -44,16 +42,6 @@ export function AddressNavigator() {
             <Header headerTitle={'My Addresses'} navigation={navigation} />
           ),
         }}
-      />
-      <AddressStack.Screen
-        name="UpdateAddress"
-        component={UpdateAddressScreen}
-        options={{title: 'Edit Address', headerBackTitle: ''}}
-      />
-      <AddressStack.Screen
-        name="AddAddress"
-        component={AddAddressScreen}
-        options={{title: 'Add Address', headerBackTitle: ''}}
       />
       <AddressStack.Screen
         name="MapScreen"
