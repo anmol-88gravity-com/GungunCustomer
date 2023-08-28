@@ -58,14 +58,14 @@ export const HomeScreen = () => {
               <Text style={styles.textImg}>lowest delivery {"\n"} charges ever</Text>
               <TouchableOpacity style={styles.orderNowButton}>
                 <View style={{ flexDirection: 'row' }}>
-                  <Text style={styles.orderText}>Order Now</Text>
+                  <Text style={styles.orderText}>Order Now </Text>
                   <AntDesign name="arrowright" size = {15} color='#ffffff' style={styles.arrowIcon}/>
                 </View>
               </TouchableOpacity>
 
             </View>
             <Text style={styles.title}>Popular Items</Text>
-            <View style={{ height: 210 }}>
+            <View style={{ height:Platform.OS === 'ios' ? '18%' : '19%' }}>
               <PopularItems
                 source={images.kadaiPaneer}
                 title="Chole Bhatoore"
@@ -73,7 +73,7 @@ export const HomeScreen = () => {
                 price="₹ 249"
               />
             </View>
-            <View style={{ height: 230 }}>
+            <View style={{ height: '20%' }}>
               <Text style={[styles.title, { marginVertical: 0 }]}>What's On your mind ?</Text>
               <RecomendedItem
                 source={images.burger}

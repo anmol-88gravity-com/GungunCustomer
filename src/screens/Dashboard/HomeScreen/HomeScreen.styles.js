@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   subItemtitle: {
-    bottom: '15%',
+    bottom: '25%',
     fontSize: FONT_SIZES.thirteen,
     fontFamily: Font_Family.medium,
     color: '#005C79',
@@ -123,7 +123,7 @@ export const styles = StyleSheet.create({
     bottom: 40,
   },
   pricetitle: {
-    bottom: '10%',
+    bottom: '20%',
     fontSize: FONT_SIZES.fifteen,
     fontFamily: Font_Family.semiBold,
     color: '#000000',

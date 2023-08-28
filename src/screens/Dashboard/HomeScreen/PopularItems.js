@@ -20,7 +20,7 @@ export const PopularItems = ({ source, title, subTitle, price }) => {
       <View style={styles.imgView}>
         <Image source={source} style={{ height: '100%', width: '100%' }} />
       </View>
-      <Text style={styles.Itemtitle}>{title}</Text>
+      <Text style={styles.Itemtitle}>{title}{'\n'}</Text>
       <Text style={styles.subItemtitle}>{subTitle}</Text>
       <Text style={styles.pricetitle}>{price}</Text>
     </TouchableOpacity>
@@ -62,7 +62,7 @@ export const RecomendedItem = ({ source, title }) => {
     return (
       <View style={{ height: 50, width: 50, marginHorizontal: 20, top: '15%' }}>
         <Image source={source} style={styles.recomendImg} />
-        <Text style={[styles.subItemtitle, { color: '#000000' }]}>{title}</Text>
+        <Text style={[styles.subItemtitle, { color: '#000000', marginTop: '10%' }]}>{title}</Text>
         <Image source={source} style={{ height: '100%', width: '100%', borderRadius: 30 }} />
         <Text style={[styles.subItemtitle, { top: '5%', color: '#000000' }]}>{title}</Text>
       </View>
@@ -103,11 +103,11 @@ export const ResturantTopPlaces = ({ source, resturantName, resturentRatting, re
           </View>
           <View style={{ flex: 1, height: 100 }}>
             <ImageBackground source={source} style={styles.resturentBackImg}>
-              <MaterialCommunityIcons name="cards-heart-outline" size={25} color="#ffffff" />
+              <MaterialCommunityIcons name="cards-heart-outline" size={25} color="#000000" />
               <View style={{ alignItems: 'flex-end', right: '5%', }}>
-                <Text style={[styles.title, { color: Colors.white, marginVertical: 0, }]}>{restType}</Text>
-                <Text style={[styles.title, { color: Colors.white, marginVertical: 0, }]}>{resturentOffer}</Text>
-                <Text style={[styles.title, { color: Colors.white, marginVertical: 0, }]}>{resturentMaxOffer}</Text>
+                <Text style={[styles.title, { color: Colors.black, marginVertical: 0, fontWeight: 'bold' }]}>{restType}</Text>
+                <Text style={[styles.title, { color: Colors.black, marginVertical: 0, fontWeight: 'bold' }]}>{resturentOffer}</Text>
+                <Text style={[styles.title, { color: Colors.black, marginVertical: 0, fontWeight: 'bold' }]}>{resturentMaxOffer}</Text>
               </View>
             </ImageBackground>
           </View>
