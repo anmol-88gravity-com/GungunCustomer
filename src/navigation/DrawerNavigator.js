@@ -42,7 +42,7 @@ function DrawerNavigation() {
         options={{
           drawerLabel: 'Home',
           headerShown: false,
-          drawerIcon: ({color, size}) => (
+          drawerIcon: ({color}) => (
             <Ionicons name="home" color={color} size={20} />
           ),
         }}
@@ -54,7 +54,7 @@ function DrawerNavigation() {
           header: ({navigation}) => (
             <Header headerTitle={'Profile'} navigation={navigation} />
           ),
-          drawerIcon: ({color, size}) => (
+          drawerIcon: ({color}) => (
             <Ionicons name="person" color={color} size={20} />
           ),
         }}
@@ -64,10 +64,8 @@ function DrawerNavigation() {
         component={AddressNavigator}
         options={{
           drawerLabel: 'Addresses',
-          header: ({navigation}) => (
-            <Header headerTitle={'Addresses'} navigation={navigation} />
-          ),
-          drawerIcon: ({color, size}) => (
+          headerShown: false,
+          drawerIcon: ({color}) => (
             <Ionicons name="location" color={color} size={20} />
           ),
         }}
@@ -78,10 +76,8 @@ function DrawerNavigation() {
         component={OrdersNavigator}
         options={{
           drawerLabel: 'Your Orders',
-          header: ({navigation}) => (
-            <Header headerTitle={'Your Orders'} navigation={navigation} />
-          ),
-          drawerIcon: ({color, size}) => (
+          headerShown: false,
+          drawerIcon: ({color}) => (
             <Ionicons name="document-text" color={color} size={20} />
           ),
         }}
@@ -94,7 +90,7 @@ function DrawerNavigation() {
           header: ({navigation}) => (
             <Header headerTitle={'My Wallet'} navigation={navigation} />
           ),
-          drawerIcon: ({color, size}) => (
+          drawerIcon: ({color}) => (
             <Ionicons name="wallet-sharp" color={color} size={20} />
           ),
         }}
@@ -108,7 +104,7 @@ function DrawerNavigation() {
           header: ({navigation}) => (
             <Header headerTitle={'Likes'} navigation={navigation} />
           ),
-          drawerIcon: ({color, size}) => (
+          drawerIcon: ({color}) => (
             <Ionicons name="heart" color={color} size={20} />
           ),
         }}
@@ -118,10 +114,8 @@ function DrawerNavigation() {
         component={SettingsNavigator}
         options={{
           drawerLabel: 'Settings',
-          header: ({navigation}) => (
-            <Header headerTitle={'Settings'} navigation={navigation} />
-          ),
-          drawerIcon: ({color, size}) => (
+          headerShown: false,
+          drawerIcon: ({color}) => (
             <Ionicons name="settings" color={color} size={20} />
           ),
         }}

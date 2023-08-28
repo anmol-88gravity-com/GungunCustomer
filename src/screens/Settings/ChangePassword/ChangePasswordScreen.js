@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   View,
@@ -7,35 +7,16 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 
 import {styles} from './ChangePasswordScreen.styles';
 
 export const ChangePasswordScreen = ({navigation}) => {
-  const [phone, setPhone] = useState('');
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Header headerTitle={"CustomerSupport"}/> */}
       <ScrollView>
         <View style={styles.container}>
-          <View style={{marginHorizontal: 20, marginTop: '10%'}}>
-            <Ionicons
-              name="arrow-back"
-              size={20}
-              onPress={() => navigation.goBack()}
-              color="#000000"
-              style={styles.icon}
-            />
-            <Text
-              style={styles.title}
-              onPress={() => navigation.navigate('CustomerFeedback')}>
-              Reset Password
-            </Text>
-          </View>
-
-          <View style={{marginHorizontal: 20}}>
+          <View style={{marginHorizontal: 20, marginTop: 20}}>
             <View style={styles.inputContainer}>
               <FontAwesome
                 name="lock"
@@ -46,7 +27,6 @@ export const ChangePasswordScreen = ({navigation}) => {
               <TextInput
                 style={styles.input}
                 placeholder="Enter Current Password"
-                keyboardType="phone-pad"
               />
             </View>
             <Text style={styles.forgotText}>Forgot Your Password?</Text>
@@ -61,7 +41,6 @@ export const ChangePasswordScreen = ({navigation}) => {
               <TextInput
                 style={styles.input}
                 placeholder="Enter New Password"
-                keyboardType="phone-pad"
               />
             </View>
             <View style={[styles.inputContainer, {marginVertical: 0}]}>
@@ -74,7 +53,6 @@ export const ChangePasswordScreen = ({navigation}) => {
               <TextInput
                 style={styles.input}
                 placeholder="Confirm New Password"
-                keyboardType="phone-pad"
               />
             </View>
 

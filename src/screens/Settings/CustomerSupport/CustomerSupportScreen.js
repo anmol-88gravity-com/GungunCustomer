@@ -1,20 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {SafeAreaView, View, Text, ScrollView} from 'react-native';
-
-import AntDesign from 'react-native-vector-icons/dist/AntDesign';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {styles} from './CustomerSupportScreen.styles';
-import Header from '../../../components/header/Header';
 
 export const CustomerSupportScreen = ({navigation}) => {
-  const [phone, setPhone] = useState('');
-
   return (
     <SafeAreaView style={styles.container}>
-      <Header headerTitle={'CustomerSupport'} />
       <ScrollView>
         <View style={styles.container}>
           <View style={{marginHorizontal: 20}}>
-            {/* <Ionicons name="arrow-back" size={20} onPress={() => navigation.goBack()} color='#000000' style={styles.icon} /> */}
             <Text
               style={styles.title}
               onPress={() => navigation.navigate('CustomerFeedback')}>

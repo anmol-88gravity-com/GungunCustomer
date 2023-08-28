@@ -6,11 +6,7 @@ import {Colors} from '../../../utils/Colors';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-  },
-  icon: {
-    marginTop: Platform.OS === 'android' ? '5%' : 0,
+    backgroundColor: Colors.white,
   },
   title: {
     marginVertical: '10%',
@@ -25,7 +21,7 @@ export const styles = StyleSheet.create({
     marginVertical: '5%',
     borderColor: '#ccc',
     borderRadius: 10,
-    padding: Platform.OS == 'ios' ? 15 : 5,
+    padding: Platform.OS === 'ios' ? 15 : 5,
   },
   icon: {
     width: 20,
