@@ -10,13 +10,13 @@ import {
 import {styles} from '../CustomerFeedback/CustomerFeedbackScreen.styles';
 import Header from '../../../components/header/Header';
 
-const SendFeedbackScreen = ({navigation}) => {
+export const SendFeedbackScreen = ({navigation}) => {
   const [phone, setPhone] = useState('');
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Header headerTitle={'Customer Feedback'} />
+        {/*<Header headerTitle={'Customer Feedback'} />*/}
         <View style={styles.container}>
           <View style={styles.mainfeedbackForm}>
             <View style={styles.feedbackForm}>
@@ -49,4 +49,3 @@ const SendFeedbackScreen = ({navigation}) => {
     </SafeAreaView>
   );
 };
-export default SendFeedbackScreen;

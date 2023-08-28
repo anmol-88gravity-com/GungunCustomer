@@ -52,27 +52,21 @@ export const styles = StyleSheet.create({
   },
   resturantPlaceTitle: {
     fontFamily: Font_Family.regular,
-    marginVertical: '2%',
-    color: Colors.black
+    marginLeft:5,
+    color: Colors.black,
   },
-  restuIcon: {
-    top: Platform.OS === 'ios' ? '1%' : '2%'
-  },
+ 
   resturantPlacesView: {
     backgroundColor: Colors.white,
-    // backgroundColor:'pink',
     width: '100%',
     padding: 10,
     borderRadius: 20,
     shadowColor: '#171717',
-    shadowOffset: { width: -2, height: 4 },
+    shadowOffset: { width: -2, height: 3 },
     shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 4,
-    left: '1%',
-    right: '2%',
     bottom: 10,
-
     marginVertical: '2%'
   },
   resturentBackImg: {
@@ -152,9 +146,72 @@ export const styles = StyleSheet.create({
 
   orderText: { fontFamily: Font_Family.regular, fontSize: FONT_SIZES.tweleve, color: Colors.white, textAlign: 'center' },
   arrowIcon: {
-    bottom: Platform.OS === 'ios' ? '1%' : 0
+    bottom: Platform.OS === 'ios' ? '1%' : 0,
+    // justifyContent:'center',
+    
   },
-  recomendImg: { height: '100%', width: '100%', borderRadius: 30, marginVertical: 10, }
+  recomendImg: { height: '100%', width: '100%', borderRadius: 30, marginVertical: 10, },
+
+  //modal
+
+
+  centeredView: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.36)',
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    padding: 15,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  
+
+  modalInnerView: {
+    backgroundColor: Colors.white,
+    marginTop: 20,
+    marginHorizontal: 10,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
+    elevation: 4,
+  },
+ 
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+
 
 
 });

@@ -9,12 +9,12 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {styles} from './AccountManagementScreen.styles';
 import {Colors} from '../../../utils/Colors';
 import {FONT_SIZES} from '../../../utils/FontSize';
 import {Font_Family} from '../../../utils/Fontfamily';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const RowItem = ({onPressHandler, heading, icon}) => {
   return (
@@ -55,7 +55,7 @@ export const AccountManagement = ({navigation}) => {
               />
               <RowItem
                 heading={'Your Transactions'}
-                onPressHandler={{}}
+                onPressHandler={() => {}}
                 icon={
                   <MaterialCommunityIcons
                     name="progress-clock"
@@ -88,7 +88,7 @@ export const AccountManagement = ({navigation}) => {
               />
               <RowItem
                 heading={'FAQ'}
-                onPressHandler={{}}
+                onPressHandler={() => {}}
                 icon={
                   <AntDesign
                     name="questioncircle"
@@ -112,7 +112,7 @@ export const AccountManagement = ({navigation}) => {
             <View style={styles.mainView}>
               <RowItem
                 heading={'About Us'}
-                onPressHandler={() => navigation.navigate('ChangePassword')}
+                onPressHandler={() => {}}
                 icon={
                   <Ionicons
                     name="information-circle-sharp"
@@ -123,7 +123,7 @@ export const AccountManagement = ({navigation}) => {
               />
               <RowItem
                 heading={'Terms and Conditons'}
-                onPressHandler={{}}
+                onPressHandler={() => {}}
                 icon={
                   <Ionicons
                     name="document-text"
@@ -134,7 +134,7 @@ export const AccountManagement = ({navigation}) => {
               />
               <RowItem
                 heading={'Privacy Policy'}
-                onPressHandler={() => navigation.navigate('SendFeedback')}
+                onPressHandler={() => {}}
                 icon={
                   <Ionicons
                     name="shield-checkmark-sharp"
@@ -165,7 +165,7 @@ export const AccountManagement = ({navigation}) => {
             <View style={styles.mainView}>
               <RowItem
                 heading={'Delete Account'}
-                onPressHandler={() => navigation.navigate('ChangePassword')}
+                onPressHandler={() => {}}
                 icon={
                   <MaterialIcons name="delete" size={20} color={Colors.red} />
                 }
