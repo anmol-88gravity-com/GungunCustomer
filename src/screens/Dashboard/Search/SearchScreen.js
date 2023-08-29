@@ -1,19 +1,19 @@
-import React, {useState} from 'react';
-import {View, Text, ScrollView} from 'react-native';
-import {Chip, Divider, TextInput} from 'react-native-paper';
+import React, { useState } from 'react';
+import { View, Text, ScrollView } from 'react-native';
+import { Chip, Divider, TextInput } from 'react-native-paper';
 
-import {Colors} from '../../../utils/Colors';
-import {Font_Family} from '../../../utils/Fontfamily';
-import {FONT_SIZES} from '../../../utils/FontSize';
-import {PopularItems, RestaurantTopPlaces} from '../HomeScreen/components';
-import {images} from '../../../utils/Images';
-import {DishCard} from './components/DishCard';
+import { Colors } from '../../../utils/Colors';
+import { Font_Family } from '../../../utils/Fontfamily';
+import { FONT_SIZES } from '../../../utils/FontSize';
+import { PopularItems, RestaurantTopPlaces } from '../HomeScreen/components';
+import { images } from '../../../utils/Images';
+import { DishCard } from './components/DishCard';
 
 const data = [1, 2, 3];
 export const SearchScreen = () => {
   const [search, setSearch] = useState('');
   return (
-    <View style={{flex: 1, backgroundColor: 'white', paddingHorizontal: 10}}>
+    <View style={{ flex: 1, backgroundColor: 'white', paddingHorizontal: 10 }}>
       <TextInput
         style={{
           backgroundColor: 'white',
@@ -26,9 +26,9 @@ export const SearchScreen = () => {
         placeholder="Search here"
         placeholderTextColor="#808080"
         mode={'outlined'}
-        outlineStyle={{borderColor: '#cdcdcd'}}
+        outlineStyle={{ borderColor: '#cdcdcd' }}
         autoFocus={true}
-        theme={{roundness: 15}}
+        theme={{ roundness: 15 }}
         activeOutlineColor={Colors.primary}
         left={<TextInput.Icon icon="search1" color={Colors.primary} />}
       />
@@ -51,7 +51,7 @@ export const SearchScreen = () => {
             }}>
             <Chip
               onPress={() => console.log('Pressed')}
-              textStyle={{color: Colors.grey}}
+              textStyle={{ color: Colors.grey }}
               style={{
                 marginRight: 10,
                 backgroundColor: 'white',
@@ -64,7 +64,7 @@ export const SearchScreen = () => {
             </Chip>
             <Chip
               onPress={() => console.log('Pressed')}
-              textStyle={{color: Colors.grey}}
+              textStyle={{ color: Colors.grey }}
               style={{
                 marginRight: 10,
                 backgroundColor: 'white',
@@ -77,7 +77,7 @@ export const SearchScreen = () => {
             </Chip>
             <Chip
               onPress={() => console.log('Pressed')}
-              textStyle={{color: Colors.grey}}
+              textStyle={{ color: Colors.grey }}
               style={{
                 marginRight: 10,
                 backgroundColor: 'white',
@@ -107,7 +107,7 @@ export const SearchScreen = () => {
             }}>
             <Chip
               onPress={() => console.log('Pressed')}
-              textStyle={{color: Colors.grey}}
+              textStyle={{ color: Colors.grey }}
               style={{
                 marginRight: 10,
                 backgroundColor: 'white',
@@ -120,7 +120,7 @@ export const SearchScreen = () => {
             </Chip>
             <Chip
               onPress={() => console.log('Pressed')}
-              textStyle={{color: Colors.grey}}
+              textStyle={{ color: Colors.grey }}
               style={{
                 marginRight: 10,
                 backgroundColor: 'white',
@@ -133,7 +133,7 @@ export const SearchScreen = () => {
             </Chip>
             <Chip
               onPress={() => console.log('Pressed')}
-              textStyle={{color: Colors.grey}}
+              textStyle={{ color: Colors.grey }}
               style={{
                 marginRight: 10,
                 backgroundColor: 'white',

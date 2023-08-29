@@ -107,6 +107,7 @@ export const HomeScreen = ({navigation}) => {
               </View>
               <RestaurantTopPlaces
                 source={images.restaurant}
+                icon="cards-heart-outline"
                 restaurantName="Manorama"
                 restaurantRating="3.8(10K+) . 29 mins"
                 restDishType="North Indian, Chinese,Biryani"

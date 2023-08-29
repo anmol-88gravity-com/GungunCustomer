@@ -11,12 +11,12 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {styles} from './AccountManagementScreen.styles';
-import {Colors} from '../../../utils/Colors';
-import {FONT_SIZES} from '../../../utils/FontSize';
-import {Font_Family} from '../../../utils/Fontfamily';
+import { styles } from './AccountManagementScreen.styles';
+import { Colors } from '../../../utils/Colors';
+import { FONT_SIZES } from '../../../utils/FontSize';
+import { Font_Family } from '../../../utils/Fontfamily';
 
-const RowItem = ({onPressHandler, heading, icon}) => {
+const RowItem = ({ onPressHandler, heading, icon }) => {
   return (
     <TouchableOpacity style={styles.rowStyles} onPress={onPressHandler}>
       {icon}
@@ -25,7 +25,7 @@ const RowItem = ({onPressHandler, heading, icon}) => {
   );
 };
 
-export const AccountManagement = ({navigation}) => {
+export const AccountManagement = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -40,7 +40,7 @@ export const AccountManagement = ({navigation}) => {
             <Text style={styles.title}>Account Settings</Text>
           </View>
 
-          <View style={{padding: 10}}>
+          <View style={{ padding: 10 }}>
             <View style={styles.mainView}>
               <RowItem
                 heading={'Change Password'}
@@ -54,11 +54,11 @@ export const AccountManagement = ({navigation}) => {
                 }
               />
               <RowItem
-                heading={'Your Transactions'}
-                onPressHandler={() => {}}
+                heading={'Notification'}
+                onPressHandler={() => navigation.navigate('Notification')}
                 icon={
                   <MaterialCommunityIcons
-                    name="progress-clock"
+                    name="bell-badge-outline"
                     size={20}
                     color={Colors.primary}
                   />
@@ -88,7 +88,7 @@ export const AccountManagement = ({navigation}) => {
               />
               <RowItem
                 heading={'FAQ'}
-                onPressHandler={() => {}}
+                onPressHandler={() => { }}
                 icon={
                   <AntDesign
                     name="questioncircle"
@@ -108,11 +108,11 @@ export const AccountManagement = ({navigation}) => {
             }}>
             <Text style={styles.title}>More</Text>
           </View>
-          <View style={{padding: 10}}>
+          <View style={{ padding: 10 }}>
             <View style={styles.mainView}>
               <RowItem
                 heading={'About Us'}
-                onPressHandler={() => {}}
+                onPressHandler={() => { }}
                 icon={
                   <Ionicons
                     name="information-circle-sharp"
@@ -123,7 +123,7 @@ export const AccountManagement = ({navigation}) => {
               />
               <RowItem
                 heading={'Terms and Conditons'}
-                onPressHandler={() => {}}
+                onPressHandler={() => { }}
                 icon={
                   <Ionicons
                     name="document-text"
@@ -134,7 +134,7 @@ export const AccountManagement = ({navigation}) => {
               />
               <RowItem
                 heading={'Privacy Policy'}
-                onPressHandler={() => {}}
+                onPressHandler={() => { }}
                 icon={
                   <Ionicons
                     name="shield-checkmark-sharp"
@@ -161,11 +161,11 @@ export const AccountManagement = ({navigation}) => {
               ⚠️ Dangerous Area
             </Text>
           </View>
-          <View style={{padding: 10}}>
+          <View style={{ padding: 10 }}>
             <View style={styles.mainView}>
               <RowItem
                 heading={'Delete Account'}
-                onPressHandler={() => {}}
+                onPressHandler={() => { }}
                 icon={
                   <MaterialIcons name="delete" size={20} color={Colors.red} />
                 }

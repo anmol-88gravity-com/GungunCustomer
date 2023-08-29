@@ -18,6 +18,7 @@ import {ChangePasswordScreen} from '../screens/Settings/ChangePassword';
 import {SendFeedbackScreen} from '../screens/Settings/SendFeedback';
 import {CustomerSupportScreen} from '../screens/Settings/CustomerSupport';
 import CustomerFeedback from '../screens/Settings/CustomerFeedback/CustomerFeedbackScreen';
+import { Notification } from '../screens/Notifications';
 
 
 
@@ -117,6 +118,11 @@ export function SettingsNavigator() {
         name="CustomerFeedback"
         component={CustomerFeedback}
         options={{title: 'Customer Feedback', headerBackTitle: ''}}
+      />
+       <SettingStack.Screen
+        name="Notification"
+        component={Notification}
+        options={{title: 'Notification', headerBackTitle: ''}}
       />
       <SettingStack.Screen
         name="CustomerSupport"

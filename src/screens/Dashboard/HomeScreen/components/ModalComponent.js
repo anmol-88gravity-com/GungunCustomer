@@ -89,7 +89,7 @@ export const ModalComponent = ({ isVisible, onClose }) => {
                     </View>
 
                     <Button
-                        onPress={() => isVisible(true)}
+                        onPress={() => console.log('true')}
                         buttonColor={Colors.secondary}
                         theme={{ roundness: 0 }}
                         style={{
@@ -110,9 +110,6 @@ export const ModalComponent = ({ isVisible, onClose }) => {
                 </View>
             </View>
         </Modal>
-
-
-
 
     );
 };

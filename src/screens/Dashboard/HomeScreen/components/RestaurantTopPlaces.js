@@ -10,6 +10,7 @@ import {styles} from '../HomeScreen.styles';
 
 export const RestaurantTopPlaces = ({
   source,
+  icon,
   restaurantName,
   restaurantRating,
   restDishType,
@@ -28,7 +29,7 @@ export const RestaurantTopPlaces = ({
 
   const topRestaurants = () => {
     return (
-      <View style={{marginHorizontal: 5}}>
+      <View style={{marginHorizontal: 5,}}>
         <View style={styles.resturantPlacesView}>
           <View style={{flexDirection: 'row'}}>
             <View style={{flex: 2, height: 100}}>
@@ -61,7 +62,7 @@ export const RestaurantTopPlaces = ({
             <LinearGradient colors={['#000', '#000', '#000']} style={{flex: 1}}>
               <ImageBackground source={source} style={styles.resturentBackImg}>
                 <MaterialCommunityIcons
-                  name="cards-heart-outline"
+                  name={icon}
                   size={20}
                   color="#fff"
                   style={{alignSelf: 'flex-end', padding: 5}}
