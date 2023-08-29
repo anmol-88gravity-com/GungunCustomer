@@ -17,6 +17,9 @@ import {AccountManagement} from '../screens/Settings/AccountManagement';
 import {ChangePasswordScreen} from '../screens/Settings/ChangePassword';
 import {SendFeedbackScreen} from '../screens/Settings/SendFeedback';
 import {CustomerSupportScreen} from '../screens/Settings/CustomerSupport';
+import CustomerFeedback from '../screens/Settings/CustomerFeedback/CustomerFeedbackScreen';
+
+
 
 const Stack = createStackNavigator();
 
@@ -109,6 +112,11 @@ export function SettingsNavigator() {
         name="SendFeedback"
         component={SendFeedbackScreen}
         options={{title: 'Send Feedback', headerBackTitle: ''}}
+      />
+        <SettingStack.Screen
+        name="CustomerFeedback"
+        component={CustomerFeedback}
+        options={{title: 'Customer Feedback', headerBackTitle: ''}}
       />
       <SettingStack.Screen
         name="CustomerSupport"

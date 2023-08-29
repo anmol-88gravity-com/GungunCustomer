@@ -65,8 +65,8 @@ export const AccountManagement = ({navigation}) => {
                 }
               />
               <RowItem
-                heading={'Send Feedback'}
-                onPressHandler={() => navigation.navigate('SendFeedback')}
+                heading={'Customer Feedback'}
+                onPressHandler={() => navigation.navigate('CustomerFeedback')}
                 icon={
                   <MaterialIcons
                     name="feedback"
