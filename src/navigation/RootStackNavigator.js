@@ -22,9 +22,20 @@ const Stack = createStackNavigator();
 
 export function DashboardNavigator() {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Search" component={SearchScreen} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          title: 'Search for dishes and restaurants',
+          headerBackTitle: '',
+        }}
+      />
     </Stack.Navigator>
   );
 }

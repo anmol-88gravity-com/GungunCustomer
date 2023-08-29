@@ -1,60 +1,48 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   View,
   Text,
   ScrollView,
-  TextInput,
   TouchableOpacity,
   Image,
-  Modal,
   Platform,
-  Pressable,
-  ImageBackground,
 } from 'react-native';
-import { styles } from './HomeScreen.styles';
-import AntDesign from 'react-native-vector-icons/dist/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import { images } from '../../../utils/Images';
-import { useNavigation } from '@react-navigation/native';
+import {images} from '../../../utils/Images';
+import {styles} from './HomeScreen.styles';
 import ScreenHeader from '../../../components/header/ScreenHeader';
-import { PopularItems, RecomendedItem, ResturantTopPlaces } from './components';
+import {
+  PopularItems,
+  RecommendedItems,
+  RestaurantTopPlaces,
+} from './components';
+import {Colors} from '../../../utils/Colors';
+import {TextInput} from 'react-native-paper';
 
-
-
-
-
-export const HomeScreen = () => {
-  const navigation = useNavigation();
-
-  const toggleModal = () => {
-    setIsModalVisible(!isModalVisible);
-  };
-
+export const HomeScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.maincontainer}>
       <ScreenHeader headerTitle={"Let's Find \nFood Near You"} />
-      <TouchableOpacity
-        style={styles.searchView}
-        onPress={() => navigation.navigate('Search')}>
-        <AntDesign
-          name="search1"
-          size={20}
-          color="#aaaaaa"
-          style={styles.icon}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Search here"
-          placeholderTextColor="#aaaaaa"
-          editable={false}
-        />
+      <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+        <View pointerEvents={'none'} style={styles.searchView}>
+          <TextInput
+            style={styles.input}
+            placeholder="Search here"
+            placeholderTextColor="#808080"
+            editable={false}
+            mode={'outlined'}
+            theme={{roundness: 15}}
+            outlineStyle={{borderColor: '#cdcdcd'}}
+            left={<TextInput.Icon icon="search1" color={Colors.primary} />}
+          />
+        </View>
       </TouchableOpacity>
       <ScrollView style={styles.container}>
         <View style={styles.container}>
-          <View style={{ marginHorizontal: 10 }}>
+          <View style={{marginHorizontal: 10}}>
             <View
               style={{
                 height: 200,
@@ -63,22 +51,28 @@ export const HomeScreen = () => {
                 justifyContent: 'center',
               }}>
               <Image source={images.bannerImg} style={styles.bannerImg} />
-              <Text style={styles.textImg}>lowest delivery {"\n"} charges ever</Text>
+              <Text style={styles.textImg}>
+                lowest delivery {'\n'} charges ever
+              </Text>
               <TouchableOpacity style={styles.orderNowButton}>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{flexDirection: 'row'}}>
                   <Text style={styles.orderText}>Order Now </Text>
-                  <AntDesign name="arrowright" size={15} color='#ffffff' style={styles.arrowIcon} />
+                  <AntDesign
+                    name="arrowright"
+                    size={15}
+                    color="#ffffff"
+                    style={styles.arrowIcon}
+                  />
                 </View>
               </TouchableOpacity>
-
             </View>
 
             <Text style={styles.title}>Popular Items</Text>
-            <View style={{
-              height: Platform.OS === 'ios' ? '18%' : '19%',
-              //  backgroundColor: 'red', 
-              flex: 1
-            }}>
+            <View
+              style={{
+                height: Platform.OS === 'ios' ? '18%' : '19%',
+                flex: 1,
+              }}>
               <PopularItems
                 source={images.kadaiPaneer}
                 title="Chole Bhatoore"
@@ -87,44 +81,44 @@ export const HomeScreen = () => {
               />
             </View>
 
-            <Text style={[styles.title, { marginVertical: 0 }]}>What's On your mind ?</Text>
-            <View style={{
-              height: 220,
-              // backgroundColor: 'pink', 
-              flex: 1
-            }}>
-              <RecomendedItem
-                source={images.burger}
-                title="Pizza"
-              />
-
+            <Text style={[styles.title, {marginVertical: 0}]}>
+              What's On your mind ?
+            </Text>
+            <View
+              style={{
+                height: 220,
+                flex: 1,
+              }}>
+              <RecommendedItems source={images.burger} title="Pizza" />
             </View>
 
-            <View style={{ flex: 1, }}>
-              <View style={{
-                flexDirection: 'row',
-              }}>
-                <MaterialIcons name="location-on" size={25} color="#000000" style={{ top: Platform.OS === 'ios' ? '4%' : '5%' }} />
-                <Text style={[styles.title,]}>Top places near you</Text>
+            <View style={{flex: 1}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                <MaterialIcons
+                  name="location-on"
+                  size={25}
+                  color={Colors.red}
+                  style={{top: Platform.OS === 'ios' ? '4%' : '5%'}}
+                />
+                <Text style={styles.title}>Top places near you</Text>
               </View>
-              <ResturantTopPlaces
-                source={images.kadaiPaneer}
-                resturantName="Manorama"
-                resturentRatting="3.8(10K+) . 29 mins"
+              <RestaurantTopPlaces
+                source={images.restaurant}
+                restaurantName="Manorama"
+                restaurantRating="3.8(10K+) . 29 mins"
                 restDishType="North Indian, Chinese,Biryani"
                 restAddress="DLF Phase 3 . 4.3 km"
-                restType="FLAT DEAL"
-                resturentOffer="₹125 OFF"
-                resturentMaxOffer="ABOVE ₹249"
-
+                restType=""
+                restaurantOffer="₹125 OFF"
+                restaurantMaxOffer="above ₹249"
               />
             </View>
-
           </View>
-
         </View>
       </ScrollView>
-
     </SafeAreaView>
   );
 };
