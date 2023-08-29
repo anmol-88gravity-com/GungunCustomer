@@ -52,10 +52,10 @@ export const styles = StyleSheet.create({
   },
   resturantPlaceTitle: {
     fontFamily: Font_Family.regular,
-    marginLeft:5,
+    marginLeft: 5,
     color: Colors.black,
   },
- 
+
   resturantPlacesView: {
     backgroundColor: Colors.white,
     width: '100%',
@@ -148,7 +148,7 @@ export const styles = StyleSheet.create({
   arrowIcon: {
     bottom: Platform.OS === 'ios' ? '1%' : 0,
     // justifyContent:'center',
-    
+
   },
   recomendImg: { height: '100%', width: '100%', borderRadius: 30, marginVertical: 10, },
 
@@ -177,20 +177,21 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-  
+
 
   modalInnerView: {
     backgroundColor: Colors.white,
     marginTop: 20,
+    borderRadius: 10,
     marginHorizontal: 10,
     padding: 10,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 2,
     elevation: 4,
   },
- 
+
   button: {
     borderRadius: 20,
     padding: 10,
@@ -211,6 +212,77 @@ export const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
   },
+  bestSellerIcon: {
+    position: 'absolute',
+    marginTop: 10,
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between'
+  },
+  bestSellerView: {
+    backgroundColor: Colors.white,
+    borderRadius: 5,
+    marginLeft: 5,
+    alignSelf: 'center',
+    padding: 2,
+    flexDirection: 'row'
+  },
+  txtBestSeller: {
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontFamily: Font_Family.regular,
+    fontSize: FONT_SIZES.tweleve,
+    color: Colors.secondary
+  },
+  countDownBtn: { position: 'absolute', bottom: 0, right: 0, paddingBottom: 10, paddingRight: 10 },
+  buttonIncrement: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#000000',
+    // borderRadius: 5,
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  buttonDecrement: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#000000',
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  minus: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginRight: 5,
+  },
+  numberContainer: {
+    backgroundColor: '#000000',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    // borderRadius: 5,
+  },
+  number: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  itemsName: {
+    fontFamily: Font_Family.medium,
+    fontSize: FONT_SIZES.fifteen,
+    color: Colors.black,
+    marginLeft: 10
+  }
+
 
 
 

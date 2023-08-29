@@ -5,8 +5,9 @@ import {Colors} from '../../../utils/Colors';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: Colors.white,
+   
   },
   title: {
     marginVertical: '10%',
@@ -32,7 +33,8 @@ export const styles = StyleSheet.create({
   imgView: {flex: 1, alignItems: 'center', justifyContent: 'center'},
   mainView: {
     backgroundColor: '#FFFFFF',
-    width: '100%',
+    width: '90%',
+    left:'5%',
     padding: 20,
     borderRadius: 10,
     shadowColor: '#171717',
@@ -41,6 +43,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 4,
     marginTop: 10,
+
   },
   btnView: {
     backgroundColor: '#F0F0F0',

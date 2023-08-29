@@ -42,9 +42,9 @@ const CustomerFeedback = ({navigation}) => {
 
   const renderItem = ({item}) => {
     return (
+      <View style={{flex:1,paddingBottom:5}}>
       <TouchableOpacity
-        style={styles.mainView}
-        onPress={() => navigation.navigate('FeedbackForm')}>
+        style={styles.mainView}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={[styles.subtitle, {marginTop: 0}]}>Order Id: 14512</Text>
           <Text style={[styles.subtitle, {marginTop: 0}]}>30-07-2023</Text>
@@ -66,13 +66,13 @@ const CustomerFeedback = ({navigation}) => {
           </View>
         </View>
       </TouchableOpacity>
+      </View>
     );
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Header headerTitle={'Customer Feedback'} />
         <View style={styles.container}>
           <View
             style={{
@@ -102,21 +102,26 @@ const CustomerFeedback = ({navigation}) => {
               style={styles.sideIcon}
             />
           </View>
-          <View style={{marginHorizontal: 10, padding: 10}}>
+          <View style={{
+            marginHorizontal: 10,
+            padding: 10
+             }}>
             <Text style={[styles.title, {marginVertical: '5%'}]}>
               Choose For Feedbacking - Recent Order
             </Text>
-            <FlatList data={DATA} renderItem={renderItem} />
-          </View>
 
-          <View style={{marginHorizontal: 20}}>
+            
+          </View>
+          <FlatList data={DATA} renderItem={renderItem} />
+
+          <View style={{marginHorizontal: 20,}}>
             <TouchableOpacity
               style={styles.btnView}
-              onPress={() => navigation.navigate('FeedbackForm')}>
+              onPress={() => navigation.navigate('SendFeedback')}>
               <Text style={styles.textSignIn}>Talk To A Help Executive</Text>
             </TouchableOpacity>
           </View>
-          <View style={{marginBottom: 30}}></View>
+          <View style={{marginBottom: 30}}/>
         </View>
       </ScrollView>
     </SafeAreaView>

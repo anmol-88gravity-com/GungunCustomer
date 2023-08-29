@@ -10,4 +10,5 @@ export const images = {
     pizza:require('../assets/dashboardImages/pizza.png'),
     burger:require('../assets/dashboardImages/burger.png'),
     kadai_Paneer:require('../assets/dashboardImages/kadai_Paneer.png'),
+    medal:require('../assets/dashboardImages/medal.png'),
   };
