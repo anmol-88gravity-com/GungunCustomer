@@ -84,7 +84,7 @@ export function OrdersNavigator() {
       <OrderStack.Screen
         name="OrderDetails"
         component={OrderDetailScreen}
-        options={{title: 'Order Details', headerBackTitle: ''}}
+        options={{title: 'Order Summary', headerBackTitle: ''}}
       />
     </OrderStack.Navigator>
   );
@@ -129,6 +129,7 @@ export function SettingsNavigator() {
         component={CustomerSupportScreen}
         options={{title: 'Customer Support', headerBackTitle: ''}}
       />
+     
     </SettingStack.Navigator>
   );
 }

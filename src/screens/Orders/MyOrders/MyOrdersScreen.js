@@ -13,13 +13,13 @@ import { FONT_SIZES } from '../../../utils/FontSize';
 
 
 
-export const MyOrdersScreen = () => {
+export const MyOrdersScreen = ({ navigation }) => {
 
   const Data = [1, 2, 3, 4, 5]
 
   const renderItem = () => {
     return (
-      <View style={{ flex: 1, marginVertical: '2%' }}>
+      <Pressable style={{ flex: 1, marginVertical: '2%' }} onPress={() => navigation.navigate('OrderDetails')}>
         <View style={styles.resturentDetails}>
           <Text style={[styles.resturentTitle,]}>Order Id:- 123456</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: '3%' }}>
@@ -67,7 +67,7 @@ export const MyOrdersScreen = () => {
             <Text style={[styles.resturentTitle, { alignSelf: 'center' }]}>Payment failed</Text>
           </View>
         </View>
-      </View>
+      </Pressable>
 
     )
   }
