@@ -40,7 +40,7 @@ export const HomeScreen = ({navigation}) => {
           />
         </View>
       </TouchableOpacity>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={{marginHorizontal: 10}}>
             <View

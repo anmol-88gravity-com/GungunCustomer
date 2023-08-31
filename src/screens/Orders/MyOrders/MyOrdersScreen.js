@@ -88,7 +88,7 @@ export const MyOrdersScreen = ({ navigation }) => {
         />
       </View>
 
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <FlatList
           data={Data}
           renderItem={renderItem}

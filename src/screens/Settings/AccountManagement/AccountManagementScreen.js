@@ -108,6 +108,7 @@ export const AccountManagement = ({ navigation }) => {
             }}>
             <Text style={styles.title}>More</Text>
           </View>
+
           <View style={{ padding: 10 }}>
             <View style={styles.mainView}>
               <RowItem
@@ -145,6 +146,7 @@ export const AccountManagement = ({ navigation }) => {
               />
             </View>
           </View>
+          
           <View
             style={{
               marginHorizontal: 20,

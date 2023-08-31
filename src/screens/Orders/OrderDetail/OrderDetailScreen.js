@@ -9,7 +9,7 @@ export const OrderDetailScreen = () => {
   return (
     <View style={styles.container}>
       {/* <Text style={[styles.textTitle, { paddingBottom: 10 }]}>Order Summary</Text> */}
-      <ScrollView>
+      <ScrollView  showsVerticalScrollIndicator={false}>
         <View style={{ marginTop: '2%' }}>
           <Text style={styles.itemTitle}>Cakes 24*7.Com</Text>
           <Text style={[styles.itemSubTitle,{marginTop:5}]}>Shop 2, Plot 373, 40 Feet Road, Satguru farm, Opposite Maruti Gate 1, Phase 4, Sector 18, Near Sector 22, Gurgaon</Text>
