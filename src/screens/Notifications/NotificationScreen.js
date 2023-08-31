@@ -1,5 +1,5 @@
 import React, { StyleSheet } from 'react-native';
-import { SafeAreaView, View, Text, TouchableOpacity,FlatList } from 'react-native';
+import { SafeAreaView, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../../utils/Colors';
 import { Font_Family } from '../../utils/Fontfamily';
@@ -15,33 +15,33 @@ const RowItem = ({ onPressHandler, heading, icon }) => {
     );
 };
 
-const data = [1,2,3,4,5,6,7,8]
+const data = [1, 2, 3, 4, 5, 6, 7, 8]
 
-const notificationLists = ()=>{
-    return(
-        <View style={[styles.mainView,]}>
-        <RowItem
-            heading={'Payment received of Rs.1035, Lorem ispum dolor sit amet, consectetur adipiscing elit'}
-            onPressHandler={() => { }}
-            icon={
-                <FontAwesome
-                    name="circle"
-                    size={10}
-                    color={Colors.primary}
-                />
-            }
-        />
-        <Text style={styles.timeText}>1:40 PM, 10 Aug 2023.</Text>
-    </View>
+const notificationLists = ({ index }) => {
+    return (
+        <View style={[styles.mainView,{ marginTop: index === 0 ? 10 : 10}]}>
+            <RowItem
+                heading={'Payment received of Rs.1035, Lorem ispum dolor sit amet, consectetur adipiscing elit'}
+                onPressHandler={() => { }}
+                icon={
+                    <FontAwesome
+                        name="circle"
+                        size={10}
+                        color={Colors.primary}
+                    />
+                }
+            />
+            <Text style={styles.timeText}>1:40 PM, 10 Aug 2023.</Text>
+        </View>
     )
 }
 
 export const Notification = () => {
     return (
-        <View style={{ flex: 1, backgroundColor: '#ffffff'}}>
-               <FlatList data={data} renderItem={notificationLists}/>
-               <View style={{marginBottom:30}}/>
-         </View>
+        <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
+            <FlatList data={data} renderItem={notificationLists} />
+            <View style={{ marginBottom: 30 }} />
+        </View>
     )
 }
 const styles = StyleSheet.create({
@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 4,
-        marginBottom:10
+        marginBottom:10,
+       
 
     },
     customerText: {
