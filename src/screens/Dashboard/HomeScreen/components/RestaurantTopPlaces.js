@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, FlatList, ImageBackground} from 'react-native';
+import {View, Text, FlatList, ImageBackground, Pressable} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -17,6 +17,7 @@ export const RestaurantTopPlaces = ({
   restType,
   restaurantOffer,
   restaurantMaxOffer,
+  onPressHandler,
 }) => {
   const data = [
     {id: '1', title: 'Item 1'},
@@ -28,7 +29,7 @@ export const RestaurantTopPlaces = ({
 
   const topRestaurants = () => {
     return (
-      <View style={{marginHorizontal: 5}}>
+      <Pressable style={{marginHorizontal: 5}} onPress={onPressHandler}>
         <View style={styles.resturantPlacesView}>
           <View style={{flexDirection: 'row'}}>
             <View style={{flex: 2, height: 100}}>
@@ -105,7 +106,7 @@ export const RestaurantTopPlaces = ({
             </LinearGradient>
           </View>
         </View>
-      </View>
+      </Pressable>
     );
   };
   return <FlatList data={data} renderItem={topRestaurants} />;

@@ -3,24 +3,19 @@ import {View, Text, ScrollView} from 'react-native';
 import {Chip, Divider, TextInput} from 'react-native-paper';
 
 import {Colors} from '../../../utils/Colors';
-import {Font_Family} from '../../../utils/Fontfamily';
-import {FONT_SIZES} from '../../../utils/FontSize';
 import {PopularItems, RestaurantTopPlaces} from '../HomeScreen/components';
 import {images} from '../../../utils/Images';
 import {DishCard} from './components/DishCard';
+import {styles} from './SearchScreeen.styles';
 
 const data = [1, 2, 3];
-export const SearchScreen = () => {
+export const SearchScreen = ({navigation}) => {
   const [search, setSearch] = useState('');
+
   return (
-    <View style={{flex: 1, backgroundColor: 'white', paddingHorizontal: 10}}>
+    <View style={styles.container}>
       <TextInput
-        style={{
-          backgroundColor: 'white',
-          width: '100%',
-          alignSelf: 'center',
-          marginTop: 15,
-        }}
+        style={styles.inputStyles}
         value={search}
         onChangeText={setSearch}
         placeholder="Search here"
@@ -34,15 +29,7 @@ export const SearchScreen = () => {
       />
       {search === '' ? (
         <>
-          <Text
-            style={{
-              marginTop: 20,
-              fontFamily: Font_Family.semiBold,
-              fontSize: FONT_SIZES.thirteen,
-              color: Colors.grey,
-            }}>
-            Recent Searches
-          </Text>
+          <Text style={styles.recentSearches}>Recent Searches</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -52,109 +39,46 @@ export const SearchScreen = () => {
             <Chip
               onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
-              style={{
-                marginRight: 10,
-                backgroundColor: 'white',
-                borderWidth: 2,
-                borderRadius: 100,
-                borderColor: Colors.grey,
-                marginBottom: 10,
-              }}>
+              style={styles.chipStyles}>
               Bikaner Sweets
             </Chip>
             <Chip
               onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
-              style={{
-                marginRight: 10,
-                backgroundColor: 'white',
-                borderWidth: 2,
-                borderRadius: 100,
-                borderColor: Colors.grey,
-                marginBottom: 10,
-              }}>
+              style={styles.chipStyles}>
               Singla's Sweets
             </Chip>
             <Chip
               onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
-              style={{
-                marginRight: 10,
-                backgroundColor: 'white',
-                borderWidth: 2,
-                borderRadius: 100,
-                borderColor: Colors.grey,
-                marginBottom: 10,
-              }}>
+              style={styles.chipStyles}>
               Om Sweets and Restaurants
             </Chip>
           </View>
           <Divider />
-          <Text
-            style={{
-              marginTop: 20,
-              fontFamily: Font_Family.semiBold,
-              fontSize: FONT_SIZES.thirteen,
-              color: Colors.grey,
-            }}>
-            Recommended
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              marginVertical: 10,
-            }}>
+          <Text style={styles.recommended}>Recommended</Text>
+          <View style={styles.chipRow}>
             <Chip
               onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
-              style={{
-                marginRight: 10,
-                backgroundColor: 'white',
-                borderWidth: 2,
-                borderRadius: 100,
-                borderColor: Colors.grey,
-                marginBottom: 10,
-              }}>
+              style={styles.foodName}>
               Masala Dosa
             </Chip>
             <Chip
               onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
-              style={{
-                marginRight: 10,
-                backgroundColor: 'white',
-                borderWidth: 2,
-                borderRadius: 100,
-                borderColor: Colors.grey,
-                marginBottom: 10,
-              }}>
+              style={styles.foodName}>
               Pav Bhaji
             </Chip>
             <Chip
               onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
-              style={{
-                marginRight: 10,
-                backgroundColor: 'white',
-                borderWidth: 2,
-                borderRadius: 100,
-                borderColor: Colors.grey,
-                marginBottom: 10,
-              }}>
+              style={styles.foodName}>
               Choco lava
             </Chip>
           </View>
           <Divider />
-          <Text
-            style={{
-              marginVertical: 20,
-              fontFamily: Font_Family.semiBold,
-              fontSize: FONT_SIZES.thirteen,
-              color: Colors.black,
-            }}>
-            Our Popular Items
-          </Text>
+          <Text style={styles.popularItems}>Our Popular Items</Text>
           <PopularItems
             source={images.kadaiPaneer}
             title="Chole Bhatoore"
@@ -163,28 +87,13 @@ export const SearchScreen = () => {
           />
         </>
       ) : (
-        <ScrollView>
-          <Text
-            style={{
-              marginVertical: 20,
-              fontFamily: Font_Family.semiBold,
-              fontSize: FONT_SIZES.fifteen,
-              color: Colors.secondary,
-            }}>
-            Dishes
-          </Text>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text style={styles.dishesText}>Dishes</Text>
           {data.map(m => (
             <DishCard />
           ))}
-          <Text
-            style={{
-              marginBottom: 20,
-              fontFamily: Font_Family.semiBold,
-              fontSize: FONT_SIZES.fifteen,
-              color: Colors.secondary,
-            }}>
-            Restaurants
-          </Text>
+          <Text style={styles.seeMore}>See More</Text>
+          <Text style={styles.restaurantText}>Restaurants</Text>
           <RestaurantTopPlaces
             source={images.restaurant}
             restaurantName="Manorama"
@@ -192,8 +101,9 @@ export const SearchScreen = () => {
             restDishType="North Indian, Chinese,Biryani"
             restAddress="DLF Phase 3 . 4.3 km"
             restType=""
-            restaurantOffer="₹125 OFF"
-            restaurantMaxOffer="above ₹249"
+            restaurantOffer=""
+            restaurantMaxOffer=""
+            onPressHandler={() => navigation.navigate('RestaurantScreen')}
           />
         </ScrollView>
       )}

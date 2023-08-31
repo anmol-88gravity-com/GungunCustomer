@@ -1,29 +1,10 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Modal,
-  TouchableOpacity,
-  FlatList,
-  Pressable,
-} from 'react-native';
-import {Button} from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-
-import { Colors } from '../../../../utils/Colors';
-import { FONT_SIZES } from '../../../../utils/FontSize';
-import { Font_Family } from '../../../../utils/Fontfamily';
-import { images } from '../../../../utils/Images';
-import { ModalComponent } from './ModalComponent';
+import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
+import {ModalComponent} from './ModalComponent';
 import {styles} from '../HomeScreen.styles';
 
-export const PopularItems = ({ source, title, subTitle, price }) => {
+export const PopularItems = ({source, title, subTitle, price}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  // const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  
 
   const data = [
     {id: '1', title: 'Item 1'},
@@ -33,9 +14,11 @@ export const PopularItems = ({ source, title, subTitle, price }) => {
     {id: '5', title: 'Item 3'},
   ];
 
-  const renderItem = ({item, index}) => {
+  const renderItem = () => {
     return (
-      <TouchableOpacity style={styles.popularitems} onPress={() => setIsModalVisible(true)}>
+      <TouchableOpacity
+        style={styles.popularitems}
+        onPress={() => setIsModalVisible(true)}>
         <View style={styles.imgView}>
           <Image source={source} style={{height: '100%', width: '100%'}} />
         </View>
@@ -49,9 +32,8 @@ export const PopularItems = ({ source, title, subTitle, price }) => {
     );
   };
 
-  
   return (
-    <View> 
+    <View>
       <ModalComponent
         isVisible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
