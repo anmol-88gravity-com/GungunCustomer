@@ -14,9 +14,8 @@ import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import {styles} from './CustomerFeedbackScreen.styles';
 import {images} from '../../../utils/Images';
-import Header from '../../../components/header/Header';
 
-const CustomerFeedback = ({navigation}) => {
+export const CustomerFeedback = ({navigation}) => {
   const [phone, setPhone] = useState('');
 
   const DATA = [
@@ -42,30 +41,31 @@ const CustomerFeedback = ({navigation}) => {
 
   const renderItem = ({item}) => {
     return (
-      <View style={{flex:1,paddingBottom:5}}>
-      <TouchableOpacity
-        style={styles.mainView}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={[styles.subtitle, {marginTop: 0}]}>Order Id: 14512</Text>
-          <Text style={[styles.subtitle, {marginTop: 0}]}>30-07-2023</Text>
-        </View>
-        <View style={{flexDirection: 'row', marginTop: '5%'}}>
-          <View style={styles.imgView}>
-            <View style={{height: 80, width: 80}}>
-              <Image
-                source={item.image}
-                style={{height: '100%', width: '100%'}}
-              />
+      <View style={{flex: 1, paddingBottom: 5}}>
+        <TouchableOpacity style={styles.mainView}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={[styles.subtitle, {marginTop: 0}]}>
+              Order Id: 14512
+            </Text>
+            <Text style={[styles.subtitle, {marginTop: 0}]}>30-07-2023</Text>
+          </View>
+          <View style={{flexDirection: 'row', marginTop: '5%'}}>
+            <View style={styles.imgView}>
+              <View style={{height: 80, width: 80}}>
+                <Image
+                  source={item.image}
+                  style={{height: '100%', width: '100%'}}
+                />
+              </View>
+            </View>
+            <View style={{flex: 3, alignSelf: 'center', left: '10%'}}>
+              <Text style={[styles.title, {marginVertical: 0}]}>
+                {item.title}
+              </Text>
+              <Text style={[styles.subtitle]}>{item.subTitle}</Text>
             </View>
           </View>
-          <View style={{flex: 3, alignSelf: 'center', left: '10%'}}>
-            <Text style={[styles.title, {marginVertical: 0}]}>
-              {item.title}
-            </Text>
-            <Text style={[styles.subtitle]}>{item.subTitle}</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -102,29 +102,27 @@ const CustomerFeedback = ({navigation}) => {
               style={styles.sideIcon}
             />
           </View>
-          <View style={{
-            marginHorizontal: 10,
-            padding: 10
-             }}>
+          <View
+            style={{
+              marginHorizontal: 10,
+              padding: 10,
+            }}>
             <Text style={[styles.title, {marginVertical: '5%'}]}>
               Choose For Feedbacking - Recent Order
             </Text>
-
-            
           </View>
           <FlatList data={DATA} renderItem={renderItem} />
 
-          <View style={{marginHorizontal: 20,}}>
+          <View style={{marginHorizontal: 20}}>
             <TouchableOpacity
               style={styles.btnView}
               onPress={() => navigation.navigate('SendFeedback')}>
               <Text style={styles.textSignIn}>Talk To A Help Executive</Text>
             </TouchableOpacity>
           </View>
-          <View style={{marginBottom: 30}}/>
+          <View style={{marginBottom: 30}} />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
-export default CustomerFeedback;

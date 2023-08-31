@@ -55,7 +55,7 @@ export const HomeScreen = ({navigation}) => {
                 lowest delivery {'\n'} charges ever
               </Text>
               <TouchableOpacity style={styles.orderNowButton}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Text style={styles.orderText}>Order Now </Text>
                   <AntDesign
                     name="arrowright"
@@ -115,6 +115,7 @@ export const HomeScreen = ({navigation}) => {
                 restType=""
                 restaurantOffer="₹125 OFF"
                 restaurantMaxOffer="above ₹249"
+                onPressHandler={() => navigation.navigate('RestaurantScreen')}
               />
             </View>
           </View>

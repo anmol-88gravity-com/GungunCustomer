@@ -128,7 +128,8 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     paddingHorizontal: 8,
-    paddingVertical: 8,
+    paddingTop: 9,
+    paddingBottom: 8,
     backgroundColor: Colors.primary,
     bottom: '20%',
     borderRadius: 20,
@@ -178,15 +179,15 @@ export const styles = StyleSheet.create({
 
   modalInnerView: {
     backgroundColor: Colors.white,
-    marginTop: 20,
+    // marginTop: 20,
     borderRadius: 10,
     marginHorizontal: 10,
-    padding: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 2,
-    elevation: 4,
+    // padding: 10,
+    // shadowColor: '#000',
+    // shadowOffset: {width: 0, height: 2},
+    // shadowOpacity: 0.25,
+    // shadowRadius: 2,
+    // elevation: 4,
   },
 
   button: {
@@ -214,31 +215,38 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   bestSellerView: {
     backgroundColor: Colors.white,
     borderRadius: 5,
     marginLeft: 5,
     alignSelf: 'center',
-    padding: 2,
-    flexDirection: 'row'
+    paddingHorizontal: 3,
+    paddingVertical: 2,
+    flexDirection: 'row',
   },
   txtBestSeller: {
     textAlign: 'center',
     alignSelf: 'center',
     fontFamily: Font_Family.regular,
     fontSize: FONT_SIZES.tweleve,
-    color: Colors.secondary
+    color: Colors.secondary,
   },
-  countDownBtn: { position: 'absolute', bottom: 0, right: 0, paddingBottom: 10, paddingRight: 10 },
+  countDownBtn: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    paddingBottom: 10,
+    paddingRight: 10,
+  },
   buttonIncrement: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#fff',
     // borderRadius: 5,
     borderTopLeftRadius: 5,
     borderBottomLeftRadius: 5,
@@ -251,7 +259,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#fff',
     borderTopRightRadius: 5,
     borderBottomRightRadius: 5,
     paddingHorizontal: 10,
@@ -261,12 +269,16 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginRight: 5,
+    color: 'white',
   },
   numberContainer: {
-    backgroundColor: '#000000',
+    backgroundColor: 'rgba(255,255,255,0.4)',
     paddingHorizontal: 10,
     paddingVertical: 5,
-    // borderRadius: 5,
+    borderTopWidth: 1,
+    borderTopColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#fff',
   },
   number: {
     color: '#ffffff',
@@ -277,10 +289,6 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.medium,
     fontSize: FONT_SIZES.fifteen,
     color: Colors.black,
-    marginLeft: 10
-  }
-
-
-
-
+    marginLeft: 10,
+  },
 });
