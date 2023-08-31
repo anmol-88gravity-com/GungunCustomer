@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {View, Text, ScrollView} from 'react-native';
-import {Chip, Divider, TextInput} from 'react-native-paper';
+import React, { useState } from 'react';
+import { View, Text, ScrollView } from 'react-native';
+import { Chip, Divider, TextInput } from 'react-native-paper';
 
 import {Colors} from '../../../utils/Colors';
 import {PopularItems, RestaurantTopPlaces} from '../HomeScreen/components';
@@ -21,9 +21,9 @@ export const SearchScreen = ({navigation}) => {
         placeholder="Search here"
         placeholderTextColor="#808080"
         mode={'outlined'}
-        outlineStyle={{borderColor: '#cdcdcd'}}
+        outlineStyle={{ borderColor: '#cdcdcd' }}
         autoFocus={true}
-        theme={{roundness: 15}}
+        theme={{ roundness: 15 }}
         activeOutlineColor={Colors.primary}
         left={<TextInput.Icon icon="search1" color={Colors.primary} />}
       />
