@@ -126,7 +126,7 @@ export const LoginScreen = ({navigation}) => {
                 )}
                 <Text
                   style={styles.forgotText}
-                  onPress={() => navigation.navigate('ResetPassword')}>
+                  onPress={() => navigation.navigate('ForgotPassword')}>
                   Forgot Your Password?
                 </Text>
                 <TouchableOpacity style={styles.btnView} onPress={handleSubmit}>

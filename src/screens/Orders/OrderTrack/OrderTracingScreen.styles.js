@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
-import { Colors } from '../../../utils/Colors';
-import { Font_Family } from '../../../utils/Fontfamily';
-import { FONT_SIZES } from '../../../utils/FontSize';
+import {StyleSheet} from 'react-native';
+import {Colors} from '../../../utils/Colors';
+import {Font_Family} from '../../../utils/Fontfamily';
+import {FONT_SIZES} from '../../../utils/FontSize';
 
 export const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: 'white' },
+  container: {flex: 1, backgroundColor: 'white'},
   centeredView: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.36)',
@@ -31,21 +31,34 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.thirteen,
     color: Colors.black,
   },
-  phoneIcon: { height: 40, width: 40, borderColor: '#ccc', borderWidth: 1, borderRadius: 10, justifyContent: 'center' },
+  phoneIcon: {
+    height: 40,
+    width: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 10,
+    justifyContent: 'center',
+  },
 
   bottomCard: {
     //  margin: 15,
     padding: 20,
-    flex:1,
-    borderTopStartRadius:20,
-    borderTopEndRadius:20
+    flex: 1,
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
   },
   areaText: {
     fontFamily: Font_Family.bold,
     fontSize: FONT_SIZES.eighteen,
     color: Colors.black,
   },
-  iconBackground: { backgroundColor: '#eee', borderRadius: 10, height: 40, width: 50, justifyContent: 'center' },
+  iconBackground: {
+    backgroundColor: '#eee',
+    borderRadius: 10,
+    height: 40,
+    width: 50,
+    justifyContent: 'center',
+  },
   addressText: {
     marginTop: 5,
     fontFamily: Font_Family.regular,
@@ -55,9 +68,8 @@ export const styles = StyleSheet.create({
   buttonStyles: {
     width: '100%',
     alignSelf: 'center',
-    marginTop: 15,
     borderRadius: 5,
-    bottom: '-20%'
+    marginTop: 15,
   },
   buttonLabel: {
     fontFamily: Font_Family.regular,
@@ -96,7 +108,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.thirteen,
     fontFamily: Font_Family.regular,
   },
-  outlineStyles: { borderRadius: 8 },
+  outlineStyles: {borderRadius: 8},
   modalButton: {
     width: '100%',
     alignSelf: 'center',
@@ -111,6 +123,6 @@ export const styles = StyleSheet.create({
   deliveryTime: {
     fontFamily: Font_Family.medium,
     fontSize: FONT_SIZES.fifteen,
-    color: '#b7b7b7'
-  }
+    color: '#b7b7b7',
+  },
 });

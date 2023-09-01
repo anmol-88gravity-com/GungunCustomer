@@ -1,21 +1,21 @@
 import React from 'react';
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import {View, Text, Pressable, ScrollView} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { Button } from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import { Colors } from '../../utils/Colors';
-import { styles } from './cart.styles';
+import {Colors} from '../../utils/Colors';
+import {styles} from './cart.styles';
 
-export const CartScreen = ({ navigation }) => {
+export const CartScreen = ({navigation}) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <Text style={styles.heading}>Items Added</Text>
       <View style={styles.cardContainer}>
-        <View style={[styles.itemRowStyles, { paddingVertical: 10 }]}>
+        <View style={[styles.itemRowStyles, {paddingVertical: 10}]}>
           <View style={styles.itemInnerRow}>
             <MaterialCommunityIcons
               name="square-circle"
@@ -33,11 +33,11 @@ export const CartScreen = ({ navigation }) => {
           </View>
           <View style={styles.qtyBox}>
             <View style={styles.qtyContainer}>
-              <Pressable style={{ padding: 5 }}>
+              <Pressable style={{padding: 5}}>
                 <AntDesign name="minus" size={22} color={Colors.primary} />
               </Pressable>
               <Text style={styles.qty}>1</Text>
-              <Pressable style={{ padding: 5 }}>
+              <Pressable style={{padding: 5}}>
                 <Ionicons name="add" size={20} color={Colors.primary} />
               </Pressable>
             </View>
@@ -67,11 +67,11 @@ export const CartScreen = ({ navigation }) => {
           </View>
           <View style={styles.qtyBox}>
             <View style={styles.qtyContainer}>
-              <Pressable style={{ padding: 5 }}>
+              <Pressable style={{padding: 5}}>
                 <AntDesign name="minus" size={22} color={Colors.primary} />
               </Pressable>
               <Text style={styles.qty}>1</Text>
-              <Pressable style={{ padding: 5 }}>
+              <Pressable style={{padding: 5}}>
                 <Ionicons name="add" size={20} color={Colors.primary} />
               </Pressable>
             </View>
@@ -107,7 +107,7 @@ export const CartScreen = ({ navigation }) => {
       </Pressable>
       <Pressable style={styles.deliveryBox}>
         <Pressable style={styles.deliveryInnerContainer}>
-          <View style={[styles.rowStyles, { width: '70%' }]}>
+          <View style={[styles.rowStyles, {width: '70%'}]}>
             <Ionicons name="location" size={20} color={Colors.secondary} />
             <View>
               <Text style={styles.deliveryText}>Delivery Location</Text>
@@ -149,11 +149,11 @@ export const CartScreen = ({ navigation }) => {
       <Button
         onPress={() => navigation.navigate('Payment')}
         mode={'contained'}
-        theme={{ roundness: 0 }}
+        theme={{roundness: 0}}
         labelStyle={styles.btnLabelStyles}
-        style={{ marginVertical: 20, borderRadius: 15 }}
-        contentStyle={{ height: 50 }}>
-        PAY
+        style={{marginVertical: 20, borderRadius: 15}}
+        contentStyle={{height: 50}}>
+        Proceed to payment
       </Button>
     </ScrollView>
   );

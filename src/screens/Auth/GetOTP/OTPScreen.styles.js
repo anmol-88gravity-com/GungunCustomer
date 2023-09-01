@@ -81,8 +81,8 @@ export const styles = StyleSheet.create({
   },
   inputText: {
     padding: 0,
-    fontSize: FONT_SIZES.thirtyFive,
-    width: '15%',
+    fontSize: FONT_SIZES.eighteen,
+    width: 40,
     textAlign: 'center',
   },
   verifyOTPText: {

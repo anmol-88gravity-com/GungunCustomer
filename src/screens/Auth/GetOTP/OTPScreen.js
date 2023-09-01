@@ -66,7 +66,6 @@ export const OTPScreen = ({navigation}) => {
                 style={[styles.inputText, borderBottom]}
                 maxLength={1}
                 keyboardType="numeric"
-                placeholder="."
                 value={code[0]}
                 onChangeText={value => handleCodeChange(value, inputRef2)}
                 ref={inputRef1}
@@ -75,7 +74,7 @@ export const OTPScreen = ({navigation}) => {
                 style={[styles.inputText, borderBottom]}
                 maxLength={1}
                 keyboardType="numeric"
-                placeholder="."
+                // placeholder="."
                 value={code[1]}
                 onChangeText={value => handleCodeChange(value, inputRef3)}
                 ref={inputRef2}
@@ -84,7 +83,7 @@ export const OTPScreen = ({navigation}) => {
                 style={[styles.inputText, borderBottom]}
                 maxLength={1}
                 keyboardType="numeric"
-                placeholder="."
+                // placeholder="."
                 value={code[2]}
                 onChangeText={value => handleCodeChange(value, inputRef4)}
                 ref={inputRef3}
@@ -93,7 +92,7 @@ export const OTPScreen = ({navigation}) => {
                 style={[styles.inputText, borderBottom]}
                 maxLength={1}
                 keyboardType="numeric"
-                placeholder="."
+                // placeholder="."
                 value={code[3]}
                 onChangeText={value => handleCodeChange(value, inputRef5)}
                 ref={inputRef4}
@@ -108,7 +107,7 @@ export const OTPScreen = ({navigation}) => {
               <Text style={styles.verifyOTPText}>Didn't Received the OTP?</Text>
               <Text
                 style={styles.btnResend}
-                onPress={() => navigation.navigate('ConfirmPassword')}>
+                onPress={() => navigation.navigate('ResetPassword')}>
                 Resend
               </Text>
             </View>
