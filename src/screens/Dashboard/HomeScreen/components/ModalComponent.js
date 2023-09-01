@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,15 +10,15 @@ import {
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import {Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
-import {styles} from '../HomeScreen.styles';
-import {Colors} from '../../../../utils/Colors';
-import {images} from '../../../../utils/Images';
-import {FONT_SIZES} from '../../../../utils/FontSize';
-import {Font_Family} from '../../../../utils/Fontfamily';
+import { styles } from '../HomeScreen.styles';
+import { Colors } from '../../../../utils/Colors';
+import { images } from '../../../../utils/Images';
+import { FONT_SIZES } from '../../../../utils/FontSize';
+import { Font_Family } from '../../../../utils/Fontfamily';
 
-export const ModalComponent = ({isVisible, onClose}) => {
+export const ModalComponent = ({ isVisible, onClose }) => {
   const [count, setCount] = useState(0);
   const newData = [1, 2, 3, 4, 5];
 
@@ -28,7 +28,7 @@ export const ModalComponent = ({isVisible, onClose}) => {
         name="star-outline"
         size={15}
         color="black"
-        style={{alignContent: 'center'}}
+        style={{ alignContent: 'center' }}
       />
     );
   };
@@ -49,23 +49,23 @@ export const ModalComponent = ({isVisible, onClose}) => {
       onRequestClose={onClose}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <View style={{alignSelf: 'flex-end'}}>
+          <View style={{ alignSelf: 'flex-end' }}>
             <Pressable onPress={onClose}>
               <AntDesign name="close" size={24} color="black" />
             </Pressable>
           </View>
           <View style={styles.modalInnerView}>
-            <View style={{backgroundColor: Colors.white}}>
-              <View style={{height: 200, width: '100%', borderRadius: 20}}>
+            <View style={{ backgroundColor: Colors.white }}>
+              <View style={{ height: 200, width: '100%', borderRadius: 20 }}>
                 <Image
-                  source={images.vadaFood}
-                  style={{height: '100%', width: '100%', borderRadius: 10}}
+                  source={images.kadaiPaneer}
+                  style={{ height: '100%', width: '100%', borderRadius: 10 }}
                 />
                 <View style={styles.bestSellerIcon}>
                   <View style={styles.bestSellerView}>
                     <Image
                       source={images.medal}
-                      style={{height: 30, width: 30}}
+                      style={{ height: 30, width: 30 }}
                     />
                     <Text style={styles.txtBestSeller}>Bestseller </Text>
                   </View>
@@ -77,7 +77,7 @@ export const ModalComponent = ({isVisible, onClose}) => {
                 </View>
 
                 <View style={styles.countDownBtn}>
-                  <View style={{flexDirection: 'row'}}>
+                  <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity
                       style={styles.buttonIncrement}
                       onPress={increment}>
@@ -95,7 +95,7 @@ export const ModalComponent = ({isVisible, onClose}) => {
                 </View>
               </View>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <View style={{ flexDirection: 'row', marginTop: 10 }}>
               <MaterialCommunityIcons
                 name="square-circle"
                 size={18}
@@ -103,7 +103,7 @@ export const ModalComponent = ({isVisible, onClose}) => {
               />
               <Text style={styles.itemsName}>Rava Masala Dosa</Text>
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <FlatList
                 data={newData}
                 horizontal={true}
@@ -134,7 +134,7 @@ export const ModalComponent = ({isVisible, onClose}) => {
 
           <Button
             buttonColor={Colors.secondary}
-            theme={{roundness: 0}}
+            theme={{ roundness: 0 }}
             style={{
               width: '100%',
               alignSelf: 'center',
@@ -142,7 +142,7 @@ export const ModalComponent = ({isVisible, onClose}) => {
               marginBottom: 10,
               borderRadius: 8,
             }}
-            contentStyle={{height: 50}}
+            contentStyle={{ height: 50 }}
             labelStyle={{
               fontFamily: Font_Family.regular,
               fontSize: FONT_SIZES.fifteen,

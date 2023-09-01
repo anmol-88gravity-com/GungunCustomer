@@ -183,9 +183,10 @@ export const styles = StyleSheet.create({
   },
   searchBarStyles: {
     backgroundColor: 'white',
-    width: '90%',
+    width: '100%',
     alignSelf: 'center',
     marginVertical: 15,
+    
   },
   filterRow: {
     flexDirection: 'row',
