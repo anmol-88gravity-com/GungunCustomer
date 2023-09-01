@@ -58,7 +58,7 @@ export const ModalComponent = ({isVisible, onClose}) => {
             <View style={{backgroundColor: Colors.white}}>
               <View style={{height: 200, width: '100%', borderRadius: 20}}>
                 <Image
-                  source={images.vadaFood}
+                  source={images.momos}
                   style={{height: '100%', width: '100%', borderRadius: 10}}
                 />
                 <View style={styles.bestSellerIcon}>
