@@ -5,14 +5,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommu
 import { Colors } from '../../../utils/Colors';
 import { Button } from 'react-native-paper';
 
-export const OrderDetailScreen = () => {
+export const OrderDetailScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* <Text style={[styles.textTitle, { paddingBottom: 10 }]}>Order Summary</Text> */}
-      <ScrollView  showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ marginTop: '2%' }}>
           <Text style={styles.itemTitle}>Cakes 24*7.Com</Text>
-          <Text style={[styles.itemSubTitle,{marginTop:5}]}>Shop 2, Plot 373, 40 Feet Road, Satguru farm, Opposite Maruti Gate 1, Phase 4, Sector 18, Near Sector 22, Gurgaon</Text>
+          <Text style={[styles.itemSubTitle, { marginTop: 5 }]}>Shop 2, Plot 373, 40 Feet Road, Satguru farm, Opposite Maruti Gate 1, Phase 4, Sector 18, Near Sector 22, Gurgaon</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: '3%' }}>
             <TouchableOpacity style={styles.invoiceButton}>
               <MaterialCommunityIcons name="newspaper-variant-multiple" size={20} color="#dea812" />
@@ -108,6 +108,7 @@ export const OrderDetailScreen = () => {
           </View>
 
           <Button
+            onPress={() => navigation.navigate('OrderTracking')}
             buttonColor={Colors.secondary}
             theme={{ roundness: 0 }}
             style={styles.buttonStyles}

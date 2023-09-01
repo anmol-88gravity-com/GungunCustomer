@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, View, Text, ScrollView} from 'react-native';
+import {SafeAreaView, View, Text, ScrollView, Pressable,Linking} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -21,19 +21,19 @@ export const CustomerSupportScreen = ({navigation}) => {
 
           <View style={{marginHorizontal: 10, padding: 10}}>
             <View style={styles.mainView}>
-              <View style={styles.innerView}>
+              <Pressable style={styles.innerView} onPress={()=>{Linking.openURL('tel:1234567890');}}>
                 <Ionicons name="call" size={20} color={Colors.primary} />
                 <Text style={styles.customerText}>
                   Talk to a Customer Support Executive
                 </Text>
-              </View>
+              </Pressable>
               <View style={styles.horizontalLine} />
-              <View
+              <Pressable
                 style={{
                   flexDirection: 'row',
                   marginTop: '5%',
                   marginLeft: '5%',
-                }}>
+                }} onPress={()=>{Linking.openURL('whatsapp://send?phone=1234567890')}}>
                 <Ionicons
                   name="logo-whatsapp"
                   size={20}
@@ -42,21 +42,21 @@ export const CustomerSupportScreen = ({navigation}) => {
                 <Text style={styles.customerText}>
                   Chat to a Customer Support Executive
                 </Text>
-              </View>
+              </Pressable>
               <View style={styles.horizontalLine} />
-              <View
+              <Pressable
                 style={{
                   flexDirection: 'row',
                   marginTop: '5%',
                   marginLeft: '5%',
-                }}>
+                }} onPress={()=>{Linking.openURL('sms:1234567890')}}>
                 <MaterialCommunityIcons
                   name="message-alert"
                   size={20}
                   color={Colors.primary}
                 />
                 <Text style={styles.customerText}>Raise a Complaint</Text>
-              </View>
+              </Pressable>
               <View style={{marginBottom: 10}} />
             </View>
           </View>

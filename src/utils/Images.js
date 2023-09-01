@@ -12,4 +12,5 @@ export const images = {
     kadai_Paneer:require('../assets/dashboardImages/kadai_Paneer.png'),
     medal:require('../assets/dashboardImages/medal.png'),
     restaurant: require('../assets/dashboardImages/restaurant.jpg'),
+    success: require('../assets/dashboardImages/success.png'),
   };

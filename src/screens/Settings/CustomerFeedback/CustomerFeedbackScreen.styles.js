@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
    
   },
   title: {
-    marginVertical: '10%',
+    marginTop: '5%',
     fontSize: FONT_SIZES.fifteen,
     fontFamily: Font_Family.semiBold,
     color: '#000000',
@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
 
   searchView: {
     marginHorizontal: 10,
-    // marginTop: Platform.OS === 'android' ? '10%' : '',
+    marginTop: '5%' ,
     backgroundColor: '#eeeeee',
     borderRadius: 10,
   },
@@ -130,4 +130,5 @@ export const styles = StyleSheet.create({
     top: 15,
     right: 15,
   },
+  chooseImage:{ borderColor: '#b7b7b7', borderWidth: 1, padding: 10, marginTop: '5%', borderStyle: 'dashed', borderRadius: 10 }
 });
