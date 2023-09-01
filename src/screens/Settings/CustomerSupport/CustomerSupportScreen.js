@@ -1,7 +1,6 @@
 import React from 'react';
 import {SafeAreaView, View, Text, ScrollView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {styles} from './CustomerSupportScreen.styles';
 import {Colors} from '../../../utils/Colors';
@@ -39,9 +38,7 @@ export const CustomerSupportScreen = ({navigation}) => {
                   size={20}
                   color={Colors.primary}
                 />
-                <Text style={styles.customerText}>
-                  Chat to a Customer Support Executive
-                </Text>
+                <Text style={styles.customerText}>Chat with us</Text>
               </View>
               <View style={styles.horizontalLine} />
               <View
@@ -49,13 +46,10 @@ export const CustomerSupportScreen = ({navigation}) => {
                   flexDirection: 'row',
                   marginTop: '5%',
                   marginLeft: '5%',
+                  alignItems: 'center',
                 }}>
-                <MaterialCommunityIcons
-                  name="message-alert"
-                  size={20}
-                  color={Colors.primary}
-                />
-                <Text style={styles.customerText}>Raise a Complaint</Text>
+                <Ionicons name="mail" size={20} color={Colors.primary} />
+                <Text style={styles.customerText}>Mail us</Text>
               </View>
               <View style={{marginBottom: 10}} />
             </View>

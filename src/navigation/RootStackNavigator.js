@@ -20,9 +20,7 @@ import {SendFeedbackScreen} from '../screens/Settings/SendFeedback';
 import {CustomerSupportScreen} from '../screens/Settings/CustomerSupport';
 import {CustomerFeedback} from '../screens/Settings/CustomerFeedback';
 import {CartScreen} from '../screens/Cart';
-import { Notification } from '../screens/Notifications';
-
-
+import {Notification} from '../screens/Notifications';
 
 const Stack = createStackNavigator();
 
@@ -50,7 +48,7 @@ export function DashboardNavigator() {
       <Stack.Screen
         name="CartScreen"
         component={CartScreen}
-        options={{title: 'Your Cart'}}
+        options={{title: 'My Cart', headerBackTitle: ''}}
       />
     </Stack.Navigator>
   );
@@ -131,7 +129,7 @@ export function SettingsNavigator() {
         component={CustomerFeedback}
         options={{title: 'Customer Feedback', headerBackTitle: ''}}
       />
-       <SettingStack.Screen
+      <SettingStack.Screen
         name="Notification"
         component={Notification}
         options={{title: 'Notification', headerBackTitle: ''}}
@@ -141,7 +139,6 @@ export function SettingsNavigator() {
         component={CustomerSupportScreen}
         options={{title: 'Customer Support', headerBackTitle: ''}}
       />
-     
     </SettingStack.Navigator>
   );
 }
