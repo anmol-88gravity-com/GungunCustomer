@@ -133,7 +133,6 @@ export const ModalComponent = ({isVisible, onClose}) => {
           </View>
 
           <Button
-            onPress={() => isVisible(true)}
             buttonColor={Colors.secondary}
             theme={{roundness: 0}}
             style={{

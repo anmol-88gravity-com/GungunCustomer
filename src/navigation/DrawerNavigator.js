@@ -30,7 +30,6 @@ function DrawerNavigation() {
           fontFamily: Font_Family.medium,
         },
         drawerType: 'front',
-
         swipeEnabled: false,
         drawerActiveTintColor: Colors.primary,
         swipeEdgeWidth: 0,

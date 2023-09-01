@@ -4,7 +4,6 @@ import {MD3LightTheme as DefaultTheme, PaperProvider} from 'react-native-paper';
 
 import Navigation from './src/navigation';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const App = () => {
   useEffect(() => {

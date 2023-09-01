@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
   },
   transactionBox: {
     alignItems: 'center',
-    marginVertical: 30,
+    marginTop: 150,
   },
   transactionImg: {
     width: 80,

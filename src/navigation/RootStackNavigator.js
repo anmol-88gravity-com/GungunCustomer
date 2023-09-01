@@ -52,7 +52,17 @@ export function DashboardNavigator() {
       <Stack.Screen
         name="CartScreen"
         component={CartScreen}
-        options={{ title: 'Your Cart' }}
+        options={{title: 'My Cart', headerBackTitle: ''}}
+      />
+       <Stack.Screen
+        name="Payment"
+        component={PaymentScreen}
+        options={{title: 'Payment', headerBackTitle: ''}}
+      />
+        <Stack.Screen
+        name="OrderTracking"
+        component={OrderTrackingScreen}
+        options={{ title: 'Order Tracking', headerBackTitle: '' }}
       />
     </Stack.Navigator>
   );
@@ -100,16 +110,6 @@ export function OrdersNavigator() {
         component={OrderDetailScreen}
         options={{ title: 'Order Summary', headerBackTitle: '' }}
       />
-      <OrderStack.Screen
-        name="OrderTracking"
-        component={OrderTrackingScreen}
-        options={{ title: 'Order Tracking', headerBackTitle: '' }}
-      />
-      <OrderStack.Screen
-        name="Payment"
-        component={PaymentScreen}
-        options={{ title: 'Payment', headerBackTitle: '' }}
-      />
     </OrderStack.Navigator>
   );
 }
@@ -153,7 +153,6 @@ export function SettingsNavigator() {
         component={CustomerSupportScreen}
         options={{ title: 'Customer Support', headerBackTitle: '' }}
       />
-
     </SettingStack.Navigator>
   );
 }

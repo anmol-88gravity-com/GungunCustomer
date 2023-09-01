@@ -5,13 +5,15 @@ import { images } from '../../utils/Images';
 import * as Progress from 'react-native-progress';
 import { Colors } from '../../utils/Colors';
 import { Button } from 'react-native-paper';
+import Navigation from '../../navigation';
 
-export const PaymentScreen = () => {
+export const PaymentScreen = ({navigation}) => {
     const [progress, setProgress] = useState(0);
     const [paymentSuccessful, setPaymentSuccessful] = useState(false);
 
     const handleProgressComplete = () => {
         setPaymentSuccessful(true);
+        navigation.navigate('OrderTracking')
     };
 
     useEffect(() => {
@@ -59,7 +61,7 @@ export const PaymentScreen = () => {
                 mode={'contained'}>
                 Cancel
             </Button>
-            
+
         </View>
     )
 }

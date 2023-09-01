@@ -57,7 +57,6 @@ export const OrderTrackingScreen = ({ route, navigation }) => {
                 </View>
 
                 <Button
-                    onPress={() => navigation.navigate('Payment')}
                     buttonColor={Colors.primary}
                     theme={{ roundness: 0 }}
                     style={styles.buttonStyles}

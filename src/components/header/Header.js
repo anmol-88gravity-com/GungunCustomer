@@ -5,6 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {FONT_SIZES} from '../../utils/FontSize';
 import {Font_Family} from '../../utils/Fontfamily';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const Header = ({headerTitle, navigation}) => {
   return (
@@ -15,15 +16,28 @@ const Header = ({headerTitle, navigation}) => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-        <Pressable onPress={() => navigation.goBack()}>
+        <Pressable onPress={() => navigation.goBack()} style={{width: '20%'}}>
           <Ionicons name="arrow-back-outline" size={24} color="black" />
         </Pressable>
         <Text style={styles.headerText}>{headerTitle}</Text>
-        <Pressable
-          style={{marginLeft: 2}}
-          onPress={() => navigation.toggleDrawer()}>
-          <Ionicons name="menu" size={28} color="black" />
-        </Pressable>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'flex-end',
+            width: '20%',
+          }}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate('DashboardNavigator', {screen: 'CartScreen'})
+            }>
+            <Ionicons name="cart" size={24} color="black" />
+          </Pressable>
+          <Pressable
+            style={{marginLeft: 20}}
+            onPress={() => navigation.toggleDrawer()}>
+            <MaterialIcons name="menu" size={28} color="black" />
+          </Pressable>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -46,5 +60,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: FONT_SIZES.sixteen,
     color: '#000000',
+    width: '40%',
+    textAlign: 'center',
   },
 });
