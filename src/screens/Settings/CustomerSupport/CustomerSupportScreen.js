@@ -1,7 +1,7 @@
 import React from 'react';
 import {SafeAreaView, View, Text, ScrollView, Pressable,Linking} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {styles} from './CustomerSupportScreen.styles';
 import {Colors} from '../../../utils/Colors';
 
