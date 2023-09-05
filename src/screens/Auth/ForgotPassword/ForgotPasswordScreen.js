@@ -12,10 +12,10 @@ import Feather from 'react-native-vector-icons/dist/Feather';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {Button} from 'react-native-paper';
+import {useDispatch} from 'react-redux';
 
 import {images} from '../../../utils/Images';
 import {generateOTP} from '../../../store/auth/forgotPasswordSlice';
-import {useDispatch} from 'react-redux';
 import {useError} from '../../../context/ErrorProvider';
 import {Colors} from '../../../utils/Colors';
 

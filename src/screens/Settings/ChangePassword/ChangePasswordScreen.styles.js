@@ -55,4 +55,11 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.regular,
     fontSize: FONT_SIZES.thirteen,
   },
+  errors: {
+    color: 'red',
+    fontSize: FONT_SIZES.tweleve,
+    fontFamily: Font_Family.regular,
+    bottom: '5%',
+    left: '1%',
+  },
 });

@@ -8,4 +8,5 @@ export const ApiEndpoints = {
     otpGenerate: '/api/otp-generate/',
     updatePassword: '/api/forget-password/',
   },
+  user: {changePassword: '/api/change-user-password/'},
 };

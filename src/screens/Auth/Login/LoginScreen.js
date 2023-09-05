@@ -6,20 +6,22 @@ import {
   ImageBackground,
   ScrollView,
   TextInput,
-  TouchableOpacity,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import {Formik} from 'formik';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import * as Yup from 'yup';
 import {useDispatch} from 'react-redux';
+import {Button} from 'react-native-paper';
+import {showMessage} from 'react-native-flash-message';
 
 import {styles} from './LoginScreen.styles';
 import {images} from '../../../utils/Images';
 import {Font_Family} from '../../../utils/Fontfamily';
 import {login} from '../../../store/auth/authSlice';
-import {useAuthMessage} from '../../../context/MessageProvider';
 import {useError} from '../../../context/ErrorProvider';
+import {Colors} from '../../../utils/Colors';
+import {FONT_SIZES} from '../../../utils/FontSize';
 
 export const LoginScreen = ({navigation}) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -34,13 +36,21 @@ export const LoginScreen = ({navigation}) => {
   });
 
   const dispatch = useDispatch();
-  const setMsg = useAuthMessage();
   const setError = useError();
 
   const handleLogin = async ({phoneNumber, password}) => {
     try {
       await dispatch(login({phoneNumber, password})).unwrap();
-      setMsg('Login Successfully.');
+      showMessage({
+        message: 'Login Successfully.',
+        type: 'default',
+        backgroundColor: Colors.secondary,
+        color: Colors.white,
+        textStyle: {
+          fontSize: FONT_SIZES.fifteen,
+          fontFamily: Font_Family.medium,
+        },
+      });
     } catch (e) {
       setError(e.message);
     }
@@ -71,6 +81,7 @@ export const LoginScreen = ({navigation}) => {
               values,
               errors,
               touched,
+              isSubmitting,
             }) => (
               <View style={{marginHorizontal: 20}}>
                 <View style={{marginVertical: 20}}>
@@ -135,9 +146,19 @@ export const LoginScreen = ({navigation}) => {
                   onPress={() => navigation.navigate('ForgotPassword')}>
                   Forgot Your Password?
                 </Text>
-                <TouchableOpacity style={styles.btnView} onPress={handleSubmit}>
-                  <Text style={styles.textSignIn}>SIGN IN</Text>
-                </TouchableOpacity>
+                <Button
+                  onPress={handleSubmit}
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
+                  buttonColor={Colors.primary}
+                  theme={{roundness: 0}}
+                  style={styles.buttonStyles}
+                  contentStyle={{height: 50}}
+                  labelStyle={styles.buttonLabel}
+                  uppercase={true}
+                  mode={'contained'}>
+                  SIGN IN
+                </Button>
                 <View style={{marginTop: '10%'}}>
                   <Text style={styles.bottomtmtitledText}>
                     New User? Lets get started by

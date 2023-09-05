@@ -27,6 +27,9 @@ import { useDispatch } from 'react-redux';
 import { useError } from '../../../context/ErrorProvider';
 import { useAuthMessage } from '../../../context/MessageProvider';
 import { Axios } from '../../../lib/Axios';
+import { showMessage } from 'react-native-flash-message';
+import { FONT_SIZES } from '../../../utils/FontSize';
+import { Font_Family } from '../../../utils/Fontfamily';
 
 
 const HEIGHT = Dimensions.get('screen').height;
@@ -127,7 +130,16 @@ export const RegisterScreen = ({ navigation }) => {
     try {
       const res = await dispatch(registerOTP({ phoneNumber })).unwrap();
       if (res) {
-        setMessage('OTP has been sent successfully.');
+        showMessage({
+          message: 'OTP has been sent successfully',
+          type: 'default',
+          backgroundColor: Colors.secondary,
+          color: Colors.white,
+          textStyle: {
+            fontSize: FONT_SIZES.fifteen,
+            fontFamily: Font_Family.medium,
+          },
+        });
         setModalVisible(true);
         setMobileNumber(phoneNumber);
       }
@@ -153,10 +165,18 @@ export const RegisterScreen = ({ navigation }) => {
 
 
   const handleRegister = async ({ fullName, password, confirmPassword, email, phoneNumber }) => {
-    console.log(fullName, password, confirmPassword, email, phoneNumber);
     try {
       await dispatch(register({ fullName, password, confirmPassword, email, phoneNumber })).unwrap();
-      setMsg('Registration Successfully.');
+      showMessage({
+        message: 'Registration Successfully.',
+        type: 'default',
+        backgroundColor: Colors.secondary,
+        color: Colors.white,
+        textStyle: {
+          fontSize: FONT_SIZES.fifteen,
+          fontFamily: Font_Family.medium,
+        },
+      });
     } catch (e) {
       setError(e.message);
     }
