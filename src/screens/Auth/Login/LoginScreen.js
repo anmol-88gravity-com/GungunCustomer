@@ -31,13 +31,12 @@ export const LoginScreen = ({ navigation }) => {
     password: Yup.string().required('Password is required'),
   });
 
-  const handleLogin = async (values) => {
-    const res = await actions.login({
-      phoneNumber,
-      password,
-
-    })
-    console.log("response--", res)
+  const handleLogin = (values) => {
+   let data ={
+    phone_number:values.phoneNumber,
+    password:values.password
+   }
+    console.log("response--", data)
   };
 
   return (
