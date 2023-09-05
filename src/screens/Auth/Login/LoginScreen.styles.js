@@ -93,4 +93,14 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.regular,
     fontSize: FONT_SIZES.tweleve,
   },
+  buttonStyles: {
+    width: '100%',
+    alignSelf: 'center',
+    borderRadius: 5,
+    marginTop: '10%',
+  },
+  buttonLabel: {
+    fontFamily: Font_Family.medium,
+    fontSize: FONT_SIZES.fifteen,
+  },
 });

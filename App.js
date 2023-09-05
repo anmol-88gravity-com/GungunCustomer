@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import {Provider as StoreProvider} from 'react-redux';
 import {MD3LightTheme as DefaultTheme} from 'react-native-paper';
@@ -11,6 +11,7 @@ import WithAxios from './src/lib/WithAxios';
 import {ErrorContextProvider} from './src/context/ErrorProvider';
 import {MsgContextProvider} from './src/context/MessageProvider';
 import {store} from './src/store';
+import FlashMessage from 'react-native-flash-message';
 
 const App = () => {
   useEffect(() => {
@@ -74,6 +75,8 @@ const App = () => {
     },
   };
 
+  const flashMessage = useRef();
+
   return (
     <SafeAreaProvider>
       <StoreProvider store={store}>
@@ -86,6 +89,7 @@ const App = () => {
           <ErrorContextProvider>
             <MsgContextProvider>
               <Navigation />
+              <FlashMessage position={'bottom'} ref={flashMessage} />
             </MsgContextProvider>
           </ErrorContextProvider>
         </PaperProvider>

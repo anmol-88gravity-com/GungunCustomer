@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
   SafeAreaView,
   View,
@@ -18,7 +18,9 @@ import {images} from '../../../utils/Images';
 import {Colors} from '../../../utils/Colors';
 import {useError} from '../../../context/ErrorProvider';
 import {updatePassword} from '../../../store/auth/forgotPasswordSlice';
-import {useAuthMessage} from '../../../context/MessageProvider';
+import {showMessage} from 'react-native-flash-message';
+import {FONT_SIZES} from '../../../utils/FontSize';
+import {Font_Family} from '../../../utils/Fontfamily';
 
 export const ResetPassword = ({route, navigation}) => {
   const validationSchema = Yup.object().shape({
@@ -32,7 +34,6 @@ export const ResetPassword = ({route, navigation}) => {
   });
 
   const dispatch = useDispatch();
-  const setAuthMessage = useAuthMessage();
   const setError = useError();
 
   const phoneNumber = route.params.phoneNumber;
@@ -43,7 +44,16 @@ export const ResetPassword = ({route, navigation}) => {
         updatePassword({phoneNumber, newPassword}),
       ).unwrap();
       if (res) {
-        setAuthMessage('Password updated Successfully.');
+        showMessage({
+          message: 'Password updated Successfully.',
+          type: 'default',
+          backgroundColor: Colors.secondary,
+          color: Colors.primary,
+          textStyle: {
+            fontSize: FONT_SIZES.fifteen,
+            fontFamily: Font_Family.medium,
+          },
+        });
         navigation.navigate('Login');
       }
     } catch (e) {
