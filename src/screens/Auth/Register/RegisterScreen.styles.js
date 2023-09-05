@@ -1,7 +1,7 @@
-import { Platform, StyleSheet } from 'react-native';
-import { Colors } from '../../../utils/Colors';
-import { FONT_SIZES } from '../../../utils/FontSize';
-import { Font_Family } from '../../../utils/Fontfamily';
+import {StyleSheet} from 'react-native';
+import {Colors} from '../../../utils/Colors';
+import {FONT_SIZES} from '../../../utils/FontSize';
+import {Font_Family} from '../../../utils/Fontfamily';
 
 export const styles = StyleSheet.create({
   container: {
@@ -47,6 +47,12 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.semiBold,
     color: '#000000',
   },
+  headingTextt:{
+    fontSize: FONT_SIZES.twenty,
+    fontFamily: Font_Family.semiBold,
+    color: '#000000',
+    textAlign:'center'
+  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -69,6 +75,29 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 15,
     fontSize: FONT_SIZES.thirteen,
     fontFamily: Font_Family.medium,
+    
+  },
+  forgotText: {alignSelf: 'flex-end', color: '#000000'},
+  errors: {
+    color: 'red',
+    fontSize: FONT_SIZES.tweleve,
+    fontFamily: Font_Family.regular,
+  },
+  bottomtmtitledText: {color: '#000000', textAlign: 'center'},
+  imageIcon: {
+    left: Platform.OS === 'android' ? '10%' : 0,
+  },
+  eyeImageIcon: {
+    right: Platform.OS === 'android' ? '10%' : 0,
+  },
+  buttonStyles: {
+    width: '100%',
+    alignSelf: 'center',
+    marginTop: 15,
+    borderRadius: 5,
+  },
+  buttonlabel:{
+    fontFamily:Font_Family.medium
   },
   btnGetOTP: {
     color: Colors.primary,
@@ -78,27 +107,114 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.tweleve
 
   },
-  forgotText: { alignSelf: 'flex-end', color: '#000000' },
-  buttonStyles: {
-    width: '100%',
-    alignSelf: 'center',
-    marginTop: 15,
-    borderRadius: 10,
+  //modal
 
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
   },
-  buttonlabel: {
-    fontFamily: Font_Family.medium
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  errors: {
-    color: 'red',
-    fontSize: FONT_SIZES.tweleve,
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    // marginBottom: 15,
+    textAlign: 'center',
+    fontFamily:Font_Family.medium,
+    color:Colors.black,
+    fontSize:FONT_SIZES.eighteen
+  },
+
+  //OTP
+
+ 
+  // forgotText: {
+  //   alignSelf: 'flex-end',
+  //   color: '#000000',
+  //   fontFamily: Font_Family.medium,
+  //   fontSize: FONT_SIZES.thirteen,
+  // },
+  btnView: {
+    backgroundColor: Colors.primary,
+    borderRadius: 10,
+    padding: 15,
+    marginTop: '15%',
+  },
+  textSignIn: {
+    textAlign: 'center',
+    color: '#FFFFFF',
+    fontSize: FONT_SIZES.sixteen,
+    fontFamily: Font_Family.medium,
+  },
+  // bottomtmtitledText: {
+  //   color: '#000000',
+  //   textAlign: 'center',
+  //   fontFamily: Font_Family.regular,
+  //   fontSize: FONT_SIZES.tweleve,
+  // },
+  inputTextField: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 30,
+    marginTop: '10%',
+  },
+  inputText: {
+    padding: 0,
+    fontSize: FONT_SIZES.eighteen,
+    width: 40,
+    textAlign: 'center',
+  },
+  verifyOTPText: {
     fontFamily: Font_Family.regular,
+    fontSize: FONT_SIZES.fifteen,
   },
-  bottomtmtitledText: { color: '#000000', textAlign: 'center' },
-  imageIcon: {
-    left: Platform.OS === 'android' ? '10%' : 0,
+  btnResend: {
+    color: Colors.primary,
+    fontFamily: Font_Family.regular,
+    fontSize: FONT_SIZES.fifteen,
   },
-  eyeImageIcon: {
-    right: Platform.OS === 'android' ? '10%' : 0,
+  buttonStyless: {
+    width: '90%',
+    alignSelf: 'center',
+    borderRadius: 5,
   },
+  buttonLabel: {
+    fontFamily: Font_Family.medium,
+    fontSize: FONT_SIZES.fifteen,
+  },
+
+
+
+
+
+
 });

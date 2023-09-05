@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -6,8 +6,8 @@ import {
   ImageBackground,
   ScrollView,
   TextInput,
-  TouchableOpacity,
   Pressable,
+  Modal,
   Dimensions
 } from 'react-native';
 import Octicons from 'react-native-vector-icons/dist/Octicons';
@@ -18,7 +18,7 @@ import * as Yup from 'yup';
 
 import { images } from '../../../utils/Images';
 import { styles } from './RegisterScreen.styles';
-import { register, registerOTP } from '../../../store/auth/authSlice';
+import { otpVerify, register, registerOTP } from '../../../store/auth/authSlice';
 import { EmailValidation, MobileValidation } from '../../../utils/helper';
 import { ApiEndpoints } from '../../../store/ApiEndPoints';
 import { Button } from 'react-native-paper';
@@ -26,11 +26,19 @@ import { Colors } from '../../../utils/Colors';
 import { useDispatch } from 'react-redux';
 import { useError } from '../../../context/ErrorProvider';
 import { useAuthMessage } from '../../../context/MessageProvider';
+import { Axios } from '../../../lib/Axios';
+
 
 const HEIGHT = Dimensions.get('screen').height;
 export const RegisterScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [verified, setVerified] = useState(false);
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [code, setCode] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const inputRefs = useRef([]);
 
   const dispatch = useDispatch();
   const setError = useError();
@@ -40,6 +48,29 @@ export const RegisterScreen = ({ navigation }) => {
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
   };
+
+  const handleCodeChange = (value, index) => {
+    const tempCode = code.split('');
+    tempCode[index] = value;
+    setCode(tempCode.join(''));
+
+    if (value.length === 1 && index < inputRefs.current.length - 1) {
+      inputRefs.current[index + 1].focus();
+    }
+  };
+
+  const borderBottom =
+    Platform.OS === 'ios'
+      ? {
+        borderBottomColor: code.length > 0 ? '#000' : '#ccc',
+        borderBottomWidth: 2,
+      }
+      : {
+        borderBottomColor: code.length > 0 ? '#000' : '#ccc',
+        borderWidth: 0,
+        borderBottomWidth: 2,
+      };
+
 
   const validationSchema = Yup.object().shape({
     fullName: Yup.string().required('Full Name is required'),
@@ -57,7 +88,7 @@ export const RegisterScreen = ({ navigation }) => {
         if (values) {
           try {
             let response = await Axios.post(ApiEndpoints.auth.uniqueCheck, {
-              email: values,
+              email: values.email,
               phone_number: '',
             });
             return response.data.status === 'ok';
@@ -75,7 +106,7 @@ export const RegisterScreen = ({ navigation }) => {
           try {
             let response = await Axios.post(ApiEndpoints.auth.uniqueCheck, {
               email: '',
-              phone_number: values,
+              phone_number: values.phoneNumber,
             });
             return response.data.status === 'ok';
           } catch (error) {
@@ -94,8 +125,9 @@ export const RegisterScreen = ({ navigation }) => {
     }
     setLoading(true);
     try {
-      const res = await dispatch(registerOTP({phoneNumber})).unwrap();
+      const res = await dispatch(registerOTP({ phoneNumber })).unwrap();
       if (res) {
+        setMessage('OTP has been sent successfully.');
         setModalVisible(true);
         setMobileNumber(phoneNumber);
       }
@@ -104,6 +136,33 @@ export const RegisterScreen = ({ navigation }) => {
     }
     setLoading(false);
   }, []);
+
+
+  const otpVerifyHandler = useCallback(async () => {
+    try {
+      const res = await dispatch(otpVerify({ mobileNumber, code })).unwrap();
+      if (res) {
+        setModalVisible(false);
+        setVerified(true);
+      }
+    } catch (e) {
+      setError(e.message);
+    }
+  }, [verified, mobileNumber, code]);
+
+
+
+  const handleRegister = async ({ fullName, password, confirmPassword, email, phoneNumber }) => {
+    console.log(fullName, password, confirmPassword, email, phoneNumber);
+    try {
+      await dispatch(register({ fullName, password, confirmPassword, email, phoneNumber })).unwrap();
+      setMsg('Registration Successfully.');
+    } catch (e) {
+      setError(e.message);
+    }
+  };
+
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -127,14 +186,14 @@ export const RegisterScreen = ({ navigation }) => {
               fullName: '', password: '', confirmPassword: '', email: '', phoneNumber: ''
             }}
             validationSchema={validationSchema}
-            onSubmit={(values) => console.log(values, 'values')}>
+            onSubmit={handleRegister}>
             {({
               handleChange,
               handleBlur,
               handleSubmit,
               values,
               errors,
-              touched,
+              touched,isSubmitting
             }) => (
               <View style={{ marginHorizontal: 20 }}>
                 <View style={{ marginVertical: 20 }}>
@@ -148,11 +207,12 @@ export const RegisterScreen = ({ navigation }) => {
                     style={styles.imageIcon}
                   />
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input,{textTransform:'capitalize'}]}
                     placeholder="Full name"
                     onChangeText={handleChange('fullName')}
                     onBlur={handleBlur('fullName')}
                     value={values.fullName}
+                    
                   />
                 </View>
                 {touched.fullName && errors.fullName && (
@@ -205,9 +265,9 @@ export const RegisterScreen = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Confirm Password"
                     secureTextEntry={secureTextEntry}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
+                    onChangeText={handleChange('confirmPassword')}
+                    onBlur={handleBlur('confirmPassword')}
+                    value={values.confirmPassword}
                   />
                   {secureTextEntry ? (
                     <Feather
@@ -227,8 +287,8 @@ export const RegisterScreen = ({ navigation }) => {
                     />
                   )}
                 </View>
-                {touched.password && errors.password && (
-                  <Text style={styles.errors}>{errors.password}</Text>
+                {touched.confirmPassword && errors.confirmPassword && (
+                  <Text style={styles.errors}>{errors.confirmPassword}</Text>
                 )}
 
                 <View style={styles.inputContainer}>
@@ -266,16 +326,26 @@ export const RegisterScreen = ({ navigation }) => {
                     value={values.phoneNumber}
                     maxLength={10}
                   />
-                  <Pressable onPress={() => generateOTP(values.phoneNumber)}>
+                  {mobileNumber === values.phoneNumber && verified ? (
+                    <Pressable >
+                      <Text style={[styles.btnGetOTP, { color: Colors.green }]}>Verify</Text>
+                    </Pressable>
+                  ) : (<Pressable
+                    onPress={() => generateOTP(values.phoneNumber)}
+                  // onPress={() => setModalVisible(true)}
+                  >
                     <Text style={styles.btnGetOTP}>Get OTP</Text>
-                  </Pressable>
+                  </Pressable>)}
+
                 </View>
                 {touched.phoneNumber && errors.phoneNumber && (
                   <Text style={styles.errors}>{errors.phoneNumber}</Text>
                 )}
 
                 <Button
-                  // onPress={handleSubmit}
+                  onPress={handleSubmit}
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
                   buttonColor={Colors.primary}
                   theme={{ roundness: 0 }}
                   style={styles.buttonStyles}
@@ -289,6 +359,65 @@ export const RegisterScreen = ({ navigation }) => {
             )}
           </Formik>
         </ScrollView>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Entypo name="cross" size={20} style={{ alignSelf: 'flex-end', bottom: 20, }} color={Colors.black} onPress={() => setModalVisible(!modalVisible)} />
+              <Text style={styles.modalText}> OTP sent successfully on your Phone Number 💬.</Text>
+              <View style={{ marginHorizontal: 20 }}>
+                <View style={{ marginTop: '15%' }}>
+                  <Text style={styles.headingTextt}>Enter OTP to Continue</Text>
+                </View>
+
+                <View style={styles.inputTextField}>
+                  {[0, 1, 2, 3].map(index => (
+                    <TextInput
+                      key={index}
+                      style={[styles.inputText, borderBottom]}
+                      maxLength={1}
+                      keyboardType="numeric"
+                      value={code[index]}
+                      ref={ref => (inputRefs.current[index] = ref)}
+                      onChangeText={value => handleCodeChange(value, index)}
+                    />
+                  ))}
+                </View>
+
+                <View
+                  style={{
+                    marginVertical: 40,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text style={styles.verifyOTPText}>OTP not received? </Text>
+                  <Text style={styles.btnResend}>Resend OTP</Text>
+                </View>
+
+                <Button
+                  onPress={otpVerifyHandler}
+                  loading={isLoading}
+                  disabled={isLoading}
+                  buttonColor={Colors.primary}
+                  theme={{ roundness: 0 }}
+                  style={styles.buttonStyless}
+                  contentStyle={{ height: 50 }}
+                  labelStyle={styles.buttonLabel}
+                  uppercase={true}
+                  mode={'contained'}>
+                  Verify
+                </Button>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </SafeAreaView>
   );

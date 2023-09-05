@@ -3,14 +3,29 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import {View, Text} from 'react-native';
+import {View, Text, Pressable} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useDispatch} from 'react-redux';
 
 import {UserProfile} from './UserProfile';
 import {images} from '../../utils/Images';
 import {Font_Family} from '../../utils/Fontfamily';
+import {useAuthMessage} from '../../context/MessageProvider';
+import {useError} from '../../context/ErrorProvider';
+import {logout} from '../../store/auth/authSlice';
 
 export function CustomDrawerContent(props) {
+  const dispatch = useDispatch();
+  const setMsg = useAuthMessage();
+  const setError = useError();
+  const logoutHandler = async () => {
+    try {
+      await dispatch(logout());
+      setMsg('Logout Successfully.');
+    } catch (e) {
+      setError(e.message);
+    }
+  };
   return (
     <DrawerContentScrollView {...props}>
       <UserProfile
@@ -21,7 +36,8 @@ export function CustomDrawerContent(props) {
       <DrawerItemList {...props} />
       <View>
         <View />
-        <View
+        <Pressable
+          onPress={logoutHandler}
           style={{
             flexDirection: 'row',
             marginHorizontal: 10,
@@ -38,7 +54,7 @@ export function CustomDrawerContent(props) {
             }}>
             Logout
           </Text>
-        </View>
+        </Pressable>
       </View>
     </DrawerContentScrollView>
   );

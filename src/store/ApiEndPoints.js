@@ -1,7 +1,7 @@
 export const ApiEndpoints = {
   auth: {
     login: '/api/login/',
-    register: 'api/register/',
+    register: '/api/register/',
     registerOtp: '/api/register-otp/',
     uniqueCheck: '/api/phone-email-check/',
     otpVerify: '/api/otp-verify/',

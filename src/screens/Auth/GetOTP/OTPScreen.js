@@ -4,18 +4,28 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
   ImageBackground,
   ScrollView,
   Platform,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { Button } from 'react-native-paper';
 
 import { images } from '../../../utils/Images';
 import { styles } from './OTPScreen.styles';
+import { Colors } from '../../../utils/Colors';
+import { otpVerify } from '../../../store/auth/forgotPasswordSlice';
+import { useError } from '../../../context/ErrorProvider';
 
-export const OTPScreen = ({ navigation }) => {
+export const OTPScreen = ({ navigation, route }) => {
+  const phoneNumber = route.params.phoneNumber;
+
   const [code, setCode] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const inputRefs = useRef([]);
+
+  const dispatch = useDispatch();
+  const setError = useError();
 
   const handleCodeChange = (value, index) => {
     const tempCode = code.split('');
@@ -27,12 +37,10 @@ export const OTPScreen = ({ navigation }) => {
     }
   };
 
-
   const handleVerify = () => {
     setCode('');
-    inputRefs.current.forEach((ref) => ref.clear());
+    inputRefs.current.forEach(ref => ref.clear());
   };
-
 
   const borderBottom =
     Platform.OS === 'ios'
@@ -46,6 +54,19 @@ export const OTPScreen = ({ navigation }) => {
         borderBottomWidth: 2,
       };
 
+  const onPressHandler = async () => {
+    setIsLoading(true);
+    try {
+      const res = await dispatch(otpVerify({ phoneNumber, code })).unwrap();
+      if (res) {
+        navigation.navigate('ResetPassword', { phoneNumber: phoneNumber });
+      }
+    } catch (e) {
+      setError(e.message);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ flex: 1 }}>
@@ -54,44 +75,61 @@ export const OTPScreen = ({ navigation }) => {
           style={styles.backgroundImage}>
           <View style={styles.overlay}>
             <Text style={styles.text}>Hello, Customer!</Text>
-            <Text style={styles.subTitle}>Please Enter OTP</Text>
+            <Text style={styles.subTitle}>
+              {'OTP is sent to your registered\nmobile number.'}
+            </Text>
           </View>
         </ImageBackground>
       </View>
       <View style={styles.loginView}>
         <ScrollView>
+
           <View style={{ marginHorizontal: 20 }}>
             <View style={{ marginTop: '15%' }}>
-              <Text style={styles.headingText}>Verify OTP to Continue</Text>
+              <Text style={styles.headingText}>Enter OTP to Continue</Text>
             </View>
 
             <View style={styles.inputTextField}>
-              {[0, 1, 2, 3].map((index) => (
+              {[0, 1, 2, 3].map(index => (
                 <TextInput
                   key={index}
                   style={[styles.inputText, borderBottom]}
                   maxLength={1}
                   keyboardType="numeric"
                   value={code[index]}
-                  ref={(ref) => (inputRefs.current[index] = ref)}
-                  onChangeText={(value) => handleCodeChange(value, index)}
+                  ref={ref => (inputRefs.current[index] = ref)}
+                  onChangeText={value => handleCodeChange(value, index)}
                 />
               ))}
             </View>
 
-            <TouchableOpacity style={styles.btnView} >
-              <Text style={styles.textSignIn}>Verify</Text>
-            </TouchableOpacity>
-
-            <View style={{ marginTop: '5%' }}>
-              <Text style={styles.verifyOTPText}>Didn't Received the OTP?</Text>
-              <Text
-                style={styles.btnResend}
-                onPress={() => navigation.navigate('ResetPassword')}>
-                Resend
-              </Text>
+            <View
+              style={{
+                marginVertical: 40,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={styles.verifyOTPText}>OTP not received? </Text>
+              <Text style={styles.btnResend}>Resend OTP</Text>
             </View>
+
+            <Button
+              onPress={onPressHandler}
+              loading={isLoading}
+              disabled={isLoading}
+              buttonColor={Colors.primary}
+              theme={{ roundness: 0 }}
+              style={styles.buttonStyles}
+              contentStyle={{ height: 50 }}
+              labelStyle={styles.buttonLabel}
+              uppercase={true}
+              mode={'contained'}>
+              Verify
+            </Button>
           </View>
+
+
         </ScrollView>
       </View>
     </SafeAreaView>
