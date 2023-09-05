@@ -1,18 +1,41 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import AuthStackNavigation from './AuthStackNavigator';
-import { useSelector } from 'react-redux';
-// import DrawerNavigation from './DrawerNavigator';
+import {useDispatch, useSelector} from 'react-redux';
 
+import {restoreSession} from '../store/auth/authSlice';
+import DrawerNavigation from './DrawerNavigator';
+import AuthStackNavigation from './AuthStackNavigator';
+import {Loader} from '../components/common/Loader';
 export default function Navigation() {
-  const userData = useSelector((state)=> state.auth.userData)
-  console.log("user Data--", userData)
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const {token, userId, isLoading} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(restoreSession());
+  // }, [dispatch]);
+
+  // 🆗 Ship it
+  useEffect(() => {
+    (async () => {
+      await dispatch(restoreSession());
+    })();
+
+    return () => {
+      // this now gets called when the component unmounts
+    };
+  }, [dispatch]);
+
+  const isLoggedIn = token && userId;
+
+  console.log('token && userId', token, userId);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <NavigationContainer>
-      <AuthStackNavigation />
-      {/*{isLoggedIn ? <DrawerNavigation /> : <AuthStackNavigation />}*/}
+      {isLoggedIn ? <DrawerNavigation /> : <AuthStackNavigation />}
     </NavigationContainer>
   );
 }

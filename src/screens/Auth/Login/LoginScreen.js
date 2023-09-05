@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -9,17 +9,18 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import * as Yup from 'yup';
+import {useDispatch} from 'react-redux';
 
-import { styles } from './LoginScreen.styles';
-import { images } from '../../../utils/Images';
-import { Font_Family } from '../../../utils/Fontfamily';
-import actions from '../../../redux/actions';
+import {styles} from './LoginScreen.styles';
+import {images} from '../../../utils/Images';
+import {Font_Family} from '../../../utils/Fontfamily';
+import {login} from '../../../store/auth/authSlice';
+import {useAuthMessage} from '../../../context/MessageProvider';
 
-
-export const LoginScreen = ({ navigation }) => {
+export const LoginScreen = ({navigation}) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const toggleSecureEntry = () => {
@@ -31,25 +32,29 @@ export const LoginScreen = ({ navigation }) => {
     password: Yup.string().required('Password is required'),
   });
 
-  const handleLogin = async (values) => {
-    const res = await actions.login({
-      phoneNumber,
-      password,
+  const dispatch = useDispatch();
+  const setMsg = useAuthMessage();
 
-    })
-    console.log("response--", res)
+  const handleLogin = async ({phoneNumber, password}) => {
+    try {
+      await dispatch(login({phoneNumber, password})).unwrap();
+      setMsg('Login Successfully.');
+    } catch (e) {
+      // setError(e.message);
+      console.log('ls', e.message);
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <ImageBackground
           source={images.backgroundImg}
           style={styles.backgroundImage}>
           <View style={styles.overlay}>
             <Text
               style={styles.text}
-            // onPress={()=>login()}
+              // onPress={()=>login()}
             >
               Hello, Customer!
             </Text>
@@ -60,7 +65,7 @@ export const LoginScreen = ({ navigation }) => {
       <View style={styles.loginView}>
         <ScrollView>
           <Formik
-            initialValues={{ phoneNumber: '', password: '' }}
+            initialValues={{phoneNumber: '8858493334', password: '123456'}}
             validationSchema={validationSchema}
             onSubmit={handleLogin}>
             {({
@@ -71,8 +76,8 @@ export const LoginScreen = ({ navigation }) => {
               errors,
               touched,
             }) => (
-              <View style={{ marginHorizontal: 20 }}>
-                <View style={{ marginVertical: 20 }}>
+              <View style={{marginHorizontal: 20}}>
+                <View style={{marginVertical: 20}}>
                   <Text style={styles.headingText}>Sign In</Text>
                 </View>
                 <View style={styles.inputContainer}>
@@ -137,7 +142,7 @@ export const LoginScreen = ({ navigation }) => {
                 <TouchableOpacity style={styles.btnView} onPress={handleSubmit}>
                   <Text style={styles.textSignIn}>SIGN IN</Text>
                 </TouchableOpacity>
-                <View style={{ marginTop: '10%' }}>
+                <View style={{marginTop: '10%'}}>
                   <Text style={styles.bottomtmtitledText}>
                     New User? Lets get started by
                     <Text
