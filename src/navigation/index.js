@@ -1,18 +1,29 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {restoreSession} from '../store/auth/authSlice';
+import DrawerNavigation from './DrawerNavigator';
 import AuthStackNavigation from './AuthStackNavigator';
-import { useSelector } from 'react-redux';
-// import DrawerNavigation from './DrawerNavigator';
+import {Loader} from '../components/common/Loader';
 
 export default function Navigation() {
-  const userData = useSelector((state)=> state.auth.userData)
-  console.log("user Data--", userData)
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const {token, userId, isLoading} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(restoreSession());
+  }, [dispatch]);
+
+  const isLoggedIn = token && userId;
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <NavigationContainer>
-      <AuthStackNavigation />
-      {/*{isLoggedIn ? <DrawerNavigation /> : <AuthStackNavigation />}*/}
+      {isLoggedIn ? <DrawerNavigation /> : <AuthStackNavigation />}
     </NavigationContainer>
   );
 }

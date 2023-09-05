@@ -1,11 +1,16 @@
 import React, {useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
-import {MD3LightTheme as DefaultTheme, PaperProvider, } from 'react-native-paper';
+import {Provider as StoreProvider} from 'react-redux';
+import {MD3LightTheme as DefaultTheme} from 'react-native-paper';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {Provider as PaperProvider} from 'react-native-paper';
 
 import Navigation from './src/navigation';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import store from './src/redux/store';
-import { Provider } from 'react-redux';
+import WithAxios from './src/lib/WithAxios';
+import {ErrorContextProvider} from './src/context/ErrorProvider';
+import {MsgContextProvider} from './src/context/MessageProvider';
+import {store} from './src/store';
 
 const App = () => {
   useEffect(() => {
@@ -70,21 +75,22 @@ const App = () => {
   };
 
   return (
-    // <PaperProvider store={store}
-    //   theme={theme}
-    //   settings={{
-    //     icon: props => <AntDesign {...props} />,
-    //   }}>
-    //   <Navigation />
-    // </PaperProvider>
-
-    <Provider store={store}
-      theme={theme}
-      settings={{
-        icon: props => <AntDesign {...props} />,
-      }}>
-      <Navigation />
-    </Provider>
+    <SafeAreaProvider>
+      <StoreProvider store={store}>
+        <PaperProvider
+          theme={theme}
+          settings={{
+            icon: props => <AntDesign {...props} />,
+          }}>
+          <WithAxios />
+          <ErrorContextProvider>
+            <MsgContextProvider>
+              <Navigation />
+            </MsgContextProvider>
+          </ErrorContextProvider>
+        </PaperProvider>
+      </StoreProvider>
+    </SafeAreaProvider>
   );
 };
 export default App;
