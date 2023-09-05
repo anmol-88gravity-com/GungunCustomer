@@ -7,7 +7,13 @@ export const Axios = axios.create({
   baseURL: Config.API_URL,
 });
 
-const authRoutes = [ApiEndpoints.auth.login, ApiEndpoints.auth.register];
+const authRoutes = [
+  ApiEndpoints.auth.login,
+  ApiEndpoints.auth.register,
+  ApiEndpoints.auth.otpGenerate,
+  ApiEndpoints.auth.otpVerify,
+  ApiEndpoints.auth.updatePassword,
+];
 
 Axios.interceptors.request.use(
   async function (config) {

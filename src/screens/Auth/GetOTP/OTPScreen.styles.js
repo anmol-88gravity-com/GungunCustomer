@@ -24,10 +24,11 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.semiBold,
   },
   subTitle: {
-    fontSize: FONT_SIZES.sixteen,
+    fontSize: FONT_SIZES.twenty,
     color: Colors.white,
     marginTop: 10,
-    fontFamily: Font_Family.medium,
+    fontFamily: Font_Family.regular,
+    textAlign: 'center',
   },
   loginView: {
     flex: 1.1,
@@ -39,7 +40,7 @@ export const styles = StyleSheet.create({
   headingText: {
     fontSize: FONT_SIZES.twenty,
     color: '#000000',
-    fontFamily: Font_Family.semiBold,
+    fontFamily: Font_Family.medium,
   },
 
   forgotText: {
@@ -76,7 +77,7 @@ export const styles = StyleSheet.create({
   inputTextField: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 20,
+    marginHorizontal: 30,
     marginTop: '10%',
   },
   inputText: {
@@ -86,15 +87,21 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   verifyOTPText: {
-    textAlign: 'center',
     fontFamily: Font_Family.regular,
-    fontSize: FONT_SIZES.tweleve,
+    fontSize: FONT_SIZES.fifteen,
   },
   btnResend: {
-    color: '#F56337',
-    textAlign: 'center',
-    marginTop: '5%',
-    fontFamily: Font_Family.semiBold,
+    color: Colors.primary,
+    fontFamily: Font_Family.regular,
+    fontSize: FONT_SIZES.fifteen,
+  },
+  buttonStyles: {
+    width: '90%',
+    alignSelf: 'center',
+    borderRadius: 5,
+  },
+  buttonLabel: {
+    fontFamily: Font_Family.medium,
     fontSize: FONT_SIZES.fifteen,
   },
 });

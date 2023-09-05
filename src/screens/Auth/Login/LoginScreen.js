@@ -19,6 +19,7 @@ import {images} from '../../../utils/Images';
 import {Font_Family} from '../../../utils/Fontfamily';
 import {login} from '../../../store/auth/authSlice';
 import {useAuthMessage} from '../../../context/MessageProvider';
+import {useError} from '../../../context/ErrorProvider';
 
 export const LoginScreen = ({navigation}) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -34,14 +35,14 @@ export const LoginScreen = ({navigation}) => {
 
   const dispatch = useDispatch();
   const setMsg = useAuthMessage();
+  const setError = useError();
 
   const handleLogin = async ({phoneNumber, password}) => {
     try {
       await dispatch(login({phoneNumber, password})).unwrap();
       setMsg('Login Successfully.');
     } catch (e) {
-      // setError(e.message);
-      console.log('ls', e.message);
+      setError(e.message);
     }
   };
 
@@ -52,12 +53,7 @@ export const LoginScreen = ({navigation}) => {
           source={images.backgroundImg}
           style={styles.backgroundImage}>
           <View style={styles.overlay}>
-            <Text
-              style={styles.text}
-              // onPress={()=>login()}
-            >
-              Hello, Customer!
-            </Text>
+            <Text style={styles.text}>Hello, Customer!</Text>
             <Text style={styles.subTitle}>Please Sign in to your Account</Text>
           </View>
         </ImageBackground>
@@ -89,7 +85,7 @@ export const LoginScreen = ({navigation}) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Phone Number"
+                    placeholder="Enter Phone Number"
                     maxLength={10}
                     keyboardType="phone-pad"
                     onChangeText={handleChange('phoneNumber')}
@@ -109,7 +105,7 @@ export const LoginScreen = ({navigation}) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Password"
+                    placeholder="Enter Password"
                     secureTextEntry={secureTextEntry}
                     onChangeText={handleChange('password')}
                     onBlur={handleBlur('password')}

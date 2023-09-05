@@ -24,10 +24,11 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.semiBold,
   },
   subTitle: {
-    fontSize: FONT_SIZES.sixteen,
+    fontSize: FONT_SIZES.twenty,
     color: Colors.white,
     marginTop: 10,
-    fontFamily: Font_Family.medium,
+    fontFamily: Font_Family.regular,
+    textAlign: 'center',
   },
   loginView: {
     flex: 1.1,
@@ -40,12 +41,13 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.twenty,
     color: '#000000',
     fontFamily: Font_Family.semiBold,
+    marginBottom: 20,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    marginVertical: '8%',
+    marginBottom: '8%',
     borderColor: '#ccc',
     borderRadius: 10,
     padding: Platform.OS == 'ios' ? 15 : 5,
@@ -94,5 +96,14 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: Font_Family.regular,
     fontSize: FONT_SIZES.tweleve,
+  },
+  buttonStyles: {
+    width: '90%',
+    alignSelf: 'center',
+    borderRadius: 5,
+  },
+  buttonLabel: {
+    fontFamily: Font_Family.medium,
+    fontSize: FONT_SIZES.fifteen,
   },
 });

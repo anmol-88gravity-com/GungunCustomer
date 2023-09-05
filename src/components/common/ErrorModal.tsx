@@ -1,21 +1,13 @@
 import React from 'react';
-import {Modal, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Modal, StyleSheet, Text, View} from 'react-native';
+import {Button} from 'react-native-paper';
 
-export const ErrorModal = ({error, visible, onClose}) => {
+import {FONT_SIZES} from '../../utils/FontSize';
+import {Colors} from '../../utils/Colors';
+import {Font_Family} from '../../utils/Fontfamily';
+
+export const ErrorModal = ({visible, onClose, error}) => {
   return (
-    // <Modal isOpen={visible} onClose={onClose} size={'lg'}>
-    //   <Modal.Content p={5}>
-    //     <Text pb={1} fontWeight={'600'} fontSize={'md'} color={'secondary.400'}>
-    //       Error ⚠️
-    //     </Text>
-    //     <Text pb={3} fontWeight={'400'} fontSize={'sm'} numberOfLines={3}>
-    //       {String(error)}
-    //     </Text>
-    //     <Button alignSelf={'flex-end'} onPress={onClose}>
-    //       OK
-    //     </Button>
-    //   </Modal.Content>
-    // </Modal>
     <Modal
       animationType="slide"
       transparent={true}
@@ -23,12 +15,18 @@ export const ErrorModal = ({error, visible, onClose}) => {
       onRequestClose={onClose}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
+          <Text style={styles.modalHeadingText}>Error ⚠️</Text>
           <Text style={styles.modalText}>{error}</Text>
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={onClose}>
-            <Text style={styles.textStyle}>Hide Modal</Text>
-          </Pressable>
+          <Button
+            onPress={onClose}
+            buttonColor={Colors.primary}
+            theme={{roundness: 0}}
+            style={styles.buttonStyles}
+            contentStyle={{height: 40}}
+            labelStyle={styles.buttonLabel}
+            mode={'contained'}>
+            OK
+          </Button>
         </View>
       </View>
     </Modal>
@@ -40,14 +38,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
+    backgroundColor: 'rgba(0,0,0,0.3)',
   },
   modalView: {
     margin: 20,
     backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
+    borderRadius: 10,
+    padding: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -57,24 +54,31 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  modalHeadingText: {
+    marginBottom: 15,
+    textAlign: 'left',
+    fontSize: FONT_SIZES.fifteen,
+    color: Colors.black,
+    fontFamily: Font_Family.semiBold,
+  },
   modalText: {
     marginBottom: 15,
-    textAlign: 'center',
+    fontSize: FONT_SIZES.fifteen,
+    color: Colors.black,
+    fontFamily: Font_Family.regular,
+  },
+  buttonStyles: {
+    width: '100%',
+    alignSelf: 'flex-end',
+    borderRadius: 5,
+  },
+  buttonLabel: {
+    fontFamily: Font_Family.medium,
+    fontSize: FONT_SIZES.fifteen,
   },
 });

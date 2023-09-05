@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   View,
   Text,
   TextInput,
-  TouchableOpacity,
   ImageBackground,
   ScrollView,
 } from 'react-native';
@@ -12,18 +11,29 @@ import {styles} from './ForgotPasswordScreen.styles';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
+import {Button} from 'react-native-paper';
 
 import {images} from '../../../utils/Images';
+import {generateOTP} from '../../../store/auth/forgotPasswordSlice';
+import {useDispatch} from 'react-redux';
+import {useError} from '../../../context/ErrorProvider';
+import {Colors} from '../../../utils/Colors';
 
 export const ForgotPasswordScreen = ({navigation}) => {
-  const [phone, setPhone] = useState('');
-
   const validationSchema = Yup.object().shape({
     phoneNumber: Yup.string().required('Phone number is required*'),
   });
 
-  const handleLogin = values => {
-    navigation.navigate('OTP');
+  const dispatch = useDispatch();
+  const setError = useError();
+
+  const handleLogin = async ({phoneNumber}) => {
+    try {
+      await dispatch(generateOTP({phoneNumber})).unwrap();
+      navigation.navigate('OTP', {phoneNumber: phoneNumber});
+    } catch (e) {
+      setError(e.message);
+    }
   };
 
   return (
@@ -34,7 +44,9 @@ export const ForgotPasswordScreen = ({navigation}) => {
           style={styles.backgroundImage}>
           <View style={styles.overlay}>
             <Text style={styles.text}>Hello, Customer!</Text>
-            <Text style={styles.subTitle}>Please Reset your Password</Text>
+            <Text style={styles.subTitle}>
+              {'Please Enter Your Registered\nPhone Number'}
+            </Text>
           </View>
         </ImageBackground>
       </View>
@@ -43,7 +55,6 @@ export const ForgotPasswordScreen = ({navigation}) => {
           <Formik
             initialValues={{phoneNumber: ''}}
             validationSchema={validationSchema}
-            // onSubmit={(values)=>console.log(values)}
             onSubmit={handleLogin}>
             {({
               handleChange,
@@ -52,6 +63,7 @@ export const ForgotPasswordScreen = ({navigation}) => {
               values,
               errors,
               touched,
+              isSubmitting,
             }) => (
               <View style={{marginHorizontal: 20}}>
                 <View style={{marginTop: '15%'}}>
@@ -66,7 +78,7 @@ export const ForgotPasswordScreen = ({navigation}) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Phone Number"
+                    placeholder="Enter Phone Number"
                     keyboardType="phone-pad"
                     maxLength={10}
                     onChangeText={handleChange('phoneNumber')}
@@ -77,9 +89,19 @@ export const ForgotPasswordScreen = ({navigation}) => {
                 {touched.phoneNumber && errors.phoneNumber && (
                   <Text style={styles.errors}>{errors.phoneNumber}</Text>
                 )}
-                <TouchableOpacity style={styles.btnView} onPress={handleSubmit}>
-                  <Text style={styles.textSignIn}>Get OTP</Text>
-                </TouchableOpacity>
+                <Button
+                  onPress={handleSubmit}
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
+                  buttonColor={Colors.primary}
+                  theme={{roundness: 0}}
+                  style={styles.buttonStyles}
+                  contentStyle={{height: 50}}
+                  labelStyle={styles.buttonLabel}
+                  uppercase={true}
+                  mode={'contained'}>
+                  Continue
+                </Button>
               </View>
             )}
           </Formik>

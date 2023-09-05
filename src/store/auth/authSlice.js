@@ -17,7 +17,7 @@ const createSession = async payload => {
 export const restoreSession = createAsyncThunk(AUTH_RESTORE, async () => {
   const result = await load(Config.USER_SESSION);
   if (result) {
-    return String(result);
+    return result;
   }
 });
 
