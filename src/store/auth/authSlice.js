@@ -4,7 +4,6 @@ import {ApiEndpoints} from '../ApiEndPoints';
 import {Axios} from '../../lib/Axios';
 import Config from '../../config';
 import {load, remove, save} from '../../utils/storage';
-// import actions from '../../redux/actions';
 
 export const AUTH_LOGOUT = '/api/auth/logout';
 export const AUTH_RESTORE = '/api/auth/restore';
@@ -104,12 +103,9 @@ export const authSlice = createSlice({
     // restore session
     builder.addCase(restoreSession.pending, (state, action) => {
       state.isLoading = true;
-      console.log('action1', action);
     });
     builder.addCase(restoreSession.fulfilled, (state, action) => {
       state.isLoading = false;
-      console.log('action2', action);
-
       if (action.payload?.token) {
         state.token = action.payload.token;
         state.userId = action.payload.userId;
@@ -117,8 +113,6 @@ export const authSlice = createSlice({
       }
     });
     builder.addCase(restoreSession.rejected, (state, action) => {
-      console.log('action3', action);
-
       state.isLoading = false;
     });
   },
