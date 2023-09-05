@@ -7,8 +7,9 @@ import {load, remove, save} from '../../utils/storage';
 
 export const AUTH_LOGOUT = '/api/auth/logout';
 export const AUTH_RESTORE = '/api/auth/restore';
-// export const REGISTER = '/auth/register';
+export const REGISTER = '/auth/register';
 export const LOGIN = '/auth/login';
+export const REGISTER_OTP = '/auth/register-otp';
 
 const createSession = async payload => {
   await save(Config.USER_SESSION, payload);
@@ -45,7 +46,7 @@ export const logout = createAsyncThunk(AUTH_LOGOUT, async () => {
 //         token: result.data.response.token.refresh,
 //         accessToken: result.data.response.token.access,
 //       };
-//
+
 //       await createSession(success);
 //       return fulfillWithValue(success);
 //     } else {
@@ -76,6 +77,22 @@ export const login = createAsyncThunk(
   },
 );
 
+export const registerOTP = createAsyncThunk(
+  REGISTER_OTP,
+  async ({ phoneNumber }, { rejectWithValue }) => {
+
+    const result = await Axios.post(ApiEndpoints.auth.registerOtp, {
+      phone_number: phoneNumber,
+    });
+    console.log('registerOtp--',result)
+    if (result.data.status === 'ok') {
+      console.warn('OTP : ', result.data.response.otp);
+      return true;
+    } else {
+      return rejectWithValue(new Error(result.data.msg));
+    }
+  },
+);
 const initialState = {
   isLoading: false,
   userId: null,

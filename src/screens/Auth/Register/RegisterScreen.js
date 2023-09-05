@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -7,33 +7,107 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Pressable,
+  Dimensions
 } from 'react-native';
 import Octicons from 'react-native-vector-icons/dist/Octicons';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import Entypo from 'react-native-vector-icons/dist/Entypo';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import {images} from '../../../utils/Images';
-import {styles} from './RegisterScreen.styles';
+import { images } from '../../../utils/Images';
+import { styles } from './RegisterScreen.styles';
+import { register, registerOTP } from '../../../store/auth/authSlice';
+import { EmailValidation, MobileValidation } from '../../../utils/helper';
+import { ApiEndpoints } from '../../../store/ApiEndPoints';
+import { Button } from 'react-native-paper';
+import { Colors } from '../../../utils/Colors';
+import { useDispatch } from 'react-redux';
+import { useError } from '../../../context/ErrorProvider';
+import { useAuthMessage } from '../../../context/MessageProvider';
 
-export const RegisterScreen = ({navigation}) => {
+const HEIGHT = Dimensions.get('screen').height;
+export const RegisterScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const setError = useError();
+  const setMessage = useAuthMessage();
+
 
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
   };
 
   const validationSchema = Yup.object().shape({
-    resturantName: Yup.string().required('Resturant Name is required *'),
-    fullName: Yup.string().required('Enter full name *'),
-    password: Yup.string().required('Enter password *'),
-    phoneNumber: Yup.string().required('Enter phone number *'),
-    email: Yup.string().required('Enter valid email *'),
+    fullName: Yup.string().required('Full Name is required'),
+    password: Yup.string().required('Password is required'),
+    confirmPassword: Yup.string()
+      .required('Confirm Password is required')
+      .oneOf(
+        [Yup.ref('password'), ''],
+        'Password amd Confirm Password must be same.',
+      ),
+    email: Yup.string()
+      .matches(EmailValidation, 'Email is not valid')
+      .required('Email is required')
+      .test('Email already exists', async values => {
+        if (values) {
+          try {
+            let response = await Axios.post(ApiEndpoints.auth.uniqueCheck, {
+              email: values,
+              phone_number: '',
+            });
+            return response.data.status === 'ok';
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+      ),
+    phoneNumber: Yup.string()
+      .required('Phone Number is required')
+      .matches(MobileValidation, 'Enter Valid Phone Number')
+      .test('Phone Number already exists', async values => {
+        if (values) {
+          try {
+            let response = await Axios.post(ApiEndpoints.auth.uniqueCheck, {
+              email: '',
+              phone_number: values,
+            });
+            return response.data.status === 'ok';
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }),
+
   });
+
+
+  const generateOTP = useCallback(async (phoneNumber) => {
+    if (phoneNumber === '') {
+      setMessage('Phone Number is required');
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await dispatch(registerOTP({phoneNumber})).unwrap();
+      if (res) {
+        setModalVisible(true);
+        setMobileNumber(phoneNumber);
+      }
+    } catch (e) {
+      setError(e.message);
+    }
+    setLoading(false);
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{flex: 1, backgroundColor: 'red'}}>
+      <View style={{ flex: 1, backgroundColor: 'red' }}>
         <ImageBackground
           source={images.backgroundImg}
           style={styles.backgroundImage}>
@@ -50,14 +124,10 @@ export const RegisterScreen = ({navigation}) => {
         <ScrollView>
           <Formik
             initialValues={{
-              resturantName: '',
-              fullName: '',
-              password: '',
-              phoneNumber: '',
-              email: '',
+              fullName: '', password: '', confirmPassword: '', email: '', phoneNumber: ''
             }}
             validationSchema={validationSchema}
-            onSubmit={values => console.log('values--', values)}>
+            onSubmit={(values) => console.log(values, 'values')}>
             {({
               handleChange,
               handleBlur,
@@ -66,8 +136,8 @@ export const RegisterScreen = ({navigation}) => {
               errors,
               touched,
             }) => (
-              <View style={{marginHorizontal: 20}}>
-                <View style={{marginVertical: 20}}>
+              <View style={{ marginHorizontal: 20 }}>
+                <View style={{ marginVertical: 20 }}>
                   <Text style={styles.headingText}>Create Account</Text>
                 </View>
                 <View style={styles.inputContainer}>
@@ -109,6 +179,7 @@ export const RegisterScreen = ({navigation}) => {
                       size={20}
                       color="#ccc"
                       onPress={toggleSecureEntry}
+                      style={styles.eyeImageIcon}
                     />
                   ) : (
                     <Feather
@@ -116,6 +187,7 @@ export const RegisterScreen = ({navigation}) => {
                       size={20}
                       color="#ccc"
                       onPress={toggleSecureEntry}
+                      style={styles.eyeImageIcon}
                     />
                   )}
                 </View>
@@ -143,6 +215,7 @@ export const RegisterScreen = ({navigation}) => {
                       size={20}
                       color="#ccc"
                       onPress={toggleSecureEntry}
+                      style={styles.eyeImageIcon}
                     />
                   ) : (
                     <Feather
@@ -150,31 +223,14 @@ export const RegisterScreen = ({navigation}) => {
                       size={20}
                       color="#ccc"
                       onPress={toggleSecureEntry}
+                      style={styles.eyeImageIcon}
                     />
                   )}
                 </View>
                 {touched.password && errors.password && (
                   <Text style={styles.errors}>{errors.password}</Text>
                 )}
-                <View style={styles.inputContainer}>
-                  <Feather
-                    name="smartphone"
-                    size={18}
-                    color="#DEA812"
-                    style={styles.imageIcon}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Phone Number"
-                    keyboardType="phone-pad"
-                    onChangeText={handleChange('phoneNumber')}
-                    onBlur={handleBlur('phoneNumber')}
-                    value={values.phoneNumber}
-                  />
-                </View>
-                {touched.phoneNumber && errors.phoneNumber && (
-                  <Text style={styles.errors}>{errors.phoneNumber}</Text>
-                )}
+
                 <View style={styles.inputContainer}>
                   <Entypo
                     name="email"
@@ -194,18 +250,41 @@ export const RegisterScreen = ({navigation}) => {
                 {touched.email && errors.email && (
                   <Text style={styles.errors}>{errors.email}</Text>
                 )}
-                <TouchableOpacity style={styles.btnView} onPress={handleSubmit}>
-                  <Text style={styles.textSignIn}>CREATE ACCOUNT</Text>
-                </TouchableOpacity>
-                {/* <View style={{ marginTop: '10%' }}>
-                                    <View style={{ backgroundColor: '#E1E1E1', height: 1, width: '100%' }}></View>
-                                </View>
-                                <View style={{ marginTop: '10%' }}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                        <Image source={images.google} style={[styles.icon, { marginTop: -2 }]} />
-                                        <Text style={{ textDecorationLine: 'underline', color: '#ccc',fontFamily: Font_Family.medium,fontSize:FONT_SIZES.fifteen }}>OR SIGNUP USING GMAIL</Text>
-                                    </View>
-                                </View> */}
+                <View style={styles.inputContainer}>
+                  <Feather
+                    name="smartphone"
+                    size={18}
+                    color="#DEA812"
+                    style={styles.imageIcon}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Phone Number"
+                    keyboardType="phone-pad"
+                    onChangeText={handleChange('phoneNumber')}
+                    onBlur={handleBlur('phoneNumber')}
+                    value={values.phoneNumber}
+                    maxLength={10}
+                  />
+                  <Pressable onPress={() => generateOTP(values.phoneNumber)}>
+                    <Text style={styles.btnGetOTP}>Get OTP</Text>
+                  </Pressable>
+                </View>
+                {touched.phoneNumber && errors.phoneNumber && (
+                  <Text style={styles.errors}>{errors.phoneNumber}</Text>
+                )}
+
+                <Button
+                  // onPress={handleSubmit}
+                  buttonColor={Colors.primary}
+                  theme={{ roundness: 0 }}
+                  style={styles.buttonStyles}
+                  contentStyle={{ height: 50 }}
+                  labelStyle={styles.buttonlabel}
+                  mode={'contained'}>
+                  CREATE ACCOUNT
+                </Button>
+
               </View>
             )}
           </Formik>

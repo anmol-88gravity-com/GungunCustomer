@@ -1,7 +1,7 @@
-import {StyleSheet} from 'react-native';
-import {Colors} from '../../../utils/Colors';
-import {FONT_SIZES} from '../../../utils/FontSize';
-import {Font_Family} from '../../../utils/Fontfamily';
+import { Platform, StyleSheet } from 'react-native';
+import { Colors } from '../../../utils/Colors';
+import { FONT_SIZES } from '../../../utils/FontSize';
+import { Font_Family } from '../../../utils/Fontfamily';
 
 export const styles = StyleSheet.create({
   container: {
@@ -70,27 +70,35 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.thirteen,
     fontFamily: Font_Family.medium,
   },
-  forgotText: {alignSelf: 'flex-end', color: '#000000'},
-  btnView: {
-    backgroundColor: Colors.primary,
+  btnGetOTP: {
+    color: Colors.primary,
+    textDecorationLine: 'underline',
+    right: Platform.OS === 'android' ? '10%' : 0,
+    fontFamily: Font_Family.medium,
+    fontSize: FONT_SIZES.tweleve
+
+  },
+  forgotText: { alignSelf: 'flex-end', color: '#000000' },
+  buttonStyles: {
+    width: '100%',
+    alignSelf: 'center',
+    marginTop: 15,
     borderRadius: 10,
-    padding: 15,
-    // marginVertical:'20%',
-    marginTop: '8%',
+
+  },
+  buttonlabel: {
+    fontFamily: Font_Family.medium
   },
   errors: {
     color: 'red',
     fontSize: FONT_SIZES.tweleve,
     fontFamily: Font_Family.regular,
   },
-  textSignIn: {
-    textAlign: 'center',
-    color: '#FFFFFF',
-    fontSize: FONT_SIZES.sixteen,
-    fontFamily: Font_Family.medium,
-  },
-  bottomtmtitledText: {color: '#000000', textAlign: 'center'},
+  bottomtmtitledText: { color: '#000000', textAlign: 'center' },
   imageIcon: {
     left: Platform.OS === 'android' ? '10%' : 0,
+  },
+  eyeImageIcon: {
+    right: Platform.OS === 'android' ? '10%' : 0,
   },
 });
