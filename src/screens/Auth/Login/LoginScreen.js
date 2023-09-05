@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -9,15 +9,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import * as Yup from 'yup';
 
-import {styles} from './LoginScreen.styles';
-import {images} from '../../../utils/Images';
-import {Font_Family} from '../../../utils/Fontfamily';
+import { styles } from './LoginScreen.styles';
+import { images } from '../../../utils/Images';
+import { Font_Family } from '../../../utils/Fontfamily';
+import actions from '../../../redux/actions';
 
-export const LoginScreen = ({navigation}) => {
+
+export const LoginScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const toggleSecureEntry = () => {
@@ -29,20 +31,25 @@ export const LoginScreen = ({navigation}) => {
     password: Yup.string().required('Password is required'),
   });
 
-  const handleLogin = values => {
-    navigation.navigate('Drawer');
+  const handleLogin = async (values) => {
+    const res = await actions.login({
+      phoneNumber,
+      password,
+
+    })
+    console.log("response--", res)
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <ImageBackground
           source={images.backgroundImg}
           style={styles.backgroundImage}>
           <View style={styles.overlay}>
             <Text
               style={styles.text}
-              // onPress={()=>login()}
+            // onPress={()=>login()}
             >
               Hello, Customer!
             </Text>
@@ -53,10 +60,8 @@ export const LoginScreen = ({navigation}) => {
       <View style={styles.loginView}>
         <ScrollView>
           <Formik
-            initialValues={{phoneNumber: '987543210', password: '123456'}}
+            initialValues={{ phoneNumber: '', password: '' }}
             validationSchema={validationSchema}
-            // onSubmit={handleLogin}
-            // onSubmit={()=>login()}
             onSubmit={handleLogin}>
             {({
               handleChange,
@@ -66,8 +71,8 @@ export const LoginScreen = ({navigation}) => {
               errors,
               touched,
             }) => (
-              <View style={{marginHorizontal: 20}}>
-                <View style={{marginVertical: 20}}>
+              <View style={{ marginHorizontal: 20 }}>
+                <View style={{ marginVertical: 20 }}>
                   <Text style={styles.headingText}>Sign In</Text>
                 </View>
                 <View style={styles.inputContainer}>
@@ -132,7 +137,7 @@ export const LoginScreen = ({navigation}) => {
                 <TouchableOpacity style={styles.btnView} onPress={handleSubmit}>
                   <Text style={styles.textSignIn}>SIGN IN</Text>
                 </TouchableOpacity>
-                <View style={{marginTop: '10%'}}>
+                <View style={{ marginTop: '10%' }}>
                   <Text style={styles.bottomtmtitledText}>
                     New User? Lets get started by
                     <Text

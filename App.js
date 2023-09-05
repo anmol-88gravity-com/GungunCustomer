@@ -1,9 +1,11 @@
 import React, {useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
-import {MD3LightTheme as DefaultTheme, PaperProvider} from 'react-native-paper';
+import {MD3LightTheme as DefaultTheme, PaperProvider, } from 'react-native-paper';
 
 import Navigation from './src/navigation';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import store from './src/redux/store';
+import { Provider } from 'react-redux';
 
 const App = () => {
   useEffect(() => {
@@ -68,13 +70,21 @@ const App = () => {
   };
 
   return (
-    <PaperProvider
+    // <PaperProvider store={store}
+    //   theme={theme}
+    //   settings={{
+    //     icon: props => <AntDesign {...props} />,
+    //   }}>
+    //   <Navigation />
+    // </PaperProvider>
+
+    <Provider store={store}
       theme={theme}
       settings={{
         icon: props => <AntDesign {...props} />,
       }}>
       <Navigation />
-    </PaperProvider>
+    </Provider>
   );
 };
 export default App;

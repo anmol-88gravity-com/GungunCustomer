@@ -14,7 +14,7 @@ export const CustomerSupportScreen = ({navigation}) => {
             <Text
               style={styles.title}
               onPress={() => navigation.navigate('CustomerFeedback')}>
-              Hey Vishnu, How can we help you.
+              Hey Vishnu, How can we h elp you.
             </Text>
           </View>
 
