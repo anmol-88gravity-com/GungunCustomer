@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,16 +8,16 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import {useDispatch} from 'react-redux';
-import {Button} from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { Button } from 'react-native-paper';
 
-import {images} from '../../../utils/Images';
-import {styles} from './OTPScreen.styles';
-import {Colors} from '../../../utils/Colors';
-import {otpVerify} from '../../../store/auth/forgotPasswordSlice';
-import {useError} from '../../../context/ErrorProvider';
+import { images } from '../../../utils/Images';
+import { styles } from './OTPScreen.styles';
+import { Colors } from '../../../utils/Colors';
+import { otpVerify } from '../../../store/auth/forgotPasswordSlice';
+import { useError } from '../../../context/ErrorProvider';
 
-export const OTPScreen = ({navigation, route}) => {
+export const OTPScreen = ({ navigation, route }) => {
   const phoneNumber = route.params.phoneNumber;
 
   const [code, setCode] = useState('');
@@ -45,21 +45,21 @@ export const OTPScreen = ({navigation, route}) => {
   const borderBottom =
     Platform.OS === 'ios'
       ? {
-          borderBottomColor: code.length > 0 ? '#000' : '#ccc',
-          borderBottomWidth: 2,
-        }
+        borderBottomColor: code.length > 0 ? '#000' : '#ccc',
+        borderBottomWidth: 2,
+      }
       : {
-          borderBottomColor: code.length > 0 ? '#000' : '#ccc',
-          borderWidth: 0,
-          borderBottomWidth: 2,
-        };
+        borderBottomColor: code.length > 0 ? '#000' : '#ccc',
+        borderWidth: 0,
+        borderBottomWidth: 2,
+      };
 
   const onPressHandler = async () => {
     setIsLoading(true);
     try {
-      const res = await dispatch(otpVerify({phoneNumber, code})).unwrap();
+      const res = await dispatch(otpVerify({ phoneNumber, code })).unwrap();
       if (res) {
-        navigation.navigate('ResetPassword', {phoneNumber: phoneNumber});
+        navigation.navigate('ResetPassword', { phoneNumber: phoneNumber });
       }
     } catch (e) {
       setError(e.message);
@@ -69,7 +69,7 @@ export const OTPScreen = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <ImageBackground
           source={images.backgroundImg}
           style={styles.backgroundImage}>
@@ -83,8 +83,9 @@ export const OTPScreen = ({navigation, route}) => {
       </View>
       <View style={styles.loginView}>
         <ScrollView>
-          <View style={{marginHorizontal: 20}}>
-            <View style={{marginTop: '15%'}}>
+
+          <View style={{ marginHorizontal: 20 }}>
+            <View style={{ marginTop: '15%' }}>
               <Text style={styles.headingText}>Enter OTP to Continue</Text>
             </View>
 
@@ -118,15 +119,17 @@ export const OTPScreen = ({navigation, route}) => {
               loading={isLoading}
               disabled={isLoading}
               buttonColor={Colors.primary}
-              theme={{roundness: 0}}
+              theme={{ roundness: 0 }}
               style={styles.buttonStyles}
-              contentStyle={{height: 50}}
+              contentStyle={{ height: 50 }}
               labelStyle={styles.buttonLabel}
               uppercase={true}
               mode={'contained'}>
               Verify
             </Button>
           </View>
+
+
         </ScrollView>
       </View>
     </SafeAreaView>
