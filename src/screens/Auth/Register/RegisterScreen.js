@@ -163,7 +163,6 @@ export const RegisterScreen = ({ navigation }) => {
   }, [verified, mobileNumber, code]);
 
 
-
   const handleRegister = async ({ fullName, password, confirmPassword, email, phoneNumber }) => {
     try {
       await dispatch(register({ fullName, password, confirmPassword, email, phoneNumber })).unwrap();
@@ -365,7 +364,7 @@ export const RegisterScreen = ({ navigation }) => {
                 <Button
                   onPress={handleSubmit}
                   loading={isSubmitting}
-                  disabled={isSubmitting}
+                  disabled={!verified || isSubmitting}
                   buttonColor={Colors.primary}
                   theme={{ roundness: 0 }}
                   style={styles.buttonStyles}

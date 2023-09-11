@@ -57,9 +57,6 @@ export const login = createAsyncThunk(
 export const register = createAsyncThunk(
   REGISTER,
   async ({ fullName, password, confirmPassword, email, phoneNumber }, { rejectWithValue, fulfillWithValue }) => {
-   
-    console.log(fullName, password, confirmPassword, email, phoneNumber);
-
     const result = await Axios.post(ApiEndpoints.auth.register, {
       name:fullName,
       password: password,
@@ -67,7 +64,6 @@ export const register = createAsyncThunk(
       email: email,
       phone_number:phoneNumber,
     });
-    console.log('resultnew---',result)
     if (result.data.status === 'ok') {
       const success = {
         userId: result.data.response.id,
