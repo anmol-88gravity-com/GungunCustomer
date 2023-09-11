@@ -77,4 +77,40 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.medium,
     fontSize: FONT_SIZES.tweleve,
   },
+  //dropdown
+
+
+  dropdownContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: '#DEA812',
+    padding: 10,
+    borderRadius: 5,
+  },
+  dropdownText: {
+    color: '#DEA812',
+  },
+  dropdownIcon: {
+    marginLeft: 5,
+  },
+  dropdownOptions: {
+    // marginTop: 5,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    backgroundColor: '#FFF',
+  },
+  dropdownOption: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  dropdownOptionText: {
+    color: '#ccc',
+    fontFamily:Font_Family.medium,
+    fontSize:FONT_SIZES.thirteen
+  },
 });
