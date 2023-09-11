@@ -8,8 +8,6 @@ import {OTPScreen} from '../screens/Auth/GetOTP';
 import {ForgotPasswordScreen} from '../screens/Auth/ForgotPassword';
 import {ResetPassword} from '../screens/Auth/ResetPassword';
 
-import DrawerNavigation from './DrawerNavigator';
-
 const Stack = createStackNavigator();
 
 function AuthStackNavigation() {
@@ -20,7 +18,6 @@ function AuthStackNavigation() {
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <Stack.Screen name="OTP" component={OTPScreen} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
-      <Stack.Screen name="Drawer" component={DrawerNavigation} />
     </Stack.Navigator>
   );
 }

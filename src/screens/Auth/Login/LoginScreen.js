@@ -71,7 +71,7 @@ export const LoginScreen = ({navigation}) => {
       <View style={styles.loginView}>
         <ScrollView>
           <Formik
-            initialValues={{phoneNumber: '8858493334', password: '123456'}}
+            initialValues={{phoneNumber: '8858493334', password: '12345'}}
             validationSchema={validationSchema}
             onSubmit={handleLogin}>
             {({
