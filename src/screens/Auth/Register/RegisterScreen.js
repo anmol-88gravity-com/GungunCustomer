@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,32 +8,32 @@ import {
   TextInput,
   Pressable,
   Modal,
-  Dimensions
+  Dimensions,
+  Platform,
 } from 'react-native';
 import Octicons from 'react-native-vector-icons/dist/Octicons';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import Entypo from 'react-native-vector-icons/dist/Entypo';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import * as Yup from 'yup';
 
-import { images } from '../../../utils/Images';
-import { styles } from './RegisterScreen.styles';
-import { otpVerify, register, registerOTP } from '../../../store/auth/authSlice';
-import { EmailValidation, MobileValidation } from '../../../utils/helper';
-import { ApiEndpoints } from '../../../store/ApiEndPoints';
-import { Button } from 'react-native-paper';
-import { Colors } from '../../../utils/Colors';
-import { useDispatch } from 'react-redux';
-import { useError } from '../../../context/ErrorProvider';
-import { useAuthMessage } from '../../../context/MessageProvider';
-import { Axios } from '../../../lib/Axios';
-import { showMessage } from 'react-native-flash-message';
-import { FONT_SIZES } from '../../../utils/FontSize';
-import { Font_Family } from '../../../utils/Fontfamily';
-
+import {images} from '../../../utils/Images';
+import {styles} from './RegisterScreen.styles';
+import {otpVerify, register, registerOTP} from '../../../store/auth/authSlice';
+import {EmailValidation, MobileValidation} from '../../../utils/helper';
+import {ApiEndpoints} from '../../../store/ApiEndPoints';
+import {Button} from 'react-native-paper';
+import {Colors} from '../../../utils/Colors';
+import {useDispatch} from 'react-redux';
+import {useError} from '../../../context/ErrorProvider';
+import {useAuthMessage} from '../../../context/MessageProvider';
+import {Axios} from '../../../lib/Axios';
+import {showMessage} from 'react-native-flash-message';
+import {FONT_SIZES} from '../../../utils/FontSize';
+import {Font_Family} from '../../../utils/Fontfamily';
 
 const HEIGHT = Dimensions.get('screen').height;
-export const RegisterScreen = ({ navigation }) => {
+export const RegisterScreen = ({navigation}) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState(false);
@@ -46,7 +46,6 @@ export const RegisterScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const setError = useError();
   const setMessage = useAuthMessage();
-
 
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
@@ -65,15 +64,14 @@ export const RegisterScreen = ({ navigation }) => {
   const borderBottom =
     Platform.OS === 'ios'
       ? {
-        borderBottomColor: code.length > 0 ? '#000' : '#ccc',
-        borderBottomWidth: 2,
-      }
+          borderBottomColor: code.length > 0 ? '#000' : '#ccc',
+          borderBottomWidth: 2,
+        }
       : {
-        borderBottomColor: code.length > 0 ? '#000' : '#ccc',
-        borderWidth: 0,
-        borderBottomWidth: 2,
-      };
-
+          borderBottomColor: code.length > 0 ? '#000' : '#ccc',
+          borderWidth: 0,
+          borderBottomWidth: 2,
+        };
 
   const validationSchema = Yup.object().shape({
     fullName: Yup.string().required('Full Name is required'),
@@ -99,8 +97,7 @@ export const RegisterScreen = ({ navigation }) => {
             console.log(error);
           }
         }
-      }
-      ),
+      }),
     phoneNumber: Yup.string()
       .required('Phone Number is required')
       .matches(MobileValidation, 'Enter Valid Phone Number')
@@ -117,18 +114,16 @@ export const RegisterScreen = ({ navigation }) => {
           }
         }
       }),
-
   });
 
-
-  const generateOTP = useCallback(async (phoneNumber) => {
+  const generateOTP = useCallback(async phoneNumber => {
     if (phoneNumber === '') {
       setMessage('Phone Number is required');
       return;
     }
     setLoading(true);
     try {
-      const res = await dispatch(registerOTP({ phoneNumber })).unwrap();
+      const res = await dispatch(registerOTP({phoneNumber})).unwrap();
       if (res) {
         showMessage({
           message: 'OTP has been sent successfully',
@@ -149,10 +144,9 @@ export const RegisterScreen = ({ navigation }) => {
     setLoading(false);
   }, []);
 
-
   const otpVerifyHandler = useCallback(async () => {
     try {
-      const res = await dispatch(otpVerify({ mobileNumber, code })).unwrap();
+      const res = await dispatch(otpVerify({mobileNumber, code})).unwrap();
       if (res) {
         setModalVisible(false);
         setVerified(true);
@@ -162,10 +156,17 @@ export const RegisterScreen = ({ navigation }) => {
     }
   }, [verified, mobileNumber, code]);
 
-
-  const handleRegister = async ({ fullName, password, confirmPassword, email, phoneNumber }) => {
+  const handleRegister = async ({
+    fullName,
+    password,
+    confirmPassword,
+    email,
+    phoneNumber,
+  }) => {
     try {
-      await dispatch(register({ fullName, password, confirmPassword, email, phoneNumber })).unwrap();
+      await dispatch(
+        register({fullName, password, confirmPassword, email, phoneNumber}),
+      ).unwrap();
       showMessage({
         message: 'Registration Successfully.',
         type: 'default',
@@ -181,11 +182,9 @@ export const RegisterScreen = ({ navigation }) => {
     }
   };
 
-
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ flex: 1, backgroundColor: 'red' }}>
+      <View style={{flex: 1, backgroundColor: 'red'}}>
         <ImageBackground
           source={images.backgroundImg}
           style={styles.backgroundImage}>
@@ -202,7 +201,11 @@ export const RegisterScreen = ({ navigation }) => {
         <ScrollView>
           <Formik
             initialValues={{
-              fullName: '', password: '', confirmPassword: '', email: '', phoneNumber: ''
+              fullName: '',
+              password: '',
+              confirmPassword: '',
+              email: '',
+              phoneNumber: '',
             }}
             validationSchema={validationSchema}
             onSubmit={handleRegister}>
@@ -212,10 +215,11 @@ export const RegisterScreen = ({ navigation }) => {
               handleSubmit,
               values,
               errors,
-              touched,isSubmitting
+              touched,
+              isSubmitting,
             }) => (
-              <View style={{ marginHorizontal: 20 }}>
-                <View style={{ marginVertical: 20 }}>
+              <View style={{marginHorizontal: 20}}>
+                <View style={{marginVertical: 20}}>
                   <Text style={styles.headingText}>Create Account</Text>
                 </View>
                 <View style={styles.inputContainer}>
@@ -226,12 +230,11 @@ export const RegisterScreen = ({ navigation }) => {
                     style={styles.imageIcon}
                   />
                   <TextInput
-                    style={[styles.input,{textTransform:'capitalize'}]}
+                    style={[styles.input, {textTransform: 'capitalize'}]}
                     placeholder="Full name"
                     onChangeText={handleChange('fullName')}
                     onBlur={handleBlur('fullName')}
                     value={values.fullName}
-                    
                   />
                 </View>
                 {touched.fullName && errors.fullName && (
@@ -346,16 +349,19 @@ export const RegisterScreen = ({ navigation }) => {
                     maxLength={10}
                   />
                   {mobileNumber === values.phoneNumber && verified ? (
-                    <Pressable >
-                      <Text style={[styles.btnGetOTP, { color: Colors.green }]}>Verify</Text>
+                    <Pressable>
+                      <Text style={[styles.btnGetOTP, {color: Colors.green}]}>
+                        Verify
+                      </Text>
                     </Pressable>
-                  ) : (<Pressable
-                    onPress={() => generateOTP(values.phoneNumber)}
-                  // onPress={() => setModalVisible(true)}
-                  >
-                    <Text style={styles.btnGetOTP}>Get OTP</Text>
-                  </Pressable>)}
-
+                  ) : (
+                    <Pressable
+                      onPress={() => generateOTP(values.phoneNumber)}
+                      // onPress={() => setModalVisible(true)}
+                    >
+                      <Text style={styles.btnGetOTP}>Get OTP</Text>
+                    </Pressable>
+                  )}
                 </View>
                 {touched.phoneNumber && errors.phoneNumber && (
                   <Text style={styles.errors}>{errors.phoneNumber}</Text>
@@ -366,14 +372,13 @@ export const RegisterScreen = ({ navigation }) => {
                   loading={isSubmitting}
                   disabled={!verified || isSubmitting}
                   buttonColor={Colors.primary}
-                  theme={{ roundness: 0 }}
+                  theme={{roundness: 0}}
                   style={styles.buttonStyles}
-                  contentStyle={{ height: 50 }}
+                  contentStyle={{height: 50}}
                   labelStyle={styles.buttonlabel}
                   mode={'contained'}>
                   CREATE ACCOUNT
                 </Button>
-
               </View>
             )}
           </Formik>
@@ -388,10 +393,19 @@ export const RegisterScreen = ({ navigation }) => {
           }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Entypo name="cross" size={20} style={{ alignSelf: 'flex-end', bottom: 20, }} color={Colors.black} onPress={() => setModalVisible(!modalVisible)} />
-              <Text style={styles.modalText}> OTP sent successfully on your Phone Number 💬.</Text>
-              <View style={{ marginHorizontal: 20 }}>
-                <View style={{ marginTop: '15%' }}>
+              <Entypo
+                name="cross"
+                size={20}
+                style={{alignSelf: 'flex-end', bottom: 20}}
+                color={Colors.black}
+                onPress={() => setModalVisible(!modalVisible)}
+              />
+              <Text style={styles.modalText}>
+                {' '}
+                OTP sent successfully on your Phone Number 💬.
+              </Text>
+              <View style={{marginHorizontal: 20}}>
+                <View style={{marginTop: '15%'}}>
                   <Text style={styles.headingTextt}>Enter OTP to Continue</Text>
                 </View>
 
@@ -425,9 +439,9 @@ export const RegisterScreen = ({ navigation }) => {
                   loading={isLoading}
                   disabled={isLoading}
                   buttonColor={Colors.primary}
-                  theme={{ roundness: 0 }}
+                  theme={{roundness: 0}}
                   style={styles.buttonStyless}
-                  contentStyle={{ height: 50 }}
+                  contentStyle={{height: 50}}
                   labelStyle={styles.buttonLabel}
                   uppercase={true}
                   mode={'contained'}>

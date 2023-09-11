@@ -5,10 +5,13 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {Colors} from '../../../utils/Colors';
 import {styles} from './AddressScreen.styles';
+import {useGetAddressList} from '../../../hooks/useGetAddressList';
 
 const addressList = [1, 2, 3];
 
 export const AddressScreen = ({navigation}) => {
+  // const {addressList, loading} = useGetAddressList();
+
   const renderItem = ({index}) => (
     <Pressable
       onPress={() => navigation.navigate('MapScreen', {name: 'edit'})}
