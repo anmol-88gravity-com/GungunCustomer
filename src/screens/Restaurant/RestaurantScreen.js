@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { View, Text, Image, Pressable, FlatList, Modal } from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, Image, Pressable, FlatList, Modal} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Divider, FAB, Switch, TextInput } from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Divider, FAB, Switch, TextInput} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import { FONT_SIZES } from '../../utils/FontSize';
-import { Font_Family } from '../../utils/Fontfamily';
-import { Colors } from '../../utils/Colors';
-import { MenuList } from '../../data/menuList';
-import { ModalComponent } from '../Dashboard/HomeScreen/components';
-import { AllCategories } from '../../data/AllCategories';
-import { styles } from './Restaurant.styles';
-export const RestaurantScreen = ({ navigation }) => {
+import {FONT_SIZES} from '../../utils/FontSize';
+import {Font_Family} from '../../utils/Fontfamily';
+import {Colors} from '../../utils/Colors';
+import {MenuList} from '../../data/menuList';
+import {ModalComponent} from '../Dashboard/HomeScreen/components';
+import {AllCategories} from '../../data/AllCategories';
+import {styles} from './Restaurant.styles';
+export const RestaurantScreen = ({navigation}) => {
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -21,7 +21,7 @@ export const RestaurantScreen = ({ navigation }) => {
 
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
-  const Item = ({ dishes, categoryName }) => (
+  const Item = ({dishes, categoryName}) => (
     <View>
       <Text style={styles.categoryName}>{categoryName}</Text>
       {dishes.map(item => (
@@ -51,7 +51,7 @@ export const RestaurantScreen = ({ navigation }) => {
     </View>
   );
 
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({item, index}) => (
     <Pressable key={index} style={styles.menuItem}>
       <Text
         style={{
@@ -78,7 +78,7 @@ export const RestaurantScreen = ({ navigation }) => {
     <SafeAreaView edges={['top', 'bottom']} style={styles.container}>
       <FlatList
         data={MenuList}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <Item dishes={item.dishes} categoryName={item.category_name} />
         )}
         keyExtractor={item => item.id}
@@ -132,14 +132,14 @@ export const RestaurantScreen = ({ navigation }) => {
               </View>
               <View>
                 <Text style={styles.menuText}>Menu</Text>
-                <View style={{ marginHorizontal: 10 }}>
+                <View style={{marginHorizontal: 10}}>
                   <TextInput
                     style={styles.searchBarStyles}
                     placeholder="Search here"
                     placeholderTextColor="#808080"
                     mode={'outlined'}
-                    outlineStyle={{ borderColor: '#cdcdcd' }}
-                    theme={{ roundness: 15 }}
+                    outlineStyle={{borderColor: '#cdcdcd'}}
+                    theme={{roundness: 15}}
                     activeOutlineColor={Colors.primary}
                     left={
                       <TextInput.Icon icon="search1" color={Colors.primary} />
@@ -199,7 +199,7 @@ export const RestaurantScreen = ({ navigation }) => {
             <View style={styles.menuInnerModel}>
               <Text style={styles.modelHeading}>Menu</Text>
               <Pressable
-                style={{ paddingHorizontal: 5 }}
+                style={{paddingHorizontal: 5}}
                 onPress={() => {
                   setVisible(!visible);
                 }}>
@@ -211,6 +211,7 @@ export const RestaurantScreen = ({ navigation }) => {
               data={AllCategories}
               keyExtractor={item => String(item.id)}
               renderItem={renderItem}
+              showsVerticalScrollIndicator={false}
             />
           </View>
         </Pressable>

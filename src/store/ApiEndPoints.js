@@ -8,5 +8,13 @@ export const ApiEndpoints = {
     otpGenerate: '/api/otp-generate/',
     updatePassword: '/api/forget-password/',
   },
-  user: {changePassword: '/api/change-user-password/'},
+  user: {
+    changePassword: '/api/change-user-password/',
+    editProfile: '/api/customer-profile/', //patch and get user Profile
+  },
+  address: {
+    addAddress: '/api/customer-address/',
+    getAllAddresses: '/api/customer-address/USER_ID/',
+    editAddress: '/api/customer-address/USER_ID/ADDRESS_ID', // Put and Delete Single Address
+  },
 };
