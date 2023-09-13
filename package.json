@@ -26,6 +26,7 @@
     "react-native-flash-message": "^0.4.2",
     "react-native-floating-label-input": "^1.4.2",
     "react-native-gesture-handler": "^2.12.1",
+    "react-native-google-places-autocomplete": "^2.5.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.2",
     "react-native-paper": "^5.10.1",

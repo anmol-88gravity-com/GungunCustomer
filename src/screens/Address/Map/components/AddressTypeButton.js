@@ -3,12 +3,24 @@ import {Pressable, Text, StyleSheet} from 'react-native';
 
 import {FONT_SIZES} from '../../../../utils/FontSize';
 import {Font_Family} from '../../../../utils/Fontfamily';
+import {Colors} from '../../../../utils/Colors';
 
-export const AddressTypeButton = ({icon, title}) => {
+export const AddressTypeButton = ({icon, title, handlePress, addressTitle}) => {
   return (
-    <Pressable style={styles.backgroundStyle}>
+    <Pressable
+      style={[
+        styles.backgroundStyle,
+        {borderColor: title === addressTitle ? Colors.secondary : '#ccc'},
+      ]}
+      onPress={handlePress}>
       {icon}
-      <Text style={styles.textStyles}>{title}</Text>
+      <Text
+        style={[
+          styles.textStyles,
+          {color: title === addressTitle ? Colors.secondary : '#808080'},
+        ]}>
+        {title}
+      </Text>
     </Pressable>
   );
 };
@@ -21,13 +33,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 100,
   },
   textStyles: {
     fontSize: FONT_SIZES.thirteen,
     fontFamily: Font_Family.regular,
-    color: '#808080',
     paddingLeft: 5,
+    textTransform: 'capitalize',
   },
 });

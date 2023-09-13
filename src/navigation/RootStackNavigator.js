@@ -83,7 +83,7 @@ export function AddressNavigator() {
       <AddressStack.Screen
         name="MapScreen"
         component={MapScreen}
-        options={{headerBackTitle: ''}}
+        options={{headerShown: false}}
       />
     </AddressStack.Navigator>
   );
