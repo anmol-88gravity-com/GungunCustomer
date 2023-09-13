@@ -17,4 +17,8 @@ export const ApiEndpoints = {
     getAllAddresses: '/api/customer-address/USER_ID/',
     editAddress: '/api/customer-address/USER_ID/ADDRESS_ID', // Put and Delete Single Address
   },
+  profile:{
+    getUserProfile:'/api/customer-profile/USER_ID/',
+
+  }
 };

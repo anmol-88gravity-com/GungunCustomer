@@ -13,6 +13,9 @@ export const styles = StyleSheet.create({
   imageIcon: {
     left: Platform.OS === 'android' ? '10%' : 0,
   },
+  imageSideIcon:{
+    right: Platform.OS === 'android' ? '10%' : 0,
+  },
   title: {
     marginVertical: '10%',
     fontSize: FONT_SIZES.fifteen,
@@ -43,6 +46,15 @@ export const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 10,
     padding: Platform.OS === 'ios' ? 15 : 5,
+  },
+  inputContainerGender:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    marginVertical: '2%',
+    borderColor: '#ccc',
+    borderRadius: 10,
+    padding: Platform.OS === 'ios' ? 15 : 19,
   },
   input: {
     flex: 1,
@@ -76,6 +88,11 @@ export const styles = StyleSheet.create({
     bottom: 10,
     fontFamily: Font_Family.medium,
     fontSize: FONT_SIZES.tweleve,
+  },
+  errors: {
+    color: 'red',
+    fontSize: FONT_SIZES.tweleve,
+    fontFamily: Font_Family.regular,
   },
   //dropdown
 
