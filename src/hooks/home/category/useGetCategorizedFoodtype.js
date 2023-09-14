@@ -2,21 +2,22 @@ import {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 
-import {useError} from '../context/ErrorProvider';
+import { getDataOnYourMind } from '../../../store/home/category/categorySlice';
+import { useError } from '../../../context/ErrorProvider';
 
-export const useGetAddressList = () => {
+export const useGetCategorizedFoodtype = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const setError = useError();
 
   const [loading, setLoading] = useState(true);
-  const [addressList, setAddressList] = useState([]);
+  const [foodType, setFoodType] = useState();
 
-  const getAddressList = async () => {
+  const getOnYourMindData = async () => {
     try {
-      const res = await dispatch(getAllAddresses()).unwrap();
+      const res = await dispatch(getDataOnYourMind()).unwrap();
       if (res) {
-        setAddressList(res);
+        setFoodType(res);
         setLoading(false);
       }
     } catch (e) {
@@ -27,12 +28,12 @@ export const useGetAddressList = () => {
 
   useEffect(() => {
     return navigation.addListener('focus', () => {
-      getAddressList();
+        getOnYourMindData();
     });
   }, [navigation]);
 
   return {
-    addressList,
+    foodType,
     loading,
   };
 };

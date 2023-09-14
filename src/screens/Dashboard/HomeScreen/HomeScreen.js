@@ -89,7 +89,7 @@ export const HomeScreen = ({navigation}) => {
                 height: 220,
                 flex: 1,
               }}>
-              <RecommendedItems source={images.kadaiPaneer} title="Pizza" />
+              <RecommendedItems source={images.kadaiPaneer} title="Pizza"  />
             </View>
 
             <View style={{flex: 1}}>

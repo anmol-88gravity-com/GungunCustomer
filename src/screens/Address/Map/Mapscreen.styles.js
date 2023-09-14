@@ -108,4 +108,10 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.fifteen,
     fontFamily: Font_Family.regular,
   },
+  errors: {
+    color: 'red',
+    fontSize: FONT_SIZES.tweleve,
+    fontFamily: Font_Family.regular,
+    marginBottom: 5,
+  },
 });

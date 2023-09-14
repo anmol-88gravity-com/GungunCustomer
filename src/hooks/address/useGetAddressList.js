@@ -2,24 +2,22 @@ import {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 
-import {useError} from '../context/ErrorProvider';
+import {useError} from '../../context/ErrorProvider';
+import {getAllAddresses} from '../../store/address/addressSlice';
 
-
-export const useGetProfileData = () => {
+export const useGetAddressList = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const setError = useError();
 
   const [loading, setLoading] = useState(true);
-  const [profileList, setProfileList] = useState();
+  const [addressList, setAddressList] = useState([]);
 
-  console.log('profle--',profileList)
-
-  const getProfileData = async () => {
+  const getAddressList = async () => {
     try {
-      const res = await dispatch(getUserProfile()).unwrap();
+      const res = await dispatch(getAllAddresses()).unwrap();
       if (res) {
-        setProfileList(res);
+        setAddressList(res);
         setLoading(false);
       }
     } catch (e) {
@@ -30,12 +28,12 @@ export const useGetProfileData = () => {
 
   useEffect(() => {
     return navigation.addListener('focus', () => {
-      getProfileData();
+      getAddressList();
     });
   }, [navigation]);
 
   return {
-    profileList,
+    addressList,
     loading,
   };
 };

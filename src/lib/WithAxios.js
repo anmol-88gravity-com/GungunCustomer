@@ -15,6 +15,7 @@ const WithAxios = ({children}) => {
         if (error?.response?.status === 401) {
           dispatch(logout());
         }
+        // console.log("error",error);
         return Promise.reject(error);
       },
     );

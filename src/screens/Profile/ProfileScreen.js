@@ -16,22 +16,41 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import DatePicker from 'react-native-date-picker';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { showMessage } from 'react-native-flash-message'
+
+
 
 import { styles } from './ProfileScreen.styles';
-import { images } from '../../utils/Images';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Colors } from '../../utils/Colors';
+import { Colors } from '../../utils/Colors';;
+import { useGetProfileData } from '../../hooks/profile/useGetProfileData';
+import Config from '../../config';
+import { updateUserProfile } from '../../store/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserProfile } from '../../store/user/userSlice';
-import { useGetProfileData } from '../../hooks/useGetProfileData';
+import { useAuthMessage } from '../../context/MessageProvider';
+import { useError } from '../../context/ErrorProvider';
+import { FONT_SIZES } from '../../utils/FontSize';
+import { Font_Family } from '../../utils/Fontfamily';
+import { Button, Modal } from 'react-native-paper';
+import { images } from '../../utils/Images';
+import { Loader } from '../../components/common/Loader';
 
 
 export const ProfileScreen = ({ navigation }) => {
-  const getData = useGetProfileData();
-  console.log('ugetData', getData);
   const dispatch = useDispatch();
-  const user_Id = useSelector((state) => state?.auth?.userId);
-  
+  const setError = useError();
+  const setMessage = useAuthMessage();
+
+  const [profileUpdateData, setProfileUpdateData] = useState(profileData);
+  const { profileData, loading } = useGetProfileData();
+  const getProfileDetail = profileUpdateData?.partner_profile;
+  // console.log('profileDatassss---', profileData?.partner_profile?.name);
+
+  // console.log('getProfileDetail---', getProfileDetail);
+
+  useEffect(() => {
+    setProfileUpdateData(profileData);
+  }, [profileData]);
 
   const [selectedGender, setSelectedGender] = useState();
   const [showDropdown, setShowDropdown] = useState();
@@ -40,7 +59,7 @@ export const ProfileScreen = ({ navigation }) => {
   const stringBirthdayDate = birthdayDate;
   const date = new Date(stringBirthdayDate);
   const formattedBirthdayDate = date.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
-  // console.log('birthday', formattedBirthdayDate)
+
 
 
   const [anniversarryDate, setAnniversarryDate] = useState(new Date());
@@ -48,13 +67,7 @@ export const ProfileScreen = ({ navigation }) => {
   const stringAnniversarryDate = anniversarryDate;
   const anniversarrydate = new Date(stringAnniversarryDate);
   const formattedAnniversarryDate = anniversarrydate.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
-  // console.log('anniversary', formattedAnniversarryDate)
 
-
-  useEffect(() => {
-    console.log('id----', user_Id)
-    dispatch(getUserProfile(user_Id))
-  }, [])
 
   const genderOptions = [
     { label: 'Male', value: 'male' },
@@ -67,24 +80,76 @@ export const ProfileScreen = ({ navigation }) => {
     phoneNumber: Yup.string().required('Phone number is required*'),
   });
 
-  const handleSubmit = (values) => {
-    console.log('sss', values);
+  const user_Id = useSelector((state) => state?.auth?.userId);
+  const handleSubmit = async ({
+    fullName,
+    email,
+    phoneNumber,
+    selectedGender,
+    birthday,
+    anniversarry,
+    profileImage
+  }) => {
+    try {
+      await dispatch(
+        updateUserProfile({ fullName, email, phoneNumber, selectedGender, birthday, anniversarry, profileImage }),
+      ).unwrap();
+      setProfileUpdateData({
+        fullName: '',
+        email: '',
+        phoneNumber: '',
+        selectedGender: '',
+        birthday: '',
+        anniversarry: '',
+        profileImage: ''
+      });
+
+      console.log('data------', fullName, email, phoneNumber, selectedGender, birthday, anniversarry, profileImage)
+      showMessage({
+        message: 'User Profile updated Successfully.',
+        type: 'default',
+        backgroundColor: Colors.secondary,
+        color: Colors.white,
+        textStyle: {
+          fontSize: FONT_SIZES.fifteen,
+          fontFamily: Font_Family.medium,
+        },
+      });
+
+    }
+    catch (e) {
+      setError(e.message);
+    }
   };
+
+
+  // Image Gallery Modal
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
+
+
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView>
+      {loading ? (<Loader />) : <KeyboardAwareScrollView>
         <View style={styles.container}>
           <Formik
             initialValues={{
-              fullName: '',
-              email: '',
-              phoneNumber: '',
-              selectedGender: selectedGender,
+              fullName: getProfileDetail?.name || '',
+              email: getProfileDetail?.email || '',
+              phoneNumber: getProfileDetail?.phone_number || '',
+              selectedGender: "male",
               birthday: formattedBirthdayDate,
               anniversarry: formattedAnniversarryDate,
+              // birthday: getProfileDetail?.birthday,
+              // anniversarry: getProfileDetail?.anniversary,
             }}
             onSubmit={handleSubmit}
+            enableReinitialize={true}
             validationSchema={validationSchema}
           >
             {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
@@ -97,7 +162,7 @@ export const ProfileScreen = ({ navigation }) => {
                     marginBottom: 20,
                   }}>
                   <Image
-                    source={images.profile}
+                    source={{ uri: Config.API_URL + getProfileDetail?.profile_image }}
                     style={{
                       width: '100%',
                       height: '100%',
@@ -106,7 +171,7 @@ export const ProfileScreen = ({ navigation }) => {
                       borderColor: Colors.secondary,
                     }}
                   />
-                  <Pressable style={styles.profileView}>
+                  <Pressable style={styles.profileView} onPress={toggleModal}>
                     <FontAwesome name="camera" size={18} color={Colors.white} />
                   </Pressable>
                 </View>
@@ -213,7 +278,7 @@ export const ProfileScreen = ({ navigation }) => {
                   <TextInput style={styles.input} placeholder="Birthday"
                     onChangeText={handleChange('birhday')}
                     onBlur={handleBlur('birhday')}
-                    value={formattedBirthdayDate}
+                    value={getProfileDetail?.birthday || formattedBirthdayDate}
                     editable={false}
                   />
                   <FontAwesome
@@ -262,7 +327,7 @@ export const ProfileScreen = ({ navigation }) => {
                     onChangeText={handleChange('anniversarry')}
                     onBlur={handleBlur('anniversarry')}
                     // value={anniversarryDate.toLocaleDateString()}
-                    value={formattedAnniversarryDate}
+                    value={getProfileDetail?.anniversary || formattedAnniversarryDate}
                     editable={false}
                   />
                   <FontAwesome
@@ -283,7 +348,35 @@ export const ProfileScreen = ({ navigation }) => {
             )}
           </Formik>
         </View>
-      </KeyboardAwareScrollView>
+
+      </KeyboardAwareScrollView>}
+
+      {/* gallery  */}
+
+
+
+      {/* <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent={true}
+        // onRequestClose={closeModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <TouchableOpacity onPress={takePhoto}>
+              <Text style={styles.modalButton}>Take Photo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={closeModal}>
+              <Text style={styles.modalButton}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal> */}
+
+
+
+
+
     </SafeAreaView>
   );
 };

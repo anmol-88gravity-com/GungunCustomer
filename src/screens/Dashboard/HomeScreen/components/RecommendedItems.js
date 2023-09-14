@@ -1,46 +1,60 @@
-import React from 'react';
-import {View, Text, Image, FlatList} from 'react-native';
-import {styles} from '../HomeScreen.styles';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, FlatList } from 'react-native';
+import { styles } from '../HomeScreen.styles';
+import { useError } from '../../../../context/ErrorProvider';
+import { useAuthMessage } from '../../../../context/MessageProvider';
+import { useGetCategorizedFoodtype } from '../../../../hooks/home/category/useGetCategorizedFoodtype';
+import Config from '../../../../config';
 
-export const RecommendedItems = ({source, title}) => {
-  const data = [
-    {id: '1', title: 'Item 1'},
-    {id: '2', title: 'Item 2'},
-    {id: '3', title: 'Item 3'},
-    {id: '4', title: 'Item 1'},
-    {id: '5', title: 'Item 2'},
-    {id: '6', title: 'Item 3'},
-    {id: '7', title: 'Item 2'},
-    {id: '8', title: 'Item 3'},
-  ];
+export const RecommendedItems = ({ source, title }) => {
+  const setError = useError();
+  const setMessage = useAuthMessage();
 
-  const renderItem = () => {
+  const [foodTypeData, setFoodTypeData] = useState([]);
+  const { foodType, loading } = useGetCategorizedFoodtype();
+
+  // console.log('--->>>', foodTypeData)
+
+  useEffect(() => {
+    // if (foodType.length > 0) {
+    setFoodTypeData(foodType);
+    // }
+
+  }, [foodType]);
+
+  const renderItem = ({ item, index }) => {
     return (
-      <View>
-        <View style={{height: 60, width: 60, marginHorizontal: 20, top: '15%'}}>
-          <Image source={source} style={styles.recomendImg} />
+      <View style={{ flexDirection: 'row', }}>
+        <View style={{ height: 60, width: 60, marginHorizontal: 20, top: '15%' }}>
+          <Image source={{ uri: Config.API_URL + item?.food_image }} style={styles.recomendImg} />
           <Text
-            style={[styles.subItemtitle, {color: '#000000', marginTop: '10%'}]}>
-            {title}
+            style={[styles.subItemtitle, { color: '#000000', marginTop: '10%' }]}>
+            {item?.food_name}
           </Text>
-          <Image
-            source={source}
-            style={{height: '100%', width: '100%', borderRadius: 30}}
-          />
-          <Text style={[styles.subItemtitle, {top: '5%', color: '#000000'}]}>
-            {title}
+          <Image source={{ uri: Config.API_URL + item?.food_image }} style={styles.recomendImg} />
+          <Text
+            style={[styles.subItemtitle, { color: '#000000', marginTop: '10%' }]}>
+            {item?.food_name}
           </Text>
+
         </View>
       </View>
     );
+
   };
 
   return (
+
     <FlatList
-      data={data}
+      data={foodTypeData}
       renderItem={renderItem}
       horizontal={true}
       showsHorizontalScrollIndicator={false}
+
+
     />
+
+
+
   );
 };

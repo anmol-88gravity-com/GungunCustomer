@@ -33,6 +33,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.fifteen,
     lineHeight: 28,
     color: Colors.black,
+    textTransform: 'capitalize',
   },
   addAddressText: {
     fontFamily: Font_Family.medium,
@@ -53,5 +54,6 @@ export const styles = StyleSheet.create({
   addressTitle: {
     color: Colors.black,
     fontFamily: Font_Family.regular,
+    textTransform: 'capitalize',
   },
 });
