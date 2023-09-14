@@ -7,11 +7,13 @@ import {
   TouchableOpacity,
   Image,
   Pressable,
+  Modal
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DatePicker from 'react-native-date-picker';
 import { Formik } from 'formik';
@@ -31,12 +33,13 @@ import { useAuthMessage } from '../../context/MessageProvider';
 import { useError } from '../../context/ErrorProvider';
 import { FONT_SIZES } from '../../utils/FontSize';
 import { Font_Family } from '../../utils/Fontfamily';
-import { Button, Modal } from 'react-native-paper';
-import { images } from '../../utils/Images';
 import { Loader } from '../../components/common/Loader';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { Button } from 'react-native-paper';
 
 
 export const ProfileScreen = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const setError = useError();
   const setMessage = useAuthMessage();
@@ -59,7 +62,7 @@ export const ProfileScreen = ({ navigation }) => {
   const stringBirthdayDate = birthdayDate;
   const date = new Date(stringBirthdayDate);
   const formattedBirthdayDate = date.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
-
+  // console.log('formattedBirthdayDate--', formattedBirthdayDate)
 
 
   const [anniversarryDate, setAnniversarryDate] = useState(new Date());
@@ -67,11 +70,11 @@ export const ProfileScreen = ({ navigation }) => {
   const stringAnniversarryDate = anniversarryDate;
   const anniversarrydate = new Date(stringAnniversarryDate);
   const formattedAnniversarryDate = anniversarrydate.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
-
+  // console.log('formattedBirthdayDate--',formattedBirthdayDate)
 
   const genderOptions = [
-    { label: 'Male', value: 'male' },
-    { label: 'Female', value: 'female' },
+    { label: 'Male', value: 'M' },
+    { label: 'Female', value: 'F' },
   ];
 
   const validationSchema = Yup.object().shape({
@@ -103,8 +106,7 @@ export const ProfileScreen = ({ navigation }) => {
         anniversarry: '',
         profileImage: ''
       });
-
-      console.log('data------', fullName, email, phoneNumber, selectedGender, birthday, anniversarry, profileImage)
+      // console.log('data------', fullName, email, phoneNumber, selectedGender, birthday, anniversarry, profileImage)
       showMessage({
         message: 'User Profile updated Successfully.',
         type: 'default',
@@ -125,10 +127,25 @@ export const ProfileScreen = ({ navigation }) => {
 
   // Image Gallery Modal
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [captureImage, setCaptureImage] = useState(null);
 
-  const toggleModal = () => {
-    setModalVisible(!modalVisible);
-  };
+  const openCamera = async () => {
+    setModalVisible(false)
+    const resultCam = await launchCamera({ mediaType: 'photo', quality: 0 });
+    const fromCamraImage = resultCam.assets[0]?.uri;
+    setCaptureImage(fromCamraImage)
+    // console.log('==>>>resultCam', fromCamraImage)
+
+  }
+
+  const chooseImageFromGallery = async () => {
+    setModalVisible(false)
+    const resultGallery = await launchImageLibrary({ mediaType: 'photo', quality: 0 });
+    const selectedImgFromgallery = resultGallery?.assets[0]?.uri;
+    setSelectedImage(selectedImgFromgallery)
+    // console.log('chooseImg--', selectedImgFromgallery)
+  }
 
 
 
@@ -142,9 +159,10 @@ export const ProfileScreen = ({ navigation }) => {
               fullName: getProfileDetail?.name || '',
               email: getProfileDetail?.email || '',
               phoneNumber: getProfileDetail?.phone_number || '',
-              selectedGender: "male",
+              selectedGender: getProfileDetail?.gender || "",
               birthday: formattedBirthdayDate,
               anniversarry: formattedAnniversarryDate,
+              profileImage: selectedImage,
               // birthday: getProfileDetail?.birthday,
               // anniversarry: getProfileDetail?.anniversary,
             }}
@@ -152,7 +170,7 @@ export const ProfileScreen = ({ navigation }) => {
             enableReinitialize={true}
             validationSchema={validationSchema}
           >
-            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+            {({ handleChange, handleBlur, handleSubmit, values, errors, setFieldValue }) => (
               <View style={{ marginHorizontal: 20, marginTop: '2%' }}>
                 <View
                   style={{
@@ -163,6 +181,8 @@ export const ProfileScreen = ({ navigation }) => {
                   }}>
                   <Image
                     source={{ uri: Config.API_URL + getProfileDetail?.profile_image }}
+                    // source={{ uri: selectedImage }}
+                    // source={{uri:captureImage}}
                     style={{
                       width: '100%',
                       height: '100%',
@@ -171,7 +191,7 @@ export const ProfileScreen = ({ navigation }) => {
                       borderColor: Colors.secondary,
                     }}
                   />
-                  <Pressable style={styles.profileView} onPress={toggleModal}>
+                  <Pressable style={styles.profileView} onPress={() => setModalVisible(true)}>
                     <FontAwesome name="camera" size={18} color={Colors.white} />
                   </Pressable>
                 </View>
@@ -296,6 +316,7 @@ export const ProfileScreen = ({ navigation }) => {
                     onConfirm={(birthdayDate) => {
                       setOpen(false)
                       setBirthdayDate(birthdayDate)
+                      setFieldValue('birhday',birthdayDate)
                     }}
                     onCancel={() => {
                       setOpen(false)
@@ -309,6 +330,7 @@ export const ProfileScreen = ({ navigation }) => {
                     onConfirm={(anniversarryDate) => {
                       setOpen(false)
                       setAnniversarryDate(anniversarryDate)
+                      setFieldValue('anniversarry',anniversarryDate)
                     }}
                     onCancel={() => {
                       setOpenDateModal(false)
@@ -339,11 +361,18 @@ export const ProfileScreen = ({ navigation }) => {
                   />
                 </View>
 
-                <TouchableOpacity
-                  style={styles.btnView}
-                  onPress={handleSubmit}>
-                  <Text style={styles.textSignIn}>Submit</Text>
-                </TouchableOpacity>
+                <Button
+                  onPress={handleSubmit}
+                  loading={isLoading}
+                  buttonColor={Colors.primary}
+                  theme={{ roundness: 0 }}
+                  style={styles.buttonStyless}
+                  contentStyle={{ height: 50 }}
+                  labelStyle={styles.buttonLabel}
+                  uppercase={true}
+                  mode={'contained'}>
+                  Submit
+                </Button>
               </View>
             )}
           </Formik>
@@ -355,23 +384,41 @@ export const ProfileScreen = ({ navigation }) => {
 
 
 
-      {/* <Modal
-        visible={modalVisible}
+      <Modal
         animationType="slide"
         transparent={true}
-        // onRequestClose={closeModal}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <TouchableOpacity onPress={takePhoto}>
-              <Text style={styles.modalButton}>Take Photo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={closeModal}>
-              <Text style={styles.modalButton}>Cancel</Text>
-            </TouchableOpacity>
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Choose Image</Text>
+            <View style={{ flexDirection: 'row', }}>
+              <View>
+                <TouchableOpacity style={styles.modalCameraBtn} onPress={openCamera}>
+                  <FontAwesome name="camera" size={20} color={Colors.primary} style={{ alignSelf: 'center', }} />
+                </TouchableOpacity>
+                <Text style={styles.cameraModalText}>Camera</Text>
+              </View>
+
+
+              <View >
+                <TouchableOpacity style={[styles.modalCameraBtn, { left: '50%' }]} onPress={chooseImageFromGallery}>
+                  <MaterialIcons name="perm-media" size={20} color={Colors.primary} style={{ alignSelf: 'center', }} />
+                </TouchableOpacity>
+                <Text style={[styles.cameraModalText, { left: 20 }]}>Choose from gallery</Text>
+              </View>
+            </View>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={styles.textStyle}>Cancel</Text>
+            </Pressable>
           </View>
         </View>
-      </Modal> */}
+      </Modal>
 
 
 

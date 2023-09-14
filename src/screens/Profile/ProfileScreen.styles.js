@@ -1,7 +1,7 @@
-import {Platform, StyleSheet} from 'react-native';
-import {Font_Family} from '../../utils/Fontfamily';
-import {FONT_SIZES} from '../../utils/FontSize';
-import {Colors} from '../../utils/Colors';
+import { Platform, StyleSheet } from 'react-native';
+import { Font_Family } from '../../utils/Fontfamily';
+import { FONT_SIZES } from '../../utils/FontSize';
+import { Colors } from '../../utils/Colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
   imageIcon: {
     left: Platform.OS === 'android' ? '10%' : 0,
   },
-  imageSideIcon:{
+  imageSideIcon: {
     right: Platform.OS === 'android' ? '10%' : 0,
   },
   title: {
@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     padding: Platform.OS === 'ios' ? 15 : 5,
   },
-  inputContainerGender:{
+  inputContainerGender: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
@@ -127,7 +127,76 @@ export const styles = StyleSheet.create({
   },
   dropdownOptionText: {
     color: '#ccc',
+    fontFamily: Font_Family.medium,
+    fontSize: FONT_SIZES.thirteen
+  },
+  //Modal 
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    // margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    // alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  modalCameraBtn: {
+    // padding: 12,
+    height: 50, width: 50,
+    borderRadius: 50,
+    borderColor: Colors.primary, borderWidth: 2,
+    justifyContent:'center'
+  },
+  cameraModalText:{
     fontFamily:Font_Family.medium,
-    fontSize:FONT_SIZES.thirteen
+    fontSize:FONT_SIZES.fifteen
+  },
+  buttonClose: {
+    marginTop: 10,
+    backgroundColor: Colors.primary
+
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    fontFamily:Font_Family.bold,
+    fontSize:FONT_SIZES.eighteen
+  },
+  buttonStyless: {
+    width: '100%',
+    alignSelf: 'center',
+    borderRadius: 5,
+    top:'8%'
+  },
+  buttonLabel: {
+    fontFamily: Font_Family.medium,
+    fontSize: FONT_SIZES.fifteen,
   },
 });
+

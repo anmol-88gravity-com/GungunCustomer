@@ -16,43 +16,51 @@ export const RecommendedItems = ({ source, title }) => {
   // console.log('--->>>', foodTypeData)
 
   useEffect(() => {
-    // if (foodType.length > 0) {
-    setFoodTypeData(foodType);
-    // }
-
+    if (foodType && foodType.length > 0) {
+      setFoodTypeData(foodType);
+    }
   }, [foodType]);
 
-  const renderItem = ({ item, index }) => {
-    return (
-      <View style={{ flexDirection: 'row', }}>
-        <View style={{ height: 60, width: 60, marginHorizontal: 20, top: '15%' }}>
-          <Image source={{ uri: Config.API_URL + item?.food_image }} style={styles.recomendImg} />
-          <Text
-            style={[styles.subItemtitle, { color: '#000000', marginTop: '10%' }]}>
-            {item?.food_name}
-          </Text>
-          <Image source={{ uri: Config.API_URL + item?.food_image }} style={styles.recomendImg} />
-          <Text
-            style={[styles.subItemtitle, { color: '#000000', marginTop: '10%' }]}>
-            {item?.food_name}
-          </Text>
 
+  const renderItem = ({ item, index }) => {
+    const columnIndex = index % 2;
+    const marginHorizontal = columnIndex === 0 ? 20 : 10;
+    return (
+      <View style={{ flexDirection: 'row', flex: 1, padding: 3, paddingBottom: 30, marginTop: 5 }}>
+        <View style={{ height: 60, width: 60, marginHorizontal, bottom: '15%' }}>
+          <Image source={{ uri: Config.API_URL + item?.food_image }} style={styles.recomendImg} />
+          <Text
+            style={[styles.subItemtitle, { color: '#000000', marginTop: '10%' }]}>
+            {item?.food_name}
+          </Text>
         </View>
       </View>
     );
 
   };
+  const columns = 2;
+  const dataPerColumn = Math.ceil(foodTypeData.length / columns);
+  const dividedData = [];
+
+  for (let i = 0; i < columns; i++) {
+    const startIndex = i * dataPerColumn;
+    const endIndex = startIndex + dataPerColumn;
+    dividedData.push(foodTypeData.slice(startIndex, endIndex));
+  }
+
 
   return (
-
-    <FlatList
-      data={foodTypeData}
-      renderItem={renderItem}
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-
-
-    />
+    <View style={{ top: 15 }}>
+      {dividedData.map((columnData, columnIndex) => (
+        <FlatList
+          key={columnIndex}
+          data={columnData}
+          renderItem={renderItem}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      ))}
+    </View>
 
 
 
