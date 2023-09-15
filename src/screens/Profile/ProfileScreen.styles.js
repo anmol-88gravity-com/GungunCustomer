@@ -192,7 +192,8 @@ export const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     borderRadius: 5,
-    top:'8%'
+    marginTop:Platform.OS === 'ios' ? '5%' : '8%',
+    // position:'absolute'
   },
   buttonLabel: {
     fontFamily: Font_Family.medium,
