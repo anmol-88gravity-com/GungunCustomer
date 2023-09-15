@@ -35,6 +35,11 @@ export const styles = StyleSheet.create({
     color: Colors.black,
     textTransform: 'capitalize',
   },
+  addressBtn:{
+    width:'50%',
+    right:'5%', 
+    textDecorationLine: 'underline',
+  },
   addAddressText: {
     fontFamily: Font_Family.medium,
     fontSize: FONT_SIZES.fifteen,

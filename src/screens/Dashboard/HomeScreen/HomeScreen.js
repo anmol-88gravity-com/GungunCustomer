@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -10,22 +10,56 @@ import {
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import {images} from '../../../utils/Images';
-import {styles} from './HomeScreen.styles';
+import { images } from '../../../utils/Images';
+import { styles } from './HomeScreen.styles';
 import ScreenHeader from '../../../components/header/ScreenHeader';
 import {
   PopularItems,
   RecommendedItems,
   RestaurantTopPlaces,
 } from './components';
-import {Colors} from '../../../utils/Colors';
-import {TextInput} from 'react-native-paper';
+import { Colors } from '../../../utils/Colors';
+import { TextInput } from 'react-native-paper';
+import { setDefaultAddress } from '../../../store/address/addressSlice';
+import { useGetAddressList } from '../../../hooks/address/useGetAddressList';
 
-export const HomeScreen = ({navigation}) => {
+export const HomeScreen = ({ navigation }) => {
+  const [addressData, setAddressData] = useState(null);
+  const { addressList, loading } = useGetAddressList();
+
+  const defaultAddresses = addressList;
+  console.log('jnjdcbdjcd--dd-', defaultAddresses)
+
+
+  
   return (
     <SafeAreaView style={styles.maincontainer}>
       <ScreenHeader headerTitle={"Let's Find \nFood Near You"} />
+      <View
+        style={{
+          marginHorizontal: 20,
+          width: '85%',
+          bottom: Platform.OS === 'ios' ? 20 : 10
+        }}>
+        <View style={{ flexDirection: 'row', }}>
+          <MaterialIcons
+            name="location-on"
+            size={25}
+            color={Colors.red}
+            style={{ marginTop: Platform.OS === 'ios' ? '4%' : '5%' }}
+          />
+          <Text style={styles.title}>Home</Text>
+          <Ionicons
+            name="chevron-down-sharp"
+            size={10}
+            color={Colors.black}
+            style={{ top: Platform.OS === 'ios' ? '5%' : '6%', left: 5 }}
+          />
+        </View>
+        <Text style={styles.textAddress}>{addressList[0]?.address2 && addressList[0]?.address1}</Text>
+      </View>
       <TouchableOpacity onPress={() => navigation.navigate('Search')}>
         <View pointerEvents={'none'} style={styles.searchView}>
           <TextInput
@@ -34,15 +68,15 @@ export const HomeScreen = ({navigation}) => {
             placeholderTextColor="#808080"
             editable={false}
             mode={'outlined'}
-            theme={{roundness: 15}}
-            outlineStyle={{borderColor: '#cdcdcd'}}
+            theme={{ roundness: 15 }}
+            outlineStyle={{ borderColor: '#cdcdcd' }}
             left={<TextInput.Icon icon="search1" color={Colors.primary} />}
           />
         </View>
       </TouchableOpacity>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <View style={{marginHorizontal: 10}}>
+          <View style={{ marginHorizontal: 10 }}>
             <View
               style={{
                 height: 200,
@@ -55,7 +89,7 @@ export const HomeScreen = ({navigation}) => {
                 lowest delivery {'\n'} charges ever
               </Text>
               <TouchableOpacity style={styles.orderNowButton}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={styles.orderText}>Order Now </Text>
                   <AntDesign
                     name="arrowright"
@@ -81,7 +115,7 @@ export const HomeScreen = ({navigation}) => {
               />
             </View>
 
-            <Text style={[styles.title, {marginVertical: 0}]}>
+            <Text style={[styles.title, { marginVertical: 0 }]}>
               What's On your mind ?
             </Text>
             <View
@@ -89,10 +123,10 @@ export const HomeScreen = ({navigation}) => {
                 height: 220,
                 flex: 1,
               }}>
-              <RecommendedItems source={images.kadaiPaneer} title="Pizza"  />
+              <RecommendedItems source={images.kadaiPaneer} title="Pizza" />
             </View>
 
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -101,7 +135,7 @@ export const HomeScreen = ({navigation}) => {
                   name="location-on"
                   size={25}
                   color={Colors.red}
-                  style={{top: Platform.OS === 'ios' ? '4%' : '5%'}}
+                  style={{ top: Platform.OS === 'ios' ? '4%' : '5%' }}
                 />
                 <Text style={styles.title}>Top places near you</Text>
               </View>

@@ -1,7 +1,7 @@
-import {Platform, StyleSheet} from 'react-native';
-import {Font_Family} from '../../../utils/Fontfamily';
-import {FONT_SIZES} from '../../../utils/FontSize';
-import {Colors} from '../../../utils/Colors';
+import { Platform, StyleSheet } from 'react-native';
+import { Font_Family } from '../../../utils/Fontfamily';
+import { FONT_SIZES } from '../../../utils/FontSize';
+import { Colors } from '../../../utils/Colors';
 
 export const styles = StyleSheet.create({
   maincontainer: {
@@ -10,12 +10,11 @@ export const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    marginTop: '2%',
   },
   searchView: {
     marginHorizontal: 10,
     marginTop: Platform.OS === 'ios' ? 0 : '5%',
-    marginBottom: '2%',
+    bottom: '50%'
   },
   input: {
     backgroundColor: 'white',
@@ -26,7 +25,6 @@ export const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 5,
   },
   sideIcon: {
@@ -46,6 +44,10 @@ export const styles = StyleSheet.create({
     marginLeft: 5,
     color: Colors.black,
   },
+  textAddress: {
+    bottom: Platform.OS === 'ios' ? 15 : 20,
+    left: '7%', fontFamily: Font_Family.light, fontSize: FONT_SIZES.tweleve
+  },
 
   resturantPlacesView: {
     backgroundColor: Colors.white,
@@ -53,7 +55,7 @@ export const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 3},
+    shadowOffset: { width: -2, height: 3 },
     shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 4,
@@ -94,7 +96,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: 8,
     borderRadius: 10,
     shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 4},
+    shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 4,
@@ -113,7 +115,7 @@ export const styles = StyleSheet.create({
     color: '#000000',
     textAlign: 'center',
   },
-  bannerImg: {height: '100%', width: '100%', borderRadius: 20},
+  bannerImg: { height: '100%', width: '100%', borderRadius: 20 },
   textImg: {
     position: 'absolute',
     textAlign: 'center',
