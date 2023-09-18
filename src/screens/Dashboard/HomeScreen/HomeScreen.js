@@ -30,7 +30,7 @@ export const HomeScreen = ({ navigation }) => {
   const { addressList, loading } = useGetAddressList();
 
   const defaultAddresses = addressList;
-  console.log('jnjdcbdjcd--dd-', defaultAddresses)
+  // console.log('jnjdcbdjcd--dd-', defaultAddresses)
 
 
   
@@ -50,7 +50,7 @@ export const HomeScreen = ({ navigation }) => {
             color={Colors.red}
             style={{ marginTop: Platform.OS === 'ios' ? '4%' : '5%' }}
           />
-          <Text style={styles.title}>Home</Text>
+          <Text style={styles.title}>{addressList[0]?.address_type}</Text>
           <Ionicons
             name="chevron-down-sharp"
             size={10}
@@ -58,7 +58,7 @@ export const HomeScreen = ({ navigation }) => {
             style={{ top: Platform.OS === 'ios' ? '5%' : '6%', left: 5 }}
           />
         </View>
-        <Text style={styles.textAddress}>{addressList[0]?.address2 && addressList[0]?.address1}</Text>
+        <Text style={styles.textAddress}>{addressList[0]?.address1 +","+ addressList[0]?.address2+","+ addressList[0]?.landmark+","+ addressList[0]?.state}</Text>
       </View>
       <TouchableOpacity onPress={() => navigation.navigate('Search')}>
         <View pointerEvents={'none'} style={styles.searchView}>

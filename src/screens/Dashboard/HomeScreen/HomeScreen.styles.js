@@ -38,6 +38,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.fifteen,
     fontFamily: Font_Family.semiBold,
     color: '#000000',
+    textTransform:'capitalize'
   },
   resturantPlaceTitle: {
     fontFamily: Font_Family.regular,
@@ -46,7 +47,8 @@ export const styles = StyleSheet.create({
   },
   textAddress: {
     bottom: Platform.OS === 'ios' ? 15 : 20,
-    left: '7%', fontFamily: Font_Family.light, fontSize: FONT_SIZES.tweleve
+    left: '7%', fontFamily: Font_Family.light, fontSize: FONT_SIZES.tweleve,
+
   },
 
   resturantPlacesView: {
