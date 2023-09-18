@@ -1,7 +1,7 @@
-import { Platform, StyleSheet } from 'react-native';
-import { Font_Family } from '../../utils/Fontfamily';
-import { FONT_SIZES } from '../../utils/FontSize';
-import { Colors } from '../../utils/Colors';
+import {Platform, StyleSheet} from 'react-native';
+import {Font_Family} from '../../utils/Fontfamily';
+import {FONT_SIZES} from '../../utils/FontSize';
+import {Colors} from '../../utils/Colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -12,6 +12,11 @@ export const styles = StyleSheet.create({
   },
   imageIcon: {
     left: Platform.OS === 'android' ? '10%' : 0,
+  },
+
+  genderIcon: {
+    left: Platform.OS === 'android' ? '10%' : 0,
+    marginRight: 15,
   },
   imageSideIcon: {
     right: Platform.OS === 'android' ? '10%' : 0,
@@ -42,9 +47,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
+    borderRadius: 10,
     marginVertical: '2%',
     borderColor: '#ccc',
-    borderRadius: 10,
+
     padding: Platform.OS === 'ios' ? 15 : 5,
   },
   inputContainerGender: {
@@ -54,7 +60,8 @@ export const styles = StyleSheet.create({
     marginVertical: '2%',
     borderColor: '#ccc',
     borderRadius: 10,
-    padding: Platform.OS === 'ios' ? 15 : 19,
+    paddingHorizontal: Platform.OS === 'ios' ? 15 : 8,
+    paddingVertical: 17,
   },
   input: {
     flex: 1,
@@ -96,7 +103,6 @@ export const styles = StyleSheet.create({
   },
   //dropdown
 
-
   dropdownContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -128,9 +134,9 @@ export const styles = StyleSheet.create({
   dropdownOptionText: {
     color: '#ccc',
     fontFamily: Font_Family.medium,
-    fontSize: FONT_SIZES.thirteen
+    fontSize: FONT_SIZES.thirteen,
   },
-  //Modal 
+  //Modal
 
   centeredView: {
     flex: 1,
@@ -163,19 +169,20 @@ export const styles = StyleSheet.create({
   },
   modalCameraBtn: {
     // padding: 12,
-    height: 50, width: 50,
+    height: 50,
+    width: 50,
     borderRadius: 50,
-    borderColor: Colors.primary, borderWidth: 2,
-    justifyContent:'center'
+    borderColor: Colors.primary,
+    borderWidth: 2,
+    justifyContent: 'center',
   },
-  cameraModalText:{
-    fontFamily:Font_Family.medium,
-    fontSize:FONT_SIZES.fifteen
+  cameraModalText: {
+    fontFamily: Font_Family.medium,
+    fontSize: FONT_SIZES.fifteen,
   },
   buttonClose: {
     marginTop: 10,
-    backgroundColor: Colors.primary
-
+    backgroundColor: Colors.primary,
   },
   textStyle: {
     color: 'white',
@@ -185,19 +192,54 @@ export const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
-    fontFamily:Font_Family.bold,
-    fontSize:FONT_SIZES.eighteen
+    fontFamily: Font_Family.bold,
+    fontSize: FONT_SIZES.eighteen,
   },
   buttonStyless: {
     width: '100%',
     alignSelf: 'center',
     borderRadius: 5,
-    marginTop:Platform.OS === 'ios' ? '5%' : '8%',
-    // position:'absolute'
+    marginTop: Platform.OS === 'ios' ? '5%' : '8%',
   },
   buttonLabel: {
     fontFamily: Font_Family.medium,
     fontSize: FONT_SIZES.fifteen,
   },
+  dropdown: {
+    height: 50,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    marginTop: 8,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontFamily: Font_Family.regular,
+    fontSize: FONT_SIZES.fifteen,
+  },
+  placeholderStyle: {
+    fontFamily: Font_Family.regular,
+    fontSize: 14,
+    color: '#6c6c6c',
+  },
+  selectedTextStyle: {
+    fontFamily: Font_Family.regular,
+    fontSize: FONT_SIZES.fifteen,
+    color: 'black',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontFamily: Font_Family.regular,
+    fontSize: FONT_SIZES.fifteen,
+  },
 });
-

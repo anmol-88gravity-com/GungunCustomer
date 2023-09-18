@@ -5,9 +5,7 @@ import {load} from '../utils/storage';
 
 export const Axios = axios.create({
   baseURL: Config.API_URL,
-  
 });
-
 
 const authRoutes = [
   ApiEndpoints.auth.login,
@@ -33,7 +31,6 @@ Axios.interceptors.request.use(
         config.headers.Authorization = `Bearer ${accessToken}`;
       }
     }
-    // console.log("config",config);
     return config;
   },
   function (error) {

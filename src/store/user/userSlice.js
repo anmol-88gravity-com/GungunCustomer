@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
-import { ApiEndpoints } from '../ApiEndPoints';
-import { Axios } from '../../lib/Axios';
+import {ApiEndpoints} from '../ApiEndPoints';
+import {Axios} from '../../lib/Axios';
 
 export const CHANGE_PASSWORD = '/api/change-Password';
 export const USER_PROFILE = '/api/customer-profile';
@@ -9,7 +9,7 @@ export const UPDATE_USER_PROFILE = '/api/customer-profile';
 
 export const changePassword = createAsyncThunk(
   CHANGE_PASSWORD,
-  async ({ confirmPassword, newPassword }, { rejectWithValue }) => {
+  async ({confirmPassword, newPassword}, {rejectWithValue}) => {
     const result = await Axios.put(ApiEndpoints.user.changePassword, {
       new_password: newPassword,
       confirm_password: confirmPassword,
@@ -22,17 +22,15 @@ export const changePassword = createAsyncThunk(
   },
 );
 
-//User_Profile----
-
 export const getUserProfile = createAsyncThunk(
   USER_PROFILE,
   async (_, thunkAPI) => {
-    const { userId } = thunkAPI.getState().auth;
+    const {userId} = thunkAPI.getState().auth;
     const result = await Axios.get(
       ApiEndpoints.profile.getUserProfile.replace('USER_ID', String(userId)),
     );
     if (result.data.status === 'ok') {
-      return thunkAPI.fulfillWithValue(result.data.response);
+      return thunkAPI.fulfillWithValue(result.data.response.partner_profile);
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));
     }
@@ -41,37 +39,36 @@ export const getUserProfile = createAsyncThunk(
 
 export const updateUserProfile = createAsyncThunk(
   UPDATE_USER_PROFILE,
-  async ({
-    fullName,
-    email,
-    phoneNumber,
-    selectedGender,
-    birthday,
-    anniversarry,
-    profileImage }, thunkAPI,) => {
-    const { userId } = thunkAPI.getState().auth;
+  async (
+    {fullName, email, phoneNumber, gender, birthday, anniversary, profilePic},
+    thunkAPI,
+  ) => {
+    console.log('birthday, anniversary', birthday, anniversary);
+    const {userId} = thunkAPI.getState().auth;
     const formData = new FormData();
-    formData.append('user', userId);
-    formData.append('gender', selectedGender);
-    formData.append('birthday', birthday);
-    formData.append('anniversary', anniversarry);
+    formData.append('user', String(userId));
+    formData.append('gender', gender);
+    formData.append('birthday', String(birthday));
+    formData.append('anniversary', String(anniversary));
     formData.append('name', fullName);
     formData.append('email', email);
     formData.append('phone_number', phoneNumber);
-    formData.append('profile_image', {
-      uri: profileImage,
-      name: 'profile_image.jpg',
-      type: 'image/jpeg',
-    });
-    const result = await Axios(`http://206.189.133.64:8000/api/customer-profile/${userId}`, {
-      // const result = await Axios(ApiEndpoints.profile.editProfile + `${userId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    if (profilePic.uri) {
+      formData.append('profile_image', {
+        uri: profilePic.uri,
+        name: profilePic.name,
+        type: profilePic.type,
+      });
+    }
+    const result = await Axios.patch(
+      ApiEndpoints.profile.editProfile.replace('USER_ID', String(userId)),
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       },
-      body: formData
-    })
-    console.log('updateUserprofile--', result)
+    );
     if (result.data.status === 'ok') {
       return true;
     } else {
@@ -80,15 +77,13 @@ export const updateUserProfile = createAsyncThunk(
   },
 );
 
-
-
 export const userSlice = createSlice({
   name: 'user',
   initialState: null,
   reducers: {},
-  extraReducers: builder => { },
+  extraReducers: builder => {},
 });
 
-export const { } = userSlice.actions;
+export const {} = userSlice.actions;
 
 export default userSlice.reducer;
