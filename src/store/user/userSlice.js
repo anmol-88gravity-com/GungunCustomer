@@ -43,7 +43,7 @@ export const updateUserProfile = createAsyncThunk(
     {fullName, email, phoneNumber, gender, birthday, anniversary, profilePic},
     thunkAPI,
   ) => {
-    console.log('birthday, anniversary', birthday, anniversary);
+    // console.log('birthday, anniversary', birthday, anniversary);
     const {userId} = thunkAPI.getState().auth;
     const formData = new FormData();
     formData.append('user', String(userId));

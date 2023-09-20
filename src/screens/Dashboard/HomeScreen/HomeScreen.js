@@ -24,8 +24,11 @@ import {Colors} from '../../../utils/Colors';
 import {TextInput} from 'react-native-paper';
 import {setDefaultAddress} from '../../../store/address/addressSlice';
 import {useGetAddressList} from '../../../hooks/address/useGetAddressList';
+import { useGetProfileData } from '../../../hooks/profile/useGetProfileData';
+
 
 export const HomeScreen = ({navigation}) => {
+  const {profileData} = useGetProfileData();
   const [addressData, setAddressData] = useState(null);
   const {addressList, loading} = useGetAddressList();
 
@@ -33,7 +36,7 @@ export const HomeScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.maincontainer}>
-      <ScreenHeader headerTitle={"Let's Find \nFood Near You"} />
+      <ScreenHeader headerTitle={profileData?.fullName} />
       <View
         style={{
           marginHorizontal: 20,
@@ -47,7 +50,8 @@ export const HomeScreen = ({navigation}) => {
             color={Colors.red}
             style={{marginTop: Platform.OS === 'ios' ? '4%' : '5%'}}
           />
-          <Text style={styles.title}>{addressList[0]?.address_type}</Text>
+          <Text style={styles.title}>Home</Text>
+          {/* {addressList[0]?.address_type} */}
           <Ionicons
             name="chevron-down-sharp"
             size={10}

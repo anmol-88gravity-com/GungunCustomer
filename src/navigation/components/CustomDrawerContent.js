@@ -15,8 +15,12 @@ import {logout} from '../../store/auth/authSlice';
 import {showMessage} from 'react-native-flash-message';
 import {Colors} from '../../utils/Colors';
 import {FONT_SIZES} from '../../utils/FontSize';
+import { useGetProfileData } from '../../hooks/profile/useGetProfileData';
 
 export function CustomDrawerContent(props) {
+
+  const {profileData, loading} = useGetProfileData();
+
   const dispatch = useDispatch();
   const setError = useError();
   const logoutHandler = async () => {
