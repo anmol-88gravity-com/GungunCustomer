@@ -38,6 +38,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.fifteen,
     fontFamily: Font_Family.semiBold,
     color: '#000000',
+    textTransform:'capitalize'
   },
   resturantPlaceTitle: {
     fontFamily: Font_Family.regular,

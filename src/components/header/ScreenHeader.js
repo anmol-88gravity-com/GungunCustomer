@@ -1,36 +1,39 @@
 import React from 'react';
-import {View, Text, Image, Pressable, StyleSheet, Platform} from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, Platform } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useNavigation} from '@react-navigation/native';
-import {images} from '../../utils/Images';
-import {Font_Family} from '../../utils/Fontfamily';
-import {FONT_SIZES} from '../../utils/FontSize';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { images } from '../../utils/Images';
+import { Font_Family } from '../../utils/Fontfamily';
+import { FONT_SIZES } from '../../utils/FontSize';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useGetProfileData } from '../../hooks/profile/useGetProfileData';
+import Config from '../../config';
 
-const ScreenHeader = ({headerTitle}) => {
+const ScreenHeader = ({ headerTitle }) => {
+  const { profileData } = useGetProfileData();
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.mainHeaderView}>
       <View style={styles.middleHeaderView}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <View style={{height: 50, width: 50, borderRadius: 100}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ height: 50, width: 50, borderRadius: 100 }}>
             <Image
-              source={images.profile}
-              style={{width: '100%', height: '100%'}}
+              source={{ uri: Config.API_URL + profileData?.profileImage?.uri }}
+              style={{ width: '100%', height: '100%',borderRadius:100 }}
             />
           </View>
           <Text style={styles.headerText}>{headerTitle}</Text>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Pressable
             onPress={() =>
-              navigation.navigate('DashboardNavigator', {screen: 'CartScreen'})
+              navigation.navigate('DashboardNavigator', { screen: 'CartScreen' })
             }>
             <Ionicons name="cart" size={24} color="black" />
           </Pressable>
           <Pressable
-            style={{marginLeft: 20}}
+            style={{ marginLeft: 20 }}
             onPress={() => navigation.toggleDrawer()}>
             <MaterialIcons name="menu" size={28} color="black" />
           </Pressable>

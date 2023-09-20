@@ -13,8 +13,6 @@ export const RecommendedItems = ({ source, title }) => {
   const [foodTypeData, setFoodTypeData] = useState([]);
   const { foodType, loading } = useGetCategorizedFoodtype();
 
-  // console.log('--->>>', foodTypeData)
-
   useEffect(() => {
     if (foodType && foodType.length > 0) {
       setFoodTypeData(foodType);
@@ -26,7 +24,8 @@ export const RecommendedItems = ({ source, title }) => {
     const columnIndex = index % 2;
     const marginHorizontal = columnIndex === 0 ? 20 : 10;
     return (
-      <View style={{ flexDirection: 'row', flex: 1, padding: 3, paddingBottom: 30, marginTop: 5 }}>
+
+      <View style={{ flexDirection: 'row', flex: 1, padding: 3, paddingBottom: 30, marginTop: 5, }}>
         <View style={{ height: 60, width: 60, marginHorizontal, bottom: '15%' }}>
           <Image source={{ uri: Config.API_URL + item?.food_image }} style={styles.recomendImg} />
           <Text
@@ -35,6 +34,7 @@ export const RecommendedItems = ({ source, title }) => {
           </Text>
         </View>
       </View>
+
     );
 
   };

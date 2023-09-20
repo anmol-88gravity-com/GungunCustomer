@@ -9,6 +9,7 @@ import {
   Pressable,
   Modal,
   Alert,
+  PermissionsAndroid
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -26,6 +27,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch} from 'react-redux';
 import moment from 'moment';
 import {Dropdown} from 'react-native-element-dropdown';
+import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
 
 import {styles} from './ProfileScreen.styles';
 import {Colors} from '../../utils/Colors';
@@ -35,13 +37,13 @@ import {useError} from '../../context/ErrorProvider';
 import {FONT_SIZES} from '../../utils/FontSize';
 import {Font_Family} from '../../utils/Fontfamily';
 import {Loader} from '../../components/common/Loader';
-import Config from '../../config';
+
+
 
 export const ProfileScreen = () => {
   const dispatch = useDispatch();
   const setError = useError();
   const {profileData, loading} = useGetProfileData();
-
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userGender, setUserGender] = useState('');
@@ -118,17 +120,50 @@ export const ProfileScreen = () => {
     }
   };
 
+  // const openCamera = async () => {
+  //   setModalVisible(false);
+  //   const resultCam = await launchCamera({mediaType: 'photo', quality: 0});
+   
+  //   if (resultCam) {
+  //     setUserImage({
+  //       uri: resultCam?.assets[0]?.uri,
+  //       type: resultCam?.assets[0]?.type,
+  //       name: resultCam?.assets[0]?.fileName,
+  //     });
+  //   }
+  // };
+
   const openCamera = async () => {
-    setModalVisible(false);
-    const resultCam = await launchCamera({mediaType: 'photo', quality: 0});
-    if (resultCam) {
-      setUserImage({
-        uri: resultCam?.assets[0]?.uri,
-        type: resultCam?.assets[0]?.type,
-        name: resultCam?.assets[0]?.fileName,
-      });
-    }
+    try {
+      let permission = PERMISSIONS.ANDROID.CAMERA;
+      if (Platform.OS === 'ios') {
+        permission = PERMISSIONS.IOS.CAMERA;
+      }
+      const checkResult = await check(permission);
+      if (checkResult !== RESULTS.GRANTED) {
+        const requestResult = await request(permission);
+        if (requestResult !== RESULTS.GRANTED) {
+          // console.log('jncjdsjcdjcsbdjbc')
+          console.log('result--',RESULTS.GRANTED)
+          return;
+        }
+      }
+      setModalVisible(false);
+      const resultCam = await launchCamera({ mediaType: 'photo', quality: 0 });
+      if (resultCam) {
+        setUserImage({
+          uri: resultCam?.assets[0]?.uri,
+          type: resultCam?.assets[0]?.type,
+          name: resultCam?.assets[0]?.fileName,
+        });
+      }
+    } catch (error) {
+      console.log('error=>',error)
+     }
   };
+
+
+ 
 
   const chooseImageFromGallery = async () => {
     setModalVisible(false);
@@ -144,6 +179,51 @@ export const ProfileScreen = () => {
       });
     }
   };
+
+  const choosePhotoFromLibrary = async () => {
+    check(
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.PHOTO_LIBRARY
+        : PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+    )
+      .then(result => {
+        switch (result) {
+          case RESULTS.GRANTED:
+          chooseImageFromGallery();
+            break;
+          case RESULTS.UNAVAILABLE:
+            setError('This feature is not available on this device!');
+            break;
+          case RESULTS.DENIED:
+            request(
+              Platform.OS === 'ios'
+                ? PERMISSIONS.IOS.PHOTO_LIBRARY
+                : PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+            ).then(requestResult => {
+              if (requestResult === RESULTS.GRANTED) {
+                chooseImageFromGallery();
+              }
+            });
+            break;
+          case RESULTS.LIMITED:
+            chooseImageFromGallery();
+            break;
+          case RESULTS.BLOCKED:
+            setError(
+              'The permission is denied! Please enable storage permission.',
+            );
+            openSettings().catch(settingsErr =>
+              setError('Unable to open settings!'),
+            );
+            break;
+        }
+      })
+      .catch(e => {
+        setError(e.message);
+      });
+  };
+
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -186,12 +266,11 @@ export const ProfileScreen = () => {
                       borderColor: Colors.secondary,
                     }}>
                     <Image
-                      source={{
-                        uri: Config.API_URL + values.profilePic,
-                      }}
+                     source={{uri:values.profilePic?.uri}}
                       style={{
                         width: '100%',
                         height: '100%',
+                        borderRadius:100
                       }}
                     />
                     <Pressable

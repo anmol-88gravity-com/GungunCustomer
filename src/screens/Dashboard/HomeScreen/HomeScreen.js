@@ -23,8 +23,11 @@ import {
 } from './components';
 import {Colors} from '../../../utils/Colors';
 import {useGetAddressList} from '../../../hooks/address/useGetAddressList';
+import { useGetProfileData } from '../../../hooks/profile/useGetProfileData';
+
 
 export const HomeScreen = ({navigation}) => {
+  const {profileData} = useGetProfileData();
   const [addressData, setAddressData] = useState(null);
   const {addressList, loading} = useGetAddressList();
 
@@ -32,7 +35,7 @@ export const HomeScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.maincontainer}>
-      <ScreenHeader headerTitle={"Let's Find \nFood Near You"} />
+      <ScreenHeader headerTitle={profileData?.fullName} />
       <View
         style={{
           marginHorizontal: 20,
@@ -47,6 +50,7 @@ export const HomeScreen = ({navigation}) => {
             style={{marginTop: Platform.OS === 'ios' ? '4%' : '5%'}}
           />
           <Text style={styles.title}>Home</Text>
+          {/* {addressList[0]?.address_type} */}
           <Ionicons
             name="chevron-down-sharp"
             size={10}
@@ -55,7 +59,7 @@ export const HomeScreen = ({navigation}) => {
           />
         </View>
         <Text style={styles.textAddress}>
-          {addressList[0]?.address2 && addressList[0]?.address1}
+          {addressList[0]?.address2 + "," + addressList[0]?.address1}
         </Text>
       </View>
       <TouchableOpacity onPress={() => navigation.navigate('Search')}>
