@@ -22,7 +22,6 @@ export const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     position: 'absolute',
-    bottom: 0,
     left: 0,
     right: 0,
   },

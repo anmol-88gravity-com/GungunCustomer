@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,6 +8,7 @@ import {
   Image,
   Platform,
 } from 'react-native';
+import {TextInput} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -21,8 +22,6 @@ import {
   RestaurantTopPlaces,
 } from './components';
 import {Colors} from '../../../utils/Colors';
-import {TextInput} from 'react-native-paper';
-import {setDefaultAddress} from '../../../store/address/addressSlice';
 import {useGetAddressList} from '../../../hooks/address/useGetAddressList';
 
 export const HomeScreen = ({navigation}) => {
@@ -115,7 +114,7 @@ export const HomeScreen = ({navigation}) => {
             </View>
 
             <Text style={[styles.title, {marginVertical: 0}]}>
-              What's On your mind ?
+              What's on your mind ?
             </Text>
             <View
               style={{
