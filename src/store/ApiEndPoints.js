@@ -25,4 +25,7 @@ export const ApiEndpoints = {
   categoryFoodType: {
     foodType: 'api/food-type/',
   },
+  home: {
+    searchQuery: '/api/search/',
+  },
 };

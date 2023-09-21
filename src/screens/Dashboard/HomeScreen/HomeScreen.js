@@ -23,15 +23,12 @@ import {
 } from './components';
 import {Colors} from '../../../utils/Colors';
 import {useGetAddressList} from '../../../hooks/address/useGetAddressList';
-import { useGetProfileData } from '../../../hooks/profile/useGetProfileData';
-
+import {useGetProfileData} from '../../../hooks/profile/useGetProfileData';
 
 export const HomeScreen = ({navigation}) => {
   const {profileData} = useGetProfileData();
   const [addressData, setAddressData] = useState(null);
   const {addressList, loading} = useGetAddressList();
-
-  const defaultAddresses = addressList;
 
   return (
     <SafeAreaView style={styles.maincontainer}>
@@ -50,7 +47,7 @@ export const HomeScreen = ({navigation}) => {
             style={{marginTop: Platform.OS === 'ios' ? '4%' : '5%'}}
           />
           <Text style={styles.title}>Home</Text>
-          {/* {addressList[0]?.address_type} */}
+          {/*{addressList[0]?.address_type}*/}
           <Ionicons
             name="chevron-down-sharp"
             size={10}
@@ -59,10 +56,11 @@ export const HomeScreen = ({navigation}) => {
           />
         </View>
         <Text style={styles.textAddress}>
-          {addressList[0]?.address2 + "," + addressList[0]?.address1}
+          {addressList[0]?.address2 + ',' + addressList[0]?.address1}
         </Text>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Search', {searchKey: ''})}>
         <View pointerEvents={'none'} style={styles.searchView}>
           <TextInput
             style={styles.input}
@@ -102,7 +100,6 @@ export const HomeScreen = ({navigation}) => {
                 </View>
               </TouchableOpacity>
             </View>
-
             <Text style={styles.title}>Popular Items</Text>
             <View
               style={{
@@ -116,18 +113,14 @@ export const HomeScreen = ({navigation}) => {
                 price="₹ 249"
               />
             </View>
-
             <Text style={[styles.title, {marginVertical: 0}]}>
               What's on your mind ?
             </Text>
-            <View
-              style={{
-                height: 220,
-                flex: 1,
-              }}>
-              <RecommendedItems source={images.kadaiPaneer} title="Pizza" />
-            </View>
-
+            <RecommendedItems
+              onPressHandler={item =>
+                navigation.navigate('Search', {searchKey: item})
+              }
+            />
             <View style={{flex: 1}}>
               <View
                 style={{

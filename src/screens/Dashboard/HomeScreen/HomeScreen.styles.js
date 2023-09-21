@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.fifteen,
     fontFamily: Font_Family.semiBold,
     color: '#000000',
-    textTransform:'capitalize'
+    textTransform: 'capitalize',
   },
   resturantPlaceTitle: {
     fontFamily: Font_Family.regular,
@@ -148,13 +148,11 @@ export const styles = StyleSheet.create({
   },
   arrowIcon: {
     bottom: Platform.OS === 'ios' ? '1%' : 0,
-    // justifyContent:'center',
   },
   recomendImg: {
     height: '100%',
     width: '100%',
     borderRadius: 30,
-    marginVertical: 10,
   },
 
   //modal
@@ -184,15 +182,8 @@ export const styles = StyleSheet.create({
 
   modalInnerView: {
     backgroundColor: Colors.white,
-    // marginTop: 20,
     borderRadius: 10,
     marginHorizontal: 10,
-    // padding: 10,
-    // shadowColor: '#000',
-    // shadowOffset: {width: 0, height: 2},
-    // shadowOpacity: 0.25,
-    // shadowRadius: 2,
-    // elevation: 4,
   },
 
   button: {

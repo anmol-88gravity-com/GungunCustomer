@@ -2,8 +2,8 @@ import {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 
-import { getDataOnYourMind } from '../../../store/home/category/categorySlice';
-import { useError } from '../../../context/ErrorProvider';
+import {useError} from '../../../context/ErrorProvider';
+import {getDataOnYourMind} from '../../../store/home/homeSlice';
 
 export const useGetCategorizedFoodtype = () => {
   const navigation = useNavigation();
@@ -28,7 +28,7 @@ export const useGetCategorizedFoodtype = () => {
 
   useEffect(() => {
     return navigation.addListener('focus', () => {
-        getOnYourMindData();
+      getOnYourMindData();
     });
   }, [navigation]);
 
