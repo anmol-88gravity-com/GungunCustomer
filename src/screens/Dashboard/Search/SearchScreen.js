@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import {Chip, Divider, TextInput} from 'react-native-paper';
 
@@ -7,10 +7,40 @@ import {PopularItems, RestaurantTopPlaces} from '../HomeScreen/components';
 import {images} from '../../../utils/Images';
 import {DishCard} from './components/DishCard';
 import {styles} from './SearchScreeen.styles';
+import {useDispatch} from 'react-redux';
+import {useError} from '../../../context/ErrorProvider';
+import {getSearchResults} from '../../../store/home/homeSlice';
 
 const data = [1, 2, 3];
-export const SearchScreen = ({navigation}) => {
+export const SearchScreen = ({route, navigation}) => {
   const [search, setSearch] = useState('');
+  const [filterData, setFilterData] = useState([]);
+
+  const inputKey = route.params.searchKey;
+
+  const dispatch = useDispatch();
+  const setError = useError();
+
+  useEffect(() => {
+    if (inputKey) {
+      setSearch(inputKey);
+    }
+  }, [inputKey, route]);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(async () => {
+      try {
+        const res = await dispatch(getSearchResults({search})).unwrap();
+        if (res) {
+          setFilterData(res);
+        }
+      } catch (e) {
+        setError(e.message);
+      }
+    }, 3000);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [dispatch, search, setError]);
 
   return (
     <View style={styles.container}>
@@ -27,7 +57,7 @@ export const SearchScreen = ({navigation}) => {
         activeOutlineColor={Colors.primary}
         left={<TextInput.Icon icon="search1" color={Colors.primary} />}
       />
-      {search === '' ? (
+      {search === '' && filterData === [] ? (
         <>
           <Text style={styles.recentSearches}>Recent Searches</Text>
           <View
@@ -46,7 +76,7 @@ export const SearchScreen = ({navigation}) => {
               onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
               style={styles.chipStyles}>
-              Singla's Sweets
+              Singla's Sweetsgit
             </Chip>
             <Chip
               onPress={() => console.log('Pressed')}

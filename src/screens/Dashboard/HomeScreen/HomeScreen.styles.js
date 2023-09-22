@@ -1,7 +1,7 @@
-import { Platform, StyleSheet } from 'react-native';
-import { Font_Family } from '../../../utils/Fontfamily';
-import { FONT_SIZES } from '../../../utils/FontSize';
-import { Colors } from '../../../utils/Colors';
+import {Platform, StyleSheet} from 'react-native';
+import {Font_Family} from '../../../utils/Fontfamily';
+import {FONT_SIZES} from '../../../utils/FontSize';
+import {Colors} from '../../../utils/Colors';
 
 export const styles = StyleSheet.create({
   maincontainer: {
@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   searchView: {
     marginHorizontal: 10,
     marginTop: Platform.OS === 'ios' ? 0 : '5%',
-    bottom: '50%'
+    bottom: '50%',
   },
   input: {
     backgroundColor: 'white',
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.fifteen,
     fontFamily: Font_Family.semiBold,
     color: '#000000',
-    textTransform:'capitalize'
+    textTransform: 'capitalize',
   },
   resturantPlaceTitle: {
     fontFamily: Font_Family.regular,
@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     shadowColor: '#171717',
-    shadowOffset: { width: -2, height: 3 },
+    shadowOffset: {width: -2, height: 3},
     shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 4,
@@ -99,7 +99,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: 8,
     borderRadius: 10,
     shadowColor: '#171717',
-    shadowOffset: { width: -2, height: 4 },
+    shadowOffset: {width: -2, height: 4},
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 4,
@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
     color: '#000000',
     textAlign: 'center',
   },
-  bannerImg: { height: '100%', width: '100%', borderRadius: 20 },
+  bannerImg: {height: '100%', width: '100%', borderRadius: 20},
   textImg: {
     position: 'absolute',
     textAlign: 'center',
@@ -126,7 +126,7 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.semiBold,
     color: Colors.primary,
     fontSize: FONT_SIZES.twenty,
-    textTransform: 'capitalize',
+    textTransform: 'uppercase',
   },
   orderNowButton: {
     position: 'absolute',
@@ -148,13 +148,11 @@ export const styles = StyleSheet.create({
   },
   arrowIcon: {
     bottom: Platform.OS === 'ios' ? '1%' : 0,
-    // justifyContent:'center',
   },
   recomendImg: {
     height: '100%',
     width: '100%',
     borderRadius: 30,
-    marginVertical: 10,
   },
 
   //modal
@@ -184,15 +182,8 @@ export const styles = StyleSheet.create({
 
   modalInnerView: {
     backgroundColor: Colors.white,
-    // marginTop: 20,
     borderRadius: 10,
     marginHorizontal: 10,
-    // padding: 10,
-    // shadowColor: '#000',
-    // shadowOffset: {width: 0, height: 2},
-    // shadowOpacity: 0.25,
-    // shadowRadius: 2,
-    // elevation: 4,
   },
 
   button: {

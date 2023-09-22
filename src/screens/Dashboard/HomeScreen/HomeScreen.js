@@ -11,7 +11,6 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import { images } from '../../../utils/Images';
 import { styles } from './HomeScreen.styles';
 import ScreenHeader from '../../../components/header/ScreenHeader';
@@ -25,7 +24,7 @@ import { TextInput } from 'react-native-paper';
 import { setDefaultAddress } from '../../../store/address/addressSlice';
 import { useGetAddressList } from '../../../hooks/address/useGetAddressList';
 import { useGetProfileData } from '../../../hooks/profile/useGetProfileData';
-import { Loader } from '../../../components/common/Loader';
+
 
 
 export const HomeScreen = ({ navigation }) => {
@@ -71,7 +70,8 @@ export const HomeScreen = ({ navigation }) => {
           {addressData ? (addressData?.address1 + "," + addressData?.address2 + "," + addressData?.city + "," + addressData?.state) : "Palam Vihar"}
         </Text>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Search', {searchKey: ''})}>
         <View pointerEvents={'none'} style={styles.searchView}>
           <TextInput
             style={styles.input}
@@ -111,7 +111,6 @@ export const HomeScreen = ({ navigation }) => {
                 </View>
               </TouchableOpacity>
             </View>
-
             <Text style={styles.title}>Popular Items</Text>
             <View
               style={{
@@ -125,19 +124,15 @@ export const HomeScreen = ({ navigation }) => {
                 price="₹ 249"
               />
             </View>
-
-            <Text style={[styles.title, { marginVertical: 0 }]}>
-              What's On your mind ?
+            <Text style={[styles.title, {marginVertical: 0}]}>
+              What's on your mind ?
             </Text>
-            <View
-              style={{
-                height: 220,
-                flex: 1,
-              }}>
-              <RecommendedItems source={images.kadaiPaneer} title="Pizza" />
-            </View>
-
-            <View style={{ flex: 1 }}>
+            <RecommendedItems
+              onPressHandler={item =>
+                navigation.navigate('Search', {searchKey: item})
+              }
+            />
+            <View style={{flex: 1}}>
               <View
                 style={{
                   flexDirection: 'row',

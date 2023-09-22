@@ -9,7 +9,7 @@ import {
   Pressable,
   Modal,
   Alert,
-  PermissionsAndroid
+  Platform,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -27,7 +27,13 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch} from 'react-redux';
 import moment from 'moment';
 import {Dropdown} from 'react-native-element-dropdown';
-import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
+import {
+  PERMISSIONS,
+  RESULTS,
+  check,
+  request,
+  openSettings,
+} from 'react-native-permissions';
 
 import {styles} from './ProfileScreen.styles';
 import {Colors} from '../../utils/Colors';
@@ -37,8 +43,6 @@ import {useError} from '../../context/ErrorProvider';
 import {FONT_SIZES} from '../../utils/FontSize';
 import {Font_Family} from '../../utils/Fontfamily';
 import {Loader} from '../../components/common/Loader';
-
-
 
 export const ProfileScreen = () => {
   const dispatch = useDispatch();
@@ -120,50 +124,18 @@ export const ProfileScreen = () => {
     }
   };
 
-  // const openCamera = async () => {
-  //   setModalVisible(false);
-  //   const resultCam = await launchCamera({mediaType: 'photo', quality: 0});
-   
-  //   if (resultCam) {
-  //     setUserImage({
-  //       uri: resultCam?.assets[0]?.uri,
-  //       type: resultCam?.assets[0]?.type,
-  //       name: resultCam?.assets[0]?.fileName,
-  //     });
-  //   }
-  // };
-
   const openCamera = async () => {
-    try {
-      let permission = PERMISSIONS.ANDROID.CAMERA;
-      if (Platform.OS === 'ios') {
-        permission = PERMISSIONS.IOS.CAMERA;
-      }
-      const checkResult = await check(permission);
-      if (checkResult !== RESULTS.GRANTED) {
-        const requestResult = await request(permission);
-        if (requestResult !== RESULTS.GRANTED) {
-          // console.log('jncjdsjcdjcsbdjbc')
-          console.log('result--',RESULTS.GRANTED)
-          return;
-        }
-      }
-      setModalVisible(false);
-      const resultCam = await launchCamera({ mediaType: 'photo', quality: 0 });
-      if (resultCam) {
-        setUserImage({
-          uri: resultCam?.assets[0]?.uri,
-          type: resultCam?.assets[0]?.type,
-          name: resultCam?.assets[0]?.fileName,
-        });
-      }
-    } catch (error) {
-      console.log('error=>',error)
-     }
+    setModalVisible(false);
+    const resultCam = await launchCamera({mediaType: 'photo', quality: 0});
+
+    if (resultCam) {
+      setUserImage({
+        uri: resultCam?.assets[0]?.uri,
+        type: resultCam?.assets[0]?.type,
+        name: resultCam?.assets[0]?.fileName,
+      });
+    }
   };
-
-
- 
 
   const chooseImageFromGallery = async () => {
     setModalVisible(false);
@@ -180,7 +152,7 @@ export const ProfileScreen = () => {
     }
   };
 
-  const choosePhotoFromLibrary = async () => {
+  const choosePhotoFromLibrary = async type => {
     check(
       Platform.OS === 'ios'
         ? PERMISSIONS.IOS.PHOTO_LIBRARY
@@ -189,7 +161,11 @@ export const ProfileScreen = () => {
       .then(result => {
         switch (result) {
           case RESULTS.GRANTED:
-          chooseImageFromGallery();
+            if (type === 'camera') {
+              openCamera();
+            } else {
+              chooseImageFromGallery();
+            }
             break;
           case RESULTS.UNAVAILABLE:
             setError('This feature is not available on this device!');
@@ -201,12 +177,20 @@ export const ProfileScreen = () => {
                 : PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
             ).then(requestResult => {
               if (requestResult === RESULTS.GRANTED) {
-                chooseImageFromGallery();
+                if (type === 'camera') {
+                  openCamera();
+                } else {
+                  chooseImageFromGallery();
+                }
               }
             });
             break;
           case RESULTS.LIMITED:
-            chooseImageFromGallery();
+            if (type === 'camera') {
+              openCamera();
+            } else {
+              chooseImageFromGallery();
+            }
             break;
           case RESULTS.BLOCKED:
             setError(
@@ -222,8 +206,6 @@ export const ProfileScreen = () => {
         setError(e.message);
       });
   };
-
-  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -266,11 +248,11 @@ export const ProfileScreen = () => {
                       borderColor: Colors.secondary,
                     }}>
                     <Image
-                     source={{uri:values.profilePic?.uri}}
+                      source={{uri: values.profilePic?.uri}}
                       style={{
                         width: '100%',
                         height: '100%',
-                        borderRadius:100
+                        borderRadius: 100,
                       }}
                     />
                     <Pressable
@@ -489,7 +471,7 @@ export const ProfileScreen = () => {
               <View>
                 <TouchableOpacity
                   style={styles.modalCameraBtn}
-                  onPress={openCamera}>
+                  onPress={() => choosePhotoFromLibrary('camera')}>
                   <FontAwesome
                     name="camera"
                     size={20}
@@ -503,7 +485,7 @@ export const ProfileScreen = () => {
               <View>
                 <TouchableOpacity
                   style={[styles.modalCameraBtn, {left: '50%'}]}
-                  onPress={chooseImageFromGallery}>
+                  onPress={() => choosePhotoFromLibrary('gallery')}>
                   <MaterialIcons
                     name="perm-media"
                     size={20}

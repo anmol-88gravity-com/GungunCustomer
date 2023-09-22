@@ -1,19 +1,17 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
-import { ApiEndpoints } from '../ApiEndPoints';
-import { Axios } from '../../lib/Axios';
-
-
+import {ApiEndpoints} from '../ApiEndPoints';
+import {Axios} from '../../lib/Axios';
 
 export const GET_ADDRESS_LIST = '/get-address-list';
 export const GET_ADDRESS = '/get-address';
 export const DELETE_ADDRESS = '/delete-address';
-export const SET_DEFAULT_ADDRESS = '/set-default-address'
+export const SET_DEFAULT_ADDRESS = '/set-default-address';
 
 export const getAllAddresses = createAsyncThunk(
   GET_ADDRESS_LIST,
   async (_, thunkAPI) => {
-    const { userId } = thunkAPI.getState().auth;
+    const {userId} = thunkAPI.getState().auth;
     const result = await Axios.get(
       ApiEndpoints.address.getAllAddresses.replace('USER_ID', String(userId)),
     );
@@ -26,8 +24,8 @@ export const getAllAddresses = createAsyncThunk(
 );
 export const getSingleAddress = createAsyncThunk(
   GET_ADDRESS,
-  async ({ addressId }, thunkAPI) => {
-    const { userId } = thunkAPI.getState().auth;
+  async ({addressId}, thunkAPI) => {
+    const {userId} = thunkAPI.getState().auth;
     const result = await Axios.get(
       `/api/customer-address/${userId}/${addressId}/`,
     );
@@ -41,8 +39,8 @@ export const getSingleAddress = createAsyncThunk(
 
 export const deleteAddress = createAsyncThunk(
   DELETE_ADDRESS,
-  async ({ addressId }, thunkAPI) => {
-    const { userId } = thunkAPI.getState().auth;
+  async ({addressId}, thunkAPI) => {
+    const {userId} = thunkAPI.getState().auth;
     const result = await Axios.delete(
       `/api/customer-address/${userId}/${addressId}/`,
     );
@@ -70,7 +68,7 @@ export const addAddress = createAsyncThunk(
     },
     thunkAPI,
   ) => {
-    const { userId } = thunkAPI.getState().auth;
+    const {userId} = thunkAPI.getState().auth;
     const result = await Axios.post(ApiEndpoints.address.addAddress, {
       latitude: lat,
       longitude: long,
@@ -106,9 +104,6 @@ export const setDefaultAddress = createAsyncThunk(
   },
 );
 
-
-
-
 export const updateAddress = createAsyncThunk(
   GET_ADDRESS,
   async (
@@ -126,7 +121,7 @@ export const updateAddress = createAsyncThunk(
     },
     thunkAPI,
   ) => {
-    const { userId } = thunkAPI.getState().auth;
+    const {userId} = thunkAPI.getState().auth;
     const result = await Axios.put(
       `/api/customer-address/${userId}/${addressId}/`,
       {
@@ -154,9 +149,9 @@ export const addressSlice = createSlice({
   name: 'address',
   initialState: null,
   reducers: {},
-  extraReducers: builder => { },
+  extraReducers: builder => {},
 });
 
-export const { } = addressSlice.actions;
+export const {} = addressSlice.actions;
 
 export default addressSlice.reducer;

@@ -1,25 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Pressable, Alert, ActivityIndicator } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  Pressable,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { showMessage } from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 
-import { Colors } from '../../../utils/Colors';
-import { styles } from './AddressScreen.styles';
-import { useGetAddressList } from '../../../hooks/address/useGetAddressList';
-import { Loader } from '../../../components/common/Loader';
-import { FONT_SIZES } from '../../../utils/FontSize';
-import { Font_Family } from '../../../utils/Fontfamily';
-import { useError } from '../../../context/ErrorProvider';
-import { deleteAddress, setDefaultAddress } from '../../../store/address/addressSlice';
-import { Button } from 'react-native-paper';
+import {Colors} from '../../../utils/Colors';
+import {styles} from './AddressScreen.styles';
+import {useGetAddressList} from '../../../hooks/address/useGetAddressList';
+import {Loader} from '../../../components/common/Loader';
+import {FONT_SIZES} from '../../../utils/FontSize';
+import {Font_Family} from '../../../utils/Fontfamily';
+import {useError} from '../../../context/ErrorProvider';
+import {
+  deleteAddress,
+  setDefaultAddress,
+} from '../../../store/address/addressSlice';
 
-export const AddressScreen = ({ navigation }) => {
+export const AddressScreen = ({navigation}) => {
   const [addressUpdatedList, setAddressUpdatedList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { addressList, loading } = useGetAddressList();
+  const {addressList, loading} = useGetAddressList();
 
   const dispatch = useDispatch();
   const setError = useError();
@@ -32,7 +41,7 @@ export const AddressScreen = ({ navigation }) => {
 
   const deleteHandler = async addressId => {
     try {
-      const res = await dispatch(deleteAddress({ addressId }));
+      const res = await dispatch(deleteAddress({addressId}));
       if (res) {
         setAddressUpdatedList(prevState => {
           const a = [...prevState];
@@ -60,16 +69,14 @@ export const AddressScreen = ({ navigation }) => {
 
   const onPressHandler = async addressId =>
     Alert.alert('Wait!', 'Are you sure you want to delete this address ?', [
-      { text: 'YES', onPress: () => deleteHandler(addressId) },
-      { text: 'NO' },
+      {text: 'YES', onPress: () => deleteHandler(addressId)},
+      {text: 'NO'},
     ]);
 
   const handleDefaultAddress = async addressId => {
     setIsLoading(true);
     try {
-      await dispatch(
-        setDefaultAddress({ addressId }),
-      ).unwrap();
+      await dispatch(setDefaultAddress({addressId})).unwrap();
       showMessage({
         message: 'Set Default Address .',
         type: 'default',
@@ -84,32 +91,44 @@ export const AddressScreen = ({ navigation }) => {
     } catch (e) {
       setError(e.message);
     }
-  }
+    setIsLoading(false);
+  };
 
-
-
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({item, index}) => (
     <Pressable
       key={item.id}
-      onPress={() => navigation.navigate('MapScreen', { addressId: item.id })}
-      style={[styles.addressCard, { marginTop: index === 0 ? 20 : 0 }]}>
+      onPress={() => navigation.navigate('MapScreen', {addressId: item.id})}
+      style={[styles.addressCard, {marginTop: index === 0 ? 20 : 0}]}>
       <View style={styles.titleStyles}>
         <Text style={styles.addressTitle}>📍 {item.address_type}</Text>
         <AntDesign name="arrowright" size={18} color={Colors.primary} />
       </View>
       <View style={styles.titleStyles}>
-        <Text style={[styles.addressText, { width: '90%' }]}>
+        <Text style={[styles.addressText, {width: '90%'}]}>
           {item.address1 + ', ' + item.address2} , {item.state}, {item.state},
           Pincode-{item.pincode}, {item.landmark}
         </Text>
         <Pressable
-          style={{ alignSelf: 'flex-end' }}
+          style={{alignSelf: 'flex-end'}}
           onPress={() => onPressHandler(item.id)}>
           <MaterialCommunityIcons name="delete" size={24} color={'#bd0620'} />
         </Pressable>
       </View>
-      <Button style={styles.addressBtn} loading={isLoading} onPress={() => handleDefaultAddress(item.id)} >Set As Default</Button>
-
+      {item.is_default ? (
+        <Text style={styles.addressBtn}>Primary Address</Text>
+      ) : isLoading ? (
+        <ActivityIndicator
+          color={Colors.primary}
+          size={'small'}
+          style={{alignSelf: 'flex-end', marginTop: 5}}
+        />
+      ) : (
+        <Text
+          style={styles.addressBtn}
+          onPress={() => handleDefaultAddress(item.id)}>
+          Set As Primary
+        </Text>
+      )}
     </Pressable>
   );
 
@@ -129,13 +148,13 @@ export const AddressScreen = ({ navigation }) => {
             <Text
               style={[
                 styles.addressTitle,
-                { textAlign: 'center', marginVertical: 30 },
+                {textAlign: 'center', marginVertical: 30},
               ]}>
               NO DATA
             </Text>
           )}
           <Pressable
-            onPress={() => navigation.navigate('MapScreen', { name: 'new' })}
+            onPress={() => navigation.navigate('MapScreen', {name: 'new'})}
             style={styles.fab}>
             <Ionicons name="add-outline" size={24} color="white" />
             <Text style={styles.addAddressText}> Add Address</Text>

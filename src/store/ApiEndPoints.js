@@ -27,5 +27,8 @@ export const ApiEndpoints = {
   },
   resturantDetail:{
     resturantDetails:'api/restaurant/STORE_ID/',
-  }
+  },
+  home: {
+    searchQuery: '/api/search/',
+  },
 };
