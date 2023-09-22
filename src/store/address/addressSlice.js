@@ -95,13 +95,10 @@ export const setDefaultAddress = createAsyncThunk(
   SET_DEFAULT_ADDRESS,
   async (
     { addressId }, thunkAPI) => {
-    console.log('addressId-', addressId)
     const result = await Axios.post(
       `/api/set_default_address/${addressId}/`
     );
-    console.log('-setAddress-->>', result)
     if (result.data.status === 'ok') {
-      console.log("result.data",result.data);
       return thunkAPI.fulfillWithValue(result.data.response);
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));

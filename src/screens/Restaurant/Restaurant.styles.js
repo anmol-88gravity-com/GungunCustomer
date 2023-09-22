@@ -32,6 +32,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.eighteen,
     color: Colors.primary,
     margin: 15,
+    textTransform:'capitalize'
   },
   foodCard: {
     padding: 10,

@@ -48,6 +48,7 @@ export const styles = StyleSheet.create({
   textAddress: {
     bottom: Platform.OS === 'ios' ? 15 : 20,
     left: '7%', fontFamily: Font_Family.light, fontSize: FONT_SIZES.tweleve,
+    textTransform:'capitalize'
 
   },
 

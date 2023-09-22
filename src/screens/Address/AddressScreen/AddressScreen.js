@@ -66,7 +66,6 @@ export const AddressScreen = ({ navigation }) => {
 
   const handleDefaultAddress = async addressId => {
     setIsLoading(true);
-    console.log("addressIdaddressId", addressId);
     try {
       await dispatch(
         setDefaultAddress({ addressId }),
@@ -109,7 +108,7 @@ export const AddressScreen = ({ navigation }) => {
           <MaterialCommunityIcons name="delete" size={24} color={'#bd0620'} />
         </Pressable>
       </View>
-      <Button style={styles.addressBtn}  loading={isLoading} onPress={() => handleDefaultAddress(item.id)} >Set As Default</Button>
+      <Button style={styles.addressBtn} loading={isLoading} onPress={() => handleDefaultAddress(item.id)} >Set As Default</Button>
 
     </Pressable>
   );
