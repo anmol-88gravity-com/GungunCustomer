@@ -66,6 +66,7 @@ export const RestaurantScreen = ({ navigation }) => {
             selected === item.id ? Font_Family.semiBold : Font_Family.regular,
           fontSize: FONT_SIZES.fifteen,
           color: selected === item.id ? Colors.primary : Colors.black,
+          textTransform:'capitalize'
         }}>
         {item?.category_name}
       </Text>
