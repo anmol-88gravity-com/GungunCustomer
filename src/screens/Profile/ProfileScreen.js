@@ -37,7 +37,7 @@ import {
 
 import {styles} from './ProfileScreen.styles';
 import {Colors} from '../../utils/Colors';
-import {useGetProfileData} from '../../hooks/profile/useGetProfileData';
+import {useGetProfileData} from '../../hooks';
 import {updateUserProfile} from '../../store/user/userSlice';
 import {useError} from '../../context/ErrorProvider';
 import {FONT_SIZES} from '../../utils/FontSize';

@@ -3,24 +3,21 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 
 import {useError} from '../../context/ErrorProvider';
-import { getResturantDetails } from '../../store/resturantDetails/resturantDetailsSlice';
+import {getRestaurantDetails} from '../../store/restaurant/resturantDetailsSlice';
 
-
-
-export const useGetRestaurantDetails = () => {
+export const useGetRestaurantDetails = ({restaurantId}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const setError = useError();
 
   const [loading, setLoading] = useState(true);
-  const [resturantDetails, setResturantDetails] = useState();
- 
+  const [restaurantDetails, setRestaurantDetails] = useState();
 
-  const getResturantDetail = async () => {
+  const getRestaurantDetail = async () => {
     try {
-      const res = await dispatch(getResturantDetails()).unwrap();
+      const res = await dispatch(getRestaurantDetails({restaurantId})).unwrap();
       if (res) {
-        setResturantDetails(res);
+        setRestaurantDetails(res);
         setLoading(false);
       }
     } catch (e) {
@@ -31,12 +28,12 @@ export const useGetRestaurantDetails = () => {
 
   useEffect(() => {
     return navigation.addListener('focus', () => {
-        getResturantDetail();
+      getRestaurantDetail();
     });
   }, [navigation]);
 
   return {
-    resturantDetails,
+    restaurantDetails,
     loading,
   };
 };

@@ -8,7 +8,7 @@ import {showMessage} from 'react-native-flash-message';
 
 import {Colors} from '../../../utils/Colors';
 import {styles} from './AddressScreen.styles';
-import {useGetAddressList} from '../../../hooks/address/useGetAddressList';
+import {useGetAddressList} from '../../../hooks';
 import {Loader} from '../../../components/common/Loader';
 import {FONT_SIZES} from '../../../utils/FontSize';
 import {Font_Family} from '../../../utils/Fontfamily';

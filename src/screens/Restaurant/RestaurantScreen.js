@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
-import { View, Text, Image, Pressable, FlatList, Modal } from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, Image, Pressable, FlatList, Modal} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Divider, FAB, Switch, TextInput } from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Divider, FAB, Switch, TextInput} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import { FONT_SIZES } from '../../utils/FontSize';
-import { Font_Family } from '../../utils/Fontfamily';
-import { Colors } from '../../utils/Colors';
-import { ModalComponent } from '../Dashboard/HomeScreen/components';
-import { AllCategories } from '../../data/AllCategories';
-import { styles } from './Restaurant.styles';
-import { useGetRestaurantDetails } from '../../hooks/resturantDetails/useGetRestaurantDetails';
+import {FONT_SIZES} from '../../utils/FontSize';
+import {Font_Family} from '../../utils/Fontfamily';
+import {Colors} from '../../utils/Colors';
+import {ModalComponent} from '../Dashboard/HomeScreen/components';
+import {AllCategories} from '../../data/AllCategories';
+import {styles} from './Restaurant.styles';
 import Config from '../../config';
-import { Loader } from '../../components/common/Loader';
+import {Loader} from '../../components/common/Loader';
+import {useGetRestaurantDetails} from '../../hooks';
 
-export const RestaurantScreen = ({ navigation, route }) => {
-  const { restaurantId } = route.params;
-  const { resturantDetails, loading } = useGetRestaurantDetails(restaurantId);
-  const MenuList = resturantDetails?.menu;
-
-  // console.log('MenuList---', MenuList)
+export const RestaurantScreen = ({navigation, route}) => {
+  const {restaurantId} = route.params;
+  const {restaurantDetails, loading} = useGetRestaurantDetails({restaurantId});
+  const MenuList = restaurantDetails?.menu;
 
   const [isVegSwitchOn, setIsVegSwitchOn] = useState(false);
   const [isNonVegSwitchOn, setIsNonVegSwitchOn] = useState(false);
@@ -32,28 +30,30 @@ export const RestaurantScreen = ({ navigation, route }) => {
 
   const handleToggleVegSwitch = () => {
     setIsVegSwitchOn(!isVegSwitchOn);
-    setIsNonVegSwitchOn(false)
+    setIsNonVegSwitchOn(false);
   };
 
   const handleToggleNonVegSwitch = () => {
     setIsNonVegSwitchOn(!isNonVegSwitchOn);
     setIsVegSwitchOn(false);
-
   };
 
-  const Item = ({ dishes, categoryName }) => {
-
-    const filteredDishes = dishes.filter(item => {
-      if (isVegSwitchOn && isNonVegSwitchOn) {
-        return true;
-      } else if (isVegSwitchOn) {
-        return item.dish_type === 'V';
-      } else if (isNonVegSwitchOn) {
-        return item.dish_type === 'N';
-      } else {
-        return dishes;
-      }
-    }).filter(item => item.dish_name.toLowerCase().includes(searchText.toLowerCase()));;
+  const Item = ({dishes, categoryName}) => {
+    const filteredDishes = dishes
+      .filter(item => {
+        if (isVegSwitchOn && isNonVegSwitchOn) {
+          return true;
+        } else if (isVegSwitchOn) {
+          return item.dish_type === 'V';
+        } else if (isNonVegSwitchOn) {
+          return item.dish_type === 'N';
+        } else {
+          return dishes;
+        }
+      })
+      .filter(item =>
+        item.dish_name.toLowerCase().includes(searchText.toLowerCase()),
+      );
     return (
       <View>
         <Text style={styles.categoryName}>{categoryName}</Text>
@@ -61,11 +61,10 @@ export const RestaurantScreen = ({ navigation, route }) => {
           <Pressable
             style={styles.foodCard}
             onPress={() => setIsModalVisible(true)}
-            key={item.id}
-          >
+            key={item.id}>
             <View style={styles.cardInnerContainer}>
               <Image
-                source={{ uri: Config.API_URL + item?.dish_image }}
+                source={{uri: Config.API_URL + item?.dish_image}}
                 style={styles.foodImage}
               />
               <View style={styles.foodRowStyles}>
@@ -90,11 +89,10 @@ export const RestaurantScreen = ({ navigation, route }) => {
           </Pressable>
         ))}
       </View>
-
-    )
+    );
   };
 
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({item, index}) => (
     <Pressable key={index} style={styles.menuItem}>
       <Text
         style={{
@@ -102,7 +100,7 @@ export const RestaurantScreen = ({ navigation, route }) => {
             selected === item.id ? Font_Family.semiBold : Font_Family.regular,
           fontSize: FONT_SIZES.fifteen,
           color: selected === item.id ? Colors.primary : Colors.black,
-          textTransform: 'capitalize'
+          textTransform: 'capitalize',
         }}>
         {item?.category_name}
       </Text>
@@ -119,104 +117,120 @@ export const RestaurantScreen = ({ navigation, route }) => {
   );
 
   return (
-
-
     <SafeAreaView edges={['top', 'bottom']} style={styles.container}>
-      {loading ? (<Loader />) : (<FlatList
-        data={MenuList}
-        renderItem={({ item }) => (
-          <Item dishes={item.dishes} categoryName={item.category_name} />
-        )}
-        keyExtractor={item => item.id}
-        style={styles.flatListStyles}
-        ListHeaderComponent={() => {
-          return (
-            <>
-              <View style={styles.restaurantCard}>
-                <View style={styles.restaurantRowStyles}>
-                  <Pressable onPress={() => navigation.goBack()}>
-                    <MaterialCommunityIcons
-                      name="arrow-left"
-                      size={24}
-                      color="black"
-                    />
-                  </Pressable>
-                  <View style={styles.restaurantIcons}>
-                    <Ionicons name="heart-outline" size={24} color="black" />
-                    <Ionicons name="share-social" size={24} color="black" />
+      {loading ? (
+        <Loader />
+      ) : (
+        <FlatList
+          data={MenuList}
+          renderItem={({item}) => (
+            <Item dishes={item.dishes} categoryName={item.category_name} />
+          )}
+          keyExtractor={item => item.id}
+          style={styles.flatListStyles}
+          ListHeaderComponent={() => {
+            return (
+              <>
+                <View style={styles.restaurantCard}>
+                  <View style={styles.restaurantRowStyles}>
+                    <Pressable onPress={() => navigation.goBack()}>
+                      <MaterialCommunityIcons
+                        name="arrow-left"
+                        size={24}
+                        color="black"
+                      />
+                    </Pressable>
+                    <View style={styles.restaurantIcons}>
+                      <Ionicons name="heart-outline" size={24} color="black" />
+                      <Ionicons name="share-social" size={24} color="black" />
+                    </View>
                   </View>
-                </View>
-                <View style={styles.innerCard}>
-                  <Text style={styles.restaurantName}>
-                    {resturantDetails?.store_name}
-                  </Text>
-                  <View style={styles.rowStyles}>
-                    <Image
-                      source={require('../../assets/icons/timer.png')}
-                      style={styles.timerStyles}
-                    />
-                    <Text style={styles.distanceText}>
-                      {' '}
-                      {resturantDetails?.time} min · {resturantDetails?.distance} KM ⏐ {resturantDetails?.address?.address1 + " " + resturantDetails?.address?.address2}
+                  <View style={styles.innerCard}>
+                    <Text style={styles.restaurantName}>
+                      {restaurantDetails?.store_name}
+                    </Text>
+                    <View style={styles.rowStyles}>
+                      <Image
+                        source={require('../../assets/icons/timer.png')}
+                        style={styles.timerStyles}
+                      />
+                      <Text style={styles.distanceText}>
+                        {' '}
+                        {restaurantDetails?.time} min ·{' '}
+                        {restaurantDetails?.distance} KM ⏐{' '}
+                        {restaurantDetails?.address?.address1 +
+                          ' ' +
+                          restaurantDetails?.address?.address2}
+                      </Text>
+                    </View>
+                    <View style={styles.ratingRow}>
+                      <View style={styles.ratingBox}>
+                        <Text style={styles.rating}>4.2 </Text>
+                        <Ionicons
+                          name="star"
+                          size={15}
+                          color={Colors.secondary}
+                        />
+                      </View>
+                      <Text style={styles.totalRating}>
+                        {' '}
+                        {restaurantDetails?.average_rating}K Rating
+                      </Text>
+                    </View>
+                    <Text
+                      style={[
+                        styles.restaurantCategory,
+                        {textTransform: 'capitalize'},
+                      ]}>
+                      {MenuList &&
+                        MenuList.slice(0, 3)
+                          .map(item => item.category_name)
+                          .join(' · ')}
                     </Text>
                   </View>
-                  <View style={styles.ratingRow}>
-                    <View style={styles.ratingBox}>
-                      <Text style={styles.rating}>4.2 </Text>
-                      <Ionicons
-                        name="star"
-                        size={15}
-                        color={Colors.secondary}
+                </View>
+                <View>
+                  <Text style={styles.menuText}>Menu</Text>
+                  <View style={{marginHorizontal: 10}}>
+                    <TextInput
+                      style={styles.searchBarStyles}
+                      placeholder="Search here"
+                      placeholderTextColor="#808080"
+                      mode={'outlined'}
+                      outlineStyle={{borderColor: '#cdcdcd'}}
+                      theme={{roundness: 15}}
+                      activeOutlineColor={Colors.primary}
+                      left={
+                        <TextInput.Icon icon="search1" color={Colors.primary} />
+                      }
+                      value={searchText}
+                      onChangeText={text => setSearchText(text)}
+                    />
+                  </View>
+                  <View style={styles.filterRow}>
+                    <View style={styles.vegRow}>
+                      <Text style={styles.vegText}>Veg Only</Text>
+                      <Switch
+                        value={isVegSwitchOn}
+                        onValueChange={handleToggleVegSwitch}
+                        color={'#296c07'}
                       />
                     </View>
-                    <Text style={styles.totalRating}> {resturantDetails?.average_rating}K Rating</Text>
-                  </View>
-                  <Text style={[styles.restaurantCategory, { textTransform: 'capitalize' }]}>
-                    {MenuList && MenuList.slice(0, 3).map((item) => item.category_name).join(" · ")}
-                  </Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.menuText}>Menu</Text>
-                <View style={{ marginHorizontal: 10 }}>
-                  <TextInput
-                    style={styles.searchBarStyles}
-                    placeholder="Search here"
-                    placeholderTextColor="#808080"
-                    mode={'outlined'}
-                    outlineStyle={{ borderColor: '#cdcdcd' }}
-                    theme={{ roundness: 15 }}
-                    activeOutlineColor={Colors.primary}
-                    left={
-                      <TextInput.Icon icon="search1" color={Colors.primary} />
-                    }
-                    value={searchText}
-                    onChangeText={text => setSearchText(text)}
-                  />
-                </View>
-                <View style={styles.filterRow}>
-                  <View style={styles.vegRow}>
-                    <Text style={styles.vegText}>Veg Only</Text>
-                    <Switch
-                      value={isVegSwitchOn}
-                      onValueChange={handleToggleVegSwitch}
-                      color={'#296c07'}
-                    />
-                  </View>
-                  <View style={styles.nonVegRow}>
-                    <Text style={styles.nonVegText}>Non-Veg Only</Text>
-                    <Switch
-                      value={isNonVegSwitchOn}
-                      onValueChange={handleToggleNonVegSwitch}
-                      color={'#a90404'}
-                    />
+                    <View style={styles.nonVegRow}>
+                      <Text style={styles.nonVegText}>Non-Veg Only</Text>
+                      <Switch
+                        value={isNonVegSwitchOn}
+                        onValueChange={handleToggleNonVegSwitch}
+                        color={'#a90404'}
+                      />
+                    </View>
                   </View>
                 </View>
-              </View>
-            </>
-          );
-        }}
-      />)}
+              </>
+            );
+          }}
+        />
+      )}
 
       <FAB
         onPress={() => setVisible(true)}
@@ -231,7 +245,6 @@ export const RestaurantScreen = ({ navigation, route }) => {
         isVisible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
       />
-
 
       <Modal
         animationType="fade"
@@ -249,7 +262,7 @@ export const RestaurantScreen = ({ navigation, route }) => {
             <View style={styles.menuInnerModel}>
               <Text style={styles.modelHeading}>Menu</Text>
               <Pressable
-                style={{ paddingHorizontal: 5 }}
+                style={{paddingHorizontal: 5}}
                 onPress={() => {
                   setVisible(!visible);
                 }}>
@@ -266,8 +279,6 @@ export const RestaurantScreen = ({ navigation, route }) => {
           </View>
         </Pressable>
       </Modal>
-
-
     </SafeAreaView>
   );
 };

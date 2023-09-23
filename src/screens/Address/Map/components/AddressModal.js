@@ -15,13 +15,12 @@ import {Colors} from '../../../../utils/Colors';
 import {useError} from '../../../../context/ErrorProvider';
 import {FONT_SIZES} from '../../../../utils/FontSize';
 import {Font_Family} from '../../../../utils/Fontfamily';
-import {useGetSingleAddress} from '../../../../hooks/address/useGetSingleAddress';
+import {useGetSingleAddress, useKeyboard} from '../../../../hooks';
 import {Loader} from '../../../../components/common/Loader';
 import {
   addAddress,
   updateAddress,
 } from '../../../../store/address/addressSlice';
-import {useKeyboard} from '../../../../hooks/useKeyboard';
 
 export const AddressModal = ({open, onClose, addressId}) => {
   const [addressTitle, setAddressTitle] = useState('');
