@@ -23,36 +23,65 @@ export const RestaurantScreen = ({ navigation, route }) => {
 
   // console.log('MenuList---', MenuList)
 
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  const [isVegSwitchOn, setIsVegSwitchOn] = useState(false);
+  const [isNonVegSwitchOn, setIsNonVegSwitchOn] = useState(false);
+  const [searchText, setSearchText] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(3);
 
+  const handleToggleVegSwitch = () => {
+    setIsVegSwitchOn(!isVegSwitchOn);
+    setIsNonVegSwitchOn(false)
+  };
+
+  const handleToggleNonVegSwitch = () => {
+    setIsNonVegSwitchOn(!isNonVegSwitchOn);
+    setIsVegSwitchOn(false);
+
+  };
 
   const Item = ({ dishes, categoryName }) => {
-    const filteredDishes = isSwitchOn ? dishes.filter(item => item.dish_type === "V") : dishes;
+
+    const filteredDishes = dishes.filter(item => {
+      if (isVegSwitchOn && isNonVegSwitchOn) {
+        return true;
+      } else if (isVegSwitchOn) {
+        return item.dish_type === 'V';
+      } else if (isNonVegSwitchOn) {
+        return item.dish_type === 'N';
+      } else {
+        return dishes;
+      }
+    }).filter(item => item.dish_name.toLowerCase().includes(searchText.toLowerCase()));;
     return (
       <View>
         <Text style={styles.categoryName}>{categoryName}</Text>
         {filteredDishes.map(item => (
           <Pressable
             style={styles.foodCard}
-            onPress={() => setIsModalVisible(true)}>
+            onPress={() => setIsModalVisible(true)}
+            key={item.id}
+          >
             <View style={styles.cardInnerContainer}>
               <Image
                 source={{ uri: Config.API_URL + item?.dish_image }}
                 style={styles.foodImage}
               />
               <View style={styles.foodRowStyles}>
-                {item?.dish_type === "V" ? <MaterialCommunityIcons
-                  name="square-circle"
-                  size={20}
-                  color={Colors.green}
-                /> : <MaterialCommunityIcons
-                  name="square-circle"
-                  size={20}
-                  color={Colors.red}
-                />}
+                {item?.dish_type === 'V' ? (
+                  <MaterialCommunityIcons
+                    name="square-circle"
+                    size={20}
+                    color={Colors.green}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="square-circle"
+                    size={20}
+                    color={Colors.red}
+                  />
+                )}
 
                 <Text style={styles.foodName}>{item.dish_name}</Text>
                 <Text style={styles.foodPrice}>₹ {item.dish_price}</Text>
@@ -161,25 +190,24 @@ export const RestaurantScreen = ({ navigation, route }) => {
                     left={
                       <TextInput.Icon icon="search1" color={Colors.primary} />
                     }
-
-
+                    value={searchText}
+                    onChangeText={text => setSearchText(text)}
                   />
                 </View>
                 <View style={styles.filterRow}>
                   <View style={styles.vegRow}>
                     <Text style={styles.vegText}>Veg Only</Text>
                     <Switch
-                      value={isSwitchOn}
-                      onValueChange={() => setIsSwitchOn(!isSwitchOn)}
+                      value={isVegSwitchOn}
+                      onValueChange={handleToggleVegSwitch}
                       color={'#296c07'}
                     />
                   </View>
                   <View style={styles.nonVegRow}>
                     <Text style={styles.nonVegText}>Non-Veg Only</Text>
                     <Switch
-                      // value={isSwitchOn}
-                      // // onValueChange={onToggleSwitch}
-                      // onValueChange={() => setIsSwitchOn(!isSwitchOn)}
+                      value={isNonVegSwitchOn}
+                      onValueChange={handleToggleNonVegSwitch}
                       color={'#a90404'}
                     />
                   </View>
