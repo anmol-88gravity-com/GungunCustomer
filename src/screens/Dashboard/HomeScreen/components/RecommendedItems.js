@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, FlatList, ScrollView, Pressable } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Image, FlatList, ScrollView, Pressable} from 'react-native';
 
-import { styles } from '../HomeScreen.styles';
+import {styles} from '../HomeScreen.styles';
 import Config from '../../../../config';
-import { FONT_SIZES } from '../../../../utils/FontSize';
-import { Font_Family } from '../../../../utils/Fontfamily';
-import { useGetCategorizedFoodtype } from '../../../../hooks/home/category/useGetCategorizedFoodtype';
+import {FONT_SIZES} from '../../../../utils/FontSize';
+import {Font_Family} from '../../../../utils/Fontfamily';
 
-export const RecommendedItems = ({ onPressHandler }) => {
+export const RecommendedItems = ({onPressHandler, foodType}) => {
   const [foodTypeData, setFoodTypeData] = useState([]);
-  const { foodType, loading } = useGetCategorizedFoodtype();
-
 
   useEffect(() => {
     if (foodType && foodType.length > 0) {
@@ -20,7 +17,7 @@ export const RecommendedItems = ({ onPressHandler }) => {
 
   return (
     <ScrollView
-      style={{ paddingVertical: 20 }}
+      style={{paddingVertical: 20}}
       horizontal
       showsHorizontalScrollIndicator={false}>
       <FlatList
@@ -28,15 +25,15 @@ export const RecommendedItems = ({ onPressHandler }) => {
         contentContainerStyle={{
           alignSelf: 'flex-start',
         }}
-        ItemSeparatorComponent={({ highlighted }) => (
-          <View style={[highlighted && { marginLeft: 0 }]} />
+        ItemSeparatorComponent={({highlighted}) => (
+          <View style={[highlighted && {marginLeft: 0}]} />
         )}
         // numColumns={Math.ceil(foodTypeData.length / 2)}
         numColumns={5}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         data={foodTypeData}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <Pressable
             onPress={() => onPressHandler(item.food_name)}
             style={{
@@ -47,9 +44,9 @@ export const RecommendedItems = ({ onPressHandler }) => {
               marginRight: 5,
               width: 100,
             }}>
-            <View style={{ height: 60, width: 60, marginVertical: 5 }}>
+            <View style={{height: 60, width: 60, marginVertical: 5}}>
               <Image
-                source={{ uri: Config.API_URL + item?.food_image }}
+                source={{uri: Config.API_URL + item?.food_image}}
                 style={styles.recomendImg}
               />
             </View>

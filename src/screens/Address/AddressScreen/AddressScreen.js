@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  Pressable,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import {Alert, FlatList, Pressable, Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useDispatch} from 'react-redux';
@@ -75,21 +68,47 @@ export const AddressScreen = ({navigation}) => {
 
   const handleDefaultAddress = async addressId => {
     setIsLoading(true);
-    try {
-      await dispatch(setDefaultAddress({addressId})).unwrap();
-      showMessage({
-        message: 'Set Default Address .',
-        type: 'default',
-        backgroundColor: Colors.secondary,
-        color: Colors.white,
-        textStyle: {
-          fontSize: FONT_SIZES.fifteen,
-          fontFamily: Font_Family.medium,
-        },
-      });
-      setIsLoading(false);
-    } catch (e) {
-      setError(e.message);
+    const a = addressUpdatedList.find(d => d.id === addressId);
+    if (a) {
+      if (a.is_default === true) {
+        showMessage({
+          message: 'Already a primary address',
+          type: 'default',
+          backgroundColor: Colors.secondary,
+          color: Colors.white,
+          textStyle: {
+            fontSize: FONT_SIZES.fifteen,
+            fontFamily: Font_Family.medium,
+          },
+        });
+      } else {
+        try {
+          const res = await dispatch(setDefaultAddress({addressId})).unwrap();
+          if (res) {
+            setAddressUpdatedList(prevState => {
+              const list = [...prevState];
+              return list.map(val =>
+                val.id === addressId
+                  ? {...val, is_default: true}
+                  : {...val, is_default: false},
+              );
+            });
+          }
+          showMessage({
+            message: 'Primary Address Updated.',
+            type: 'default',
+            backgroundColor: Colors.secondary,
+            color: Colors.white,
+            textStyle: {
+              fontSize: FONT_SIZES.fifteen,
+              fontFamily: Font_Family.medium,
+            },
+          });
+          setIsLoading(false);
+        } catch (e) {
+          setError(e.message);
+        }
+      }
     }
     setIsLoading(false);
   };
@@ -97,11 +116,16 @@ export const AddressScreen = ({navigation}) => {
   const renderItem = ({item, index}) => (
     <Pressable
       key={item.id}
-      onPress={() => navigation.navigate('MapScreen', {addressId: item.id})}
       style={[styles.addressCard, {marginTop: index === 0 ? 20 : 0}]}>
       <View style={styles.titleStyles}>
         <Text style={styles.addressTitle}>📍 {item.address_type}</Text>
-        <AntDesign name="arrowright" size={18} color={Colors.primary} />
+        <AntDesign
+          name="arrowright"
+          size={18}
+          color={Colors.primary}
+          style={{paddingHorizontal: 10}}
+          onPress={() => navigation.navigate('MapScreen', {addressId: item.id})}
+        />
       </View>
       <View style={styles.titleStyles}>
         <Text style={[styles.addressText, {width: '90%'}]}>
@@ -114,21 +138,11 @@ export const AddressScreen = ({navigation}) => {
           <MaterialCommunityIcons name="delete" size={24} color={'#bd0620'} />
         </Pressable>
       </View>
-      {item.is_default ? (
-        <Text style={styles.addressBtn}>Primary Address</Text>
-      ) : isLoading ? (
-        <ActivityIndicator
-          color={Colors.primary}
-          size={'small'}
-          style={{alignSelf: 'flex-end', marginTop: 5}}
-        />
-      ) : (
-        <Text
-          style={styles.addressBtn}
-          onPress={() => handleDefaultAddress(item.id)}>
-          Set As Primary
-        </Text>
-      )}
+      <Text
+        style={styles.addressBtn}
+        onPress={() => handleDefaultAddress(item.id)}>
+        {item.is_default ? 'Primary Address' : 'Set As Primary'}
+      </Text>
     </Pressable>
   );
 
