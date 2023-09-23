@@ -9,54 +9,65 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { FONT_SIZES } from '../../utils/FontSize';
 import { Font_Family } from '../../utils/Fontfamily';
 import { Colors } from '../../utils/Colors';
-import { MenuList } from '../../data/menuList';
 import { ModalComponent } from '../Dashboard/HomeScreen/components';
 import { AllCategories } from '../../data/AllCategories';
 import { styles } from './Restaurant.styles';
 import { useGetRestaurantDetails } from '../../hooks/resturantDetails/useGetRestaurantDetails';
 import Config from '../../config';
 import { Loader } from '../../components/common/Loader';
+
 export const RestaurantScreen = ({ navigation }) => {
+
   const { resturantDetails, loading } = useGetRestaurantDetails('10');
   const MenuList = resturantDetails?.menu;
 
+  // console.log('MenuList---', MenuList)
 
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(3);
 
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const onToggleSwitch = () => {
+    setIsSwitchOn(!isSwitchOn);
 
-  const Item = ({ dishes, categoryName }) => (
-    <View>
-      <Text style={styles.categoryName}>{categoryName}</Text>
-      {dishes.map(item => (
-        <Pressable
-          style={styles.foodCard}
-          onPress={() => setIsModalVisible(true)}>
-          <View style={styles.cardInnerContainer}>
-            <Image
-              source={{ uri: Config.API_URL + item?.dish_image }}
-              style={styles.foodImage}
-            />
-            <View style={styles.foodRowStyles}>
-              <MaterialCommunityIcons
-                name="square-circle"
-                size={20}
-                color={Colors.green}
+  }
+
+  const Item = ({ dishes, categoryName }) => {
+    const filteredDishes = isSwitchOn ? dishes.filter(item => item.dish_type === "V") : dishes;
+    return (
+      <View>
+        <Text style={styles.categoryName}>{categoryName}</Text>
+        {filteredDishes.map(item => (
+          <Pressable
+            style={styles.foodCard}
+            onPress={() => setIsModalVisible(true)}>
+            <View style={styles.cardInnerContainer}>
+              <Image
+                source={{ uri: Config.API_URL + item?.dish_image }}
+                style={styles.foodImage}
               />
-              <Text style={styles.foodName}>{item.dish_name}</Text>
-              <Text style={styles.foodPrice}>₹ {item.dish_price}</Text>
+              <View style={styles.foodRowStyles}>
+                {item?.dish_type === "V" ? <MaterialCommunityIcons
+                  name="square-circle"
+                  size={20}
+                  color={Colors.green}
+                /> : <MaterialCommunityIcons
+                  name="square-circle"
+                  size={20}
+                  color={Colors.red}
+                />}
+
+                <Text style={styles.foodName}>{item.dish_name}</Text>
+                <Text style={styles.foodPrice}>₹ {item.dish_price}</Text>
+              </View>
             </View>
-          </View>
-          <Text style={styles.foodDescription} numberOfLines={1}>
-            {item.dish_description}
-          </Text>
-        </Pressable>
-      ))}
-    </View>
-  );
+          </Pressable>
+        ))}
+      </View>
+
+    )
+  };
 
   const renderItem = ({ item, index }) => (
     <Pressable key={index} style={styles.menuItem}>
@@ -66,7 +77,7 @@ export const RestaurantScreen = ({ navigation }) => {
             selected === item.id ? Font_Family.semiBold : Font_Family.regular,
           fontSize: FONT_SIZES.fifteen,
           color: selected === item.id ? Colors.primary : Colors.black,
-          textTransform:'capitalize'
+          textTransform: 'capitalize'
         }}>
         {item?.category_name}
       </Text>
@@ -112,7 +123,7 @@ export const RestaurantScreen = ({ navigation }) => {
                 </View>
                 <View style={styles.innerCard}>
                   <Text style={styles.restaurantName}>
-                    Tossin Pizza & Pasta
+                    {resturantDetails?.store_name}
                   </Text>
                   <View style={styles.rowStyles}>
                     <Image
@@ -121,7 +132,7 @@ export const RestaurantScreen = ({ navigation }) => {
                     />
                     <Text style={styles.distanceText}>
                       {' '}
-                      30-40 min · 1.2 KM ⏐ DLF Phase 5
+                      {resturantDetails?.time} min · {resturantDetails?.distance} KM ⏐ {resturantDetails?.address?.address1 + " " + resturantDetails?.address?.address2}
                     </Text>
                   </View>
                   <View style={styles.ratingRow}>
@@ -133,10 +144,10 @@ export const RestaurantScreen = ({ navigation }) => {
                         color={Colors.secondary}
                       />
                     </View>
-                    <Text style={styles.totalRating}> 2.4K Rating</Text>
+                    <Text style={styles.totalRating}> {resturantDetails?.average_rating}K Rating</Text>
                   </View>
-                  <Text style={styles.restaurantCategory}>
-                    Asian · Oriental · Thai
+                  <Text style={[styles.restaurantCategory, { textTransform: 'capitalize' }]}>
+                    {MenuList.slice(0, 3).map((item) => item.category_name).join(" · ")}
                   </Text>
                 </View>
               </View>
@@ -154,6 +165,8 @@ export const RestaurantScreen = ({ navigation }) => {
                     left={
                       <TextInput.Icon icon="search1" color={Colors.primary} />
                     }
+
+
                   />
                 </View>
                 <View style={styles.filterRow}>
@@ -161,7 +174,7 @@ export const RestaurantScreen = ({ navigation }) => {
                     <Text style={styles.vegText}>Veg Only</Text>
                     <Switch
                       value={isSwitchOn}
-                      onValueChange={onToggleSwitch}
+                      onValueChange={() => setIsSwitchOn(!isSwitchOn)}
                       color={'#296c07'}
                     />
                   </View>
