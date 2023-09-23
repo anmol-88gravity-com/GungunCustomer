@@ -4,17 +4,16 @@ import {FONT_SIZES} from '../../../utils/FontSize';
 import {Colors} from '../../../utils/Colors';
 
 export const styles = StyleSheet.create({
-  maincontainer: {
-    flexGrow: 1,
+  mainContainer: {
+    flex: 1,
     backgroundColor: '#FFFFFF',
   },
   container: {
     flex: 1,
+    marginTop: 10,
   },
   searchView: {
     marginHorizontal: 10,
-    marginTop: Platform.OS === 'ios' ? 0 : '5%',
-    bottom: '50%',
   },
   input: {
     backgroundColor: 'white',
@@ -34,11 +33,18 @@ export const styles = StyleSheet.create({
   },
 
   title: {
-    marginVertical: '5%',
     fontSize: FONT_SIZES.fifteen,
     fontFamily: Font_Family.semiBold,
-    color: '#000000',
+    color: '#000',
     textTransform: 'capitalize',
+    marginBottom: 5,
+  },
+  addressTitle: {
+    fontSize: FONT_SIZES.fifteen,
+    fontFamily: Font_Family.semiBold,
+    color: Colors.secondary,
+    textTransform: 'capitalize',
+    marginBottom: 5,
   },
   resturantPlaceTitle: {
     fontFamily: Font_Family.regular,
@@ -46,10 +52,10 @@ export const styles = StyleSheet.create({
     color: Colors.black,
   },
   textAddress: {
-    bottom: Platform.OS === 'ios' ? 15 : 20,
-    left: '7%', fontFamily: Font_Family.light, fontSize: FONT_SIZES.tweleve,
-    textTransform:'capitalize'
-
+    fontFamily: Font_Family.light,
+    fontSize: FONT_SIZES.tweleve,
+    textTransform: 'capitalize',
+    flexShrink: 1,
   },
 
   resturantPlacesView: {

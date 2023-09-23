@@ -10,7 +10,6 @@ export const getDataOnYourMind = createAsyncThunk(
   GET_FOOD_TYPE,
   async (_, thunkAPI) => {
     const result = await Axios.get(ApiEndpoints.categoryFoodType.foodType);
-    console.log('foodData---',result)
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue(result.data.response);
     } else {
