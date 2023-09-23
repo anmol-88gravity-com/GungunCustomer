@@ -9,53 +9,68 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {FONT_SIZES} from '../../utils/FontSize';
 import {Font_Family} from '../../utils/Fontfamily';
 import {Colors} from '../../utils/Colors';
-import {MenuList} from '../../data/menuList';
 import {ModalComponent} from '../Dashboard/HomeScreen/components';
 import {AllCategories} from '../../data/AllCategories';
 import {styles} from './Restaurant.styles';
 import {useGetRestaurantDetails} from '../../hooks/resturantDetails/useGetRestaurantDetails';
 import Config from '../../config';
 import {Loader} from '../../components/common/Loader';
+
 export const RestaurantScreen = ({navigation}) => {
   const {resturantDetails, loading} = useGetRestaurantDetails('10');
   const MenuList = resturantDetails?.menu;
+
+  // console.log('MenuList---', MenuList)
 
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(3);
 
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const onToggleSwitch = () => {
+    setIsSwitchOn(!isSwitchOn);
+  };
 
-  const Item = ({dishes, categoryName}) => (
-    <View>
-      <Text style={styles.categoryName}>{categoryName}</Text>
-      {dishes.map(item => (
-        <Pressable
-          style={styles.foodCard}
-          onPress={() => setIsModalVisible(true)}>
-          <View style={styles.cardInnerContainer}>
-            <Image
-              source={{uri: Config.API_URL + item?.dish_image}}
-              style={styles.foodImage}
-            />
-            <View style={styles.foodRowStyles}>
-              <MaterialCommunityIcons
-                name="square-circle"
-                size={20}
-                color={Colors.green}
+  const Item = ({dishes, categoryName}) => {
+    const filteredDishes = isSwitchOn
+      ? dishes.filter(item => item.dish_type === 'V')
+      : dishes;
+    return (
+      <View>
+        <Text style={styles.categoryName}>{categoryName}</Text>
+        {filteredDishes.map(item => (
+          <Pressable
+            style={styles.foodCard}
+            onPress={() => setIsModalVisible(true)}>
+            <View style={styles.cardInnerContainer}>
+              <Image
+                source={{uri: Config.API_URL + item?.dish_image}}
+                style={styles.foodImage}
               />
-              <Text style={styles.foodName}>{item.dish_name}</Text>
-              <Text style={styles.foodPrice}>₹ {item.dish_price}</Text>
+              <View style={styles.foodRowStyles}>
+                {item?.dish_type === 'V' ? (
+                  <MaterialCommunityIcons
+                    name="square-circle"
+                    size={20}
+                    color={Colors.green}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="square-circle"
+                    size={20}
+                    color={Colors.red}
+                  />
+                )}
+
+                <Text style={styles.foodName}>{item.dish_name}</Text>
+                <Text style={styles.foodPrice}>₹ {item.dish_price}</Text>
+              </View>
             </View>
-          </View>
-          <Text style={styles.foodDescription} numberOfLines={1}>
-            {item.dish_description}
-          </Text>
-        </Pressable>
-      ))}
-    </View>
-  );
+          </Pressable>
+        ))}
+      </View>
+    );
+  };
 
   const renderItem = ({item, index}) => (
     <Pressable key={index} style={styles.menuItem}>
@@ -110,36 +125,28 @@ export const RestaurantScreen = ({navigation}) => {
                       <Ionicons name="share-social" size={24} color="black" />
                     </View>
                   </View>
-                  <View style={styles.innerCard}>
-                    <Text style={styles.restaurantName}>
-                      Tossin Pizza & Pasta
-                    </Text>
-                    <View style={styles.rowStyles}>
-                      <Image
-                        source={require('../../assets/icons/timer.png')}
-                        style={styles.timerStyles}
-                      />
-                      <Text style={styles.distanceText}>
-                        {' '}
-                        30-40 min · 1.2 KM ⏐ DLF Phase 5
-                      </Text>
-                    </View>
-                    <View style={styles.ratingRow}>
-                      <View style={styles.ratingBox}>
-                        <Text style={styles.rating}>4.2 </Text>
-                        <Ionicons
-                          name="star"
-                          size={15}
-                          color={Colors.secondary}
-                        />
-                      </View>
-                      <Text style={styles.totalRating}> 2.4K Rating</Text>
-                    </View>
-                    <Text style={styles.restaurantCategory}>
-                      Asian · Oriental · Thai
+                </View>
+
+                <View style={styles.innerCard}>
+                  <Text style={styles.restaurantName}>
+                    {resturantDetails?.store_name}
+                  </Text>
+                  <View style={styles.rowStyles}>
+                    <Image
+                      source={require('../../assets/icons/timer.png')}
+                      style={styles.timerStyles}
+                    />
+                    <Text style={styles.distanceText}>
+                      {' '}
+                      {resturantDetails?.time} min ·{' '}
+                      {resturantDetails?.distance} KM ⏐{' '}
+                      {resturantDetails?.address?.address1 +
+                        ' ' +
+                        resturantDetails?.address?.address2}
                     </Text>
                   </View>
                 </View>
+
                 <View>
                   <Text style={styles.menuText}>Menu</Text>
                   <View style={{marginHorizontal: 10}}>
@@ -162,6 +169,55 @@ export const RestaurantScreen = ({navigation}) => {
                       <Switch
                         value={isSwitchOn}
                         onValueChange={onToggleSwitch}
+                        color={'#296c07'}
+                      />
+                    </View>
+                    <View style={styles.nonVegRow}>
+                      <Text style={styles.nonVegText}>Non-Veg Only</Text>
+                      <Switch
+                        value={isSwitchOn}
+                        onValueChange={onToggleSwitch}
+                        color={'#a90404'}
+                      />
+                    </View>
+                    <Text style={styles.totalRating}>
+                      {' '}
+                      {resturantDetails?.average_rating}K Rating
+                    </Text>
+                  </View>
+                  <Text
+                    style={[
+                      styles.restaurantCategory,
+                      {textTransform: 'capitalize'},
+                    ]}>
+                    {MenuList.slice(0, 3)
+                      .map(item => item.category_name)
+                      .join(' · ')}
+                  </Text>
+                </View>
+
+                <View>
+                  <Text style={styles.menuText}>Menu</Text>
+                  <View style={{marginHorizontal: 10}}>
+                    <TextInput
+                      style={styles.searchBarStyles}
+                      placeholder="Search here"
+                      placeholderTextColor="#808080"
+                      mode={'outlined'}
+                      outlineStyle={{borderColor: '#cdcdcd'}}
+                      theme={{roundness: 15}}
+                      activeOutlineColor={Colors.primary}
+                      left={
+                        <TextInput.Icon icon="search1" color={Colors.primary} />
+                      }
+                    />
+                  </View>
+                  <View style={styles.filterRow}>
+                    <View style={styles.vegRow}>
+                      <Text style={styles.vegText}>Veg Only</Text>
+                      <Switch
+                        value={isSwitchOn}
+                        onValueChange={() => setIsSwitchOn(!isSwitchOn)}
                         color={'#296c07'}
                       />
                     </View>

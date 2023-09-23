@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     textTransform:'capitalize'
   },
   foodCard: {
-    padding: 10,
+    padding: 20,
     marginBottom: 15,
     marginHorizontal: 15,
     backgroundColor: 'white',
@@ -48,6 +48,10 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    width:'90%',
+    alignSelf:'center',
+    
+    
   },
   cardInnerContainer: {
     flexDirection: 'row',
@@ -92,6 +96,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+
   },
   flatListStyles: {
     backgroundColor: 'rgba(0,92,121,0.1)',
@@ -143,6 +148,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.tweleve,
     fontFamily: Font_Family.regular,
     color: Colors.black,
+    textTransform:'capitalize'
   },
   timerStyles: {
     width: 15,
@@ -187,6 +193,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     marginVertical: 15,
+    
     
   },
   filterRow: {
