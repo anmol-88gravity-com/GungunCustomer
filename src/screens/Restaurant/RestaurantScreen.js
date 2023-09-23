@@ -182,7 +182,8 @@ export const RestaurantScreen = ({ navigation }) => {
                     <Text style={styles.nonVegText}>Non-Veg Only</Text>
                     <Switch
                       value={isSwitchOn}
-                      onValueChange={onToggleSwitch}
+                      // onValueChange={onToggleSwitch}
+                      onValueChange={() => setIsSwitchOn(!isSwitchOn)}
                       color={'#a90404'}
                     />
                   </View>
