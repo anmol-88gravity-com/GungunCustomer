@@ -167,7 +167,9 @@ export const SearchScreen = ({route, navigation}) => {
                   navigation.navigate('RestaurantScreen', {
                     restaurantId: item.partner_user,
                   })
-                }>
+                }
+                
+                >
                 <View
                   style={{
                     flexDirection: 'row',

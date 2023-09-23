@@ -16,9 +16,9 @@ import { useGetRestaurantDetails } from '../../hooks/resturantDetails/useGetRest
 import Config from '../../config';
 import { Loader } from '../../components/common/Loader';
 
-export const RestaurantScreen = ({ navigation }) => {
-
-  const { resturantDetails, loading } = useGetRestaurantDetails('10');
+export const RestaurantScreen = ({ navigation, route }) => {
+  const { restaurantId } = route.params;
+  const { resturantDetails, loading } = useGetRestaurantDetails(restaurantId);
   const MenuList = resturantDetails?.menu;
 
   // console.log('MenuList---', MenuList)
@@ -28,10 +28,6 @@ export const RestaurantScreen = ({ navigation }) => {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(3);
 
-  const onToggleSwitch = () => {
-    setIsSwitchOn(!isSwitchOn);
-
-  }
 
   const Item = ({ dishes, categoryName }) => {
     const filteredDishes = isSwitchOn ? dishes.filter(item => item.dish_type === "V") : dishes;
@@ -147,7 +143,7 @@ export const RestaurantScreen = ({ navigation }) => {
                     <Text style={styles.totalRating}> {resturantDetails?.average_rating}K Rating</Text>
                   </View>
                   <Text style={[styles.restaurantCategory, { textTransform: 'capitalize' }]}>
-                    {MenuList.slice(0, 3).map((item) => item.category_name).join(" · ")}
+                    {MenuList && MenuList.slice(0, 3).map((item) => item.category_name).join(" · ")}
                   </Text>
                 </View>
               </View>
@@ -181,9 +177,9 @@ export const RestaurantScreen = ({ navigation }) => {
                   <View style={styles.nonVegRow}>
                     <Text style={styles.nonVegText}>Non-Veg Only</Text>
                     <Switch
-                      value={isSwitchOn}
-                      // onValueChange={onToggleSwitch}
-                      onValueChange={() => setIsSwitchOn(!isSwitchOn)}
+                      // value={isSwitchOn}
+                      // // onValueChange={onToggleSwitch}
+                      // onValueChange={() => setIsSwitchOn(!isSwitchOn)}
                       color={'#a90404'}
                     />
                   </View>

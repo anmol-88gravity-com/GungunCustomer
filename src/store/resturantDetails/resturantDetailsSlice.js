@@ -10,10 +10,11 @@ export const GET_RESTURANT_DETAILS = '/api/restaurant';
 
 export const getResturantDetails = createAsyncThunk(
   GET_RESTURANT_DETAILS,
-  async (_, thunkAPI) => {
-    const { store_id } = thunkAPI.getState().auth;
+  async (_,thunkAPI) => {
+    const { restaurantId } = thunkAPI.getState().auth;
+    console.log('restaurantId--',restaurantId)
     const result = await Axios.get(
-      ApiEndpoints.resturantDetail.resturantDetails.replace('STORE_ID', String(10)),
+      ApiEndpoints.resturantDetail.resturantDetails.replace('STORE_ID', String('10')),
     );
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue(result.data.response);

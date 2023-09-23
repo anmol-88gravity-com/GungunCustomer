@@ -180,7 +180,7 @@ export const HomeScreen = ({navigation}) => {
                     restaurantOffer="₹125 OFF"
                     restaurantMaxOffer="above ₹249"
                     onPressHandler={() =>
-                      navigation.navigate('RestaurantScreen')
+                      navigation.navigate('RestaurantScreen',{ restaurantId: '10' })
                     }
                   />
                 </View>
