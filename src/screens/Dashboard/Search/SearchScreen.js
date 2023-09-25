@@ -32,6 +32,7 @@ export const SearchScreen = ({route, navigation}) => {
 
   const inputKey = route.params.searchKey;
 
+
   const dispatch = useDispatch();
   const setError = useError();
 

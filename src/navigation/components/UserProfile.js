@@ -3,7 +3,9 @@ import {Image, View, Text} from 'react-native';
 import {Font_Family} from '../../utils/Fontfamily';
 import {Colors} from '../../utils/Colors';
 
+
 export function UserProfile({imageSource, firstName, lastName}) {
+
   return (
     <View style={{alignItems: 'center', padding: 10}}>
       <Image

@@ -34,6 +34,7 @@ export const styles = StyleSheet.create({
     margin: 15,
     textTransform:'capitalize'
   },
+  noDataFoundText:{padding:20,textAlign:'center',fontFamily:Font_Family.medium,fontSize:FONT_SIZES.eighteen,color:Colors.black},
   foodCard: {
     padding: 20,
     marginBottom: 15,

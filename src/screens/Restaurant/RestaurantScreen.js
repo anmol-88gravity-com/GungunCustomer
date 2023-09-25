@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Image, Pressable, FlatList, Modal } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -29,6 +29,8 @@ export const RestaurantScreen = ({ navigation, route }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(3);
+  const textInputRef = useRef(null);
+
 
   const handleToggleVegSwitch = () => {
     setIsVegSwitchOn(!isVegSwitchOn);
@@ -57,38 +59,43 @@ export const RestaurantScreen = ({ navigation, route }) => {
     return (
       <View>
         <Text style={styles.categoryName}>{categoryName}</Text>
-        {filteredDishes.map(item => (
-          <Pressable
-            style={styles.foodCard}
-            onPress={() => setIsModalVisible(true)}
-            key={item.id}
-          >
-            <View style={styles.cardInnerContainer}>
-              <Image
-                source={{ uri: Config.API_URL + item?.dish_image }}
-                style={styles.foodImage}
-              />
-              <View style={styles.foodRowStyles}>
-                {item?.dish_type === 'V' ? (
-                  <MaterialCommunityIcons
-                    name="square-circle"
-                    size={20}
-                    color={Colors.green}
-                  />
-                ) : (
-                  <MaterialCommunityIcons
-                    name="square-circle"
-                    size={20}
-                    color={Colors.red}
-                  />
-                )}
+        {filteredDishes.length > 0 ? (
+          filteredDishes.map((item) => (
+            <Pressable
+              style={styles.foodCard}
+              onPress={() => setIsModalVisible(true)}
+              key={item.id}
+            >
+              <View style={styles.cardInnerContainer}>
+                <Image
+                  source={{ uri: Config.API_URL + item?.dish_image }}
+                  style={styles.foodImage}
+                />
+                <View style={styles.foodRowStyles}>
+                  {item?.dish_type === 'V' ? (
+                    <MaterialCommunityIcons
+                      name="square-circle"
+                      size={20}
+                      color={Colors.green}
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="square-circle"
+                      size={20}
+                      color={Colors.red}
+                    />
+                  )}
 
-                <Text style={styles.foodName}>{item.dish_name}</Text>
-                <Text style={styles.foodPrice}>₹ {item.dish_price}</Text>
+                  <Text style={styles.foodName}>{item.dish_name}</Text>
+                  <Text style={styles.foodPrice}>₹ {item.dish_price}</Text>
+                </View>
               </View>
-            </View>
-          </Pressable>
-        ))}
+            </Pressable>
+          ))
+
+        ) : (
+          <Text style={styles.noDataFoundText}>No Data found</Text>
+        )}
       </View>
 
     )
@@ -191,7 +198,8 @@ export const RestaurantScreen = ({ navigation, route }) => {
                       <TextInput.Icon icon="search1" color={Colors.primary} />
                     }
                     value={searchText}
-                    onChangeText={text => setSearchText(text)}
+                    onChangeText={setSearchText}
+                    autoFocus={true}
                   />
                 </View>
                 <View style={styles.filterRow}>
