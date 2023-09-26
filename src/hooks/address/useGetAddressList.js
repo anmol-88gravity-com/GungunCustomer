@@ -1,36 +1,31 @@
 import {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {useError} from '../../context/ErrorProvider';
 import {getAllAddresses} from '../../store/address/addressSlice';
 
 export const useGetAddressList = () => {
   const navigation = useNavigation();
+  const {addressList} = useSelector(state => state.address);
   const dispatch = useDispatch();
   const setError = useError();
 
-  const [loading, setLoading] = useState(true);
-  const [addressList, setAddressList] = useState([]);
-
-  const getAddressList = async () => {
-    try {
-      const res = await dispatch(getAllAddresses()).unwrap();
-      if (res) {
-        setAddressList(res);
-        setLoading(false);
-      }
-    } catch (e) {
-      setError(e.message);
-      setLoading(false);
-    }
-  };
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    return navigation.addListener('focus', () => {
-      getAddressList();
+    const unsubscribe = navigation.addListener('focus', async () => {
+      setLoading(true);
+      try {
+        await dispatch(getAllAddresses()).unwrap();
+      } catch (e) {
+        setError(e.message);
+      }
+      setLoading(false);
     });
-  }, [navigation]);
+
+    return unsubscribe;
+  }, [dispatch, navigation, setError, addressList]);
 
   return {
     addressList,

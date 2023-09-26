@@ -16,7 +16,8 @@ export const getAllAddresses = createAsyncThunk(
       ApiEndpoints.address.getAllAddresses.replace('USER_ID', String(userId)),
     );
     if (result.data.status === 'ok') {
-      return thunkAPI.fulfillWithValue(result.data.response);
+      const addressList = result.data.response;
+      return thunkAPI.fulfillWithValue(addressList);
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));
     }
@@ -94,7 +95,7 @@ export const setDefaultAddress = createAsyncThunk(
   async ({addressId}, thunkAPI) => {
     const result = await Axios.post(`/api/set_default_address/${addressId}/`);
     if (result.data.status === 'ok') {
-      return thunkAPI.fulfillWithValue(result.data.response);
+      return thunkAPI.fulfillWithValue(addressId);
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));
     }
@@ -144,9 +145,23 @@ export const updateAddress = createAsyncThunk(
 
 export const addressSlice = createSlice({
   name: 'address',
-  initialState: null,
+  initialState: {addressList: []},
   reducers: {},
-  extraReducers: builder => {},
+  extraReducers: builder => {
+    builder.addCase(getAllAddresses.fulfilled, (state, action) => {
+      state.addressList = action.payload;
+    });
+    builder.addCase(setDefaultAddress.fulfilled, (state, action) => {
+      const id = action.payload;
+      const list = state.addressList;
+
+      state.addressList = list.map(val =>
+        val.id === id
+          ? {...val, is_default: true}
+          : {...val, is_default: false},
+      );
+    });
+  },
 });
 
 export const {} = addressSlice.actions;

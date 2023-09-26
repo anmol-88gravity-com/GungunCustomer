@@ -37,7 +37,7 @@ export const HomeScreen = ({navigation}) => {
   const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
 
   useEffect(() => {
-    if (addressList && !addressData) {
+    if (addressList !== undefined && addressList.length > 0) {
       const defaultAddress = addressList.find(
         address => address.is_default === true,
       );
@@ -45,7 +45,7 @@ export const HomeScreen = ({navigation}) => {
         setAddressData(defaultAddress);
       }
     }
-  }, [addressList, addressData]);
+  }, [addressList]);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
