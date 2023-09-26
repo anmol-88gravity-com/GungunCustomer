@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, FlatList, Pressable, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Pressable,
+  Text,
+  View,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useDispatch} from 'react-redux';
@@ -8,7 +15,7 @@ import {showMessage} from 'react-native-flash-message';
 
 import {Colors} from '../../../utils/Colors';
 import {styles} from './AddressScreen.styles';
-import {useGetAddressList} from '../../../hooks/address/useGetAddressList';
+import {useGetAddressList} from '../../../hooks';
 import {Loader} from '../../../components/common/Loader';
 import {FONT_SIZES} from '../../../utils/FontSize';
 import {Font_Family} from '../../../utils/Fontfamily';
@@ -33,6 +40,22 @@ export const AddressScreen = ({navigation}) => {
   }, [addressList]);
 
   const deleteHandler = async addressId => {
+    const a = addressUpdatedList.find(d => d.id === addressId);
+    if (a) {
+      if (a.is_default === true) {
+        showMessage({
+          message:
+            'Please set another address as PRIMARY before deleting this address.',
+          type: 'danger',
+          color: Colors.white,
+          textStyle: {
+            fontSize: FONT_SIZES.fifteen,
+            fontFamily: Font_Family.medium,
+          },
+        });
+        return;
+      }
+    }
     try {
       const res = await dispatch(deleteAddress({addressId}));
       if (res) {
@@ -68,47 +91,20 @@ export const AddressScreen = ({navigation}) => {
 
   const handleDefaultAddress = async addressId => {
     setIsLoading(true);
-    const a = addressUpdatedList.find(d => d.id === addressId);
-    if (a) {
-      if (a.is_default === true) {
-        showMessage({
-          message: 'Already a primary address',
-          type: 'default',
-          backgroundColor: Colors.secondary,
-          color: Colors.white,
-          textStyle: {
-            fontSize: FONT_SIZES.fifteen,
-            fontFamily: Font_Family.medium,
-          },
-        });
-      } else {
-        try {
-          const res = await dispatch(setDefaultAddress({addressId})).unwrap();
-          if (res) {
-            setAddressUpdatedList(prevState => {
-              const list = [...prevState];
-              return list.map(val =>
-                val.id === addressId
-                  ? {...val, is_default: true}
-                  : {...val, is_default: false},
-              );
-            });
-          }
-          showMessage({
-            message: 'Primary Address Updated.',
-            type: 'default',
-            backgroundColor: Colors.secondary,
-            color: Colors.white,
-            textStyle: {
-              fontSize: FONT_SIZES.fifteen,
-              fontFamily: Font_Family.medium,
-            },
-          });
-          setIsLoading(false);
-        } catch (e) {
-          setError(e.message);
-        }
-      }
+    try {
+      await dispatch(setDefaultAddress({addressId})).unwrap();
+      showMessage({
+        message: 'Primary Address Updated.',
+        type: 'default',
+        backgroundColor: Colors.secondary,
+        color: Colors.white,
+        textStyle: {
+          fontSize: FONT_SIZES.fifteen,
+          fontFamily: Font_Family.medium,
+        },
+      });
+    } catch (e) {
+      setError(e.message);
     }
     setIsLoading(false);
   };
@@ -138,11 +134,39 @@ export const AddressScreen = ({navigation}) => {
           <MaterialCommunityIcons name="delete" size={24} color={'#bd0620'} />
         </Pressable>
       </View>
-      <Text
-        style={styles.addressBtn}
-        onPress={() => handleDefaultAddress(item.id)}>
-        {item.is_default ? 'Primary Address' : 'Set As Primary'}
-      </Text>
+      {item.is_default ? (
+        <Text
+          style={styles.addressBtn}
+          onPress={() =>
+            showMessage({
+              message: 'Already a primary address',
+              type: 'default',
+              backgroundColor: Colors.secondary,
+              color: Colors.white,
+              textStyle: {
+                fontSize: FONT_SIZES.fifteen,
+                fontFamily: Font_Family.medium,
+              },
+            })
+          }>
+          Primary Address
+        </Text>
+      ) : isLoading ? (
+        <ActivityIndicator
+          style={{
+            marginTop: 5,
+            alignSelf: 'flex-end',
+          }}
+          size={'small'}
+          color={Colors.secondary}
+        />
+      ) : (
+        <Text
+          style={styles.addressBtn}
+          onPress={() => handleDefaultAddress(item.id)}>
+          Set As Primary
+        </Text>
+      )}
     </Pressable>
   );
 

@@ -17,10 +17,12 @@ import {images} from '../../../utils/Images';
 import {styles} from './HomeScreen.styles';
 import ScreenHeader from '../../../components/header/ScreenHeader';
 import {Colors} from '../../../utils/Colors';
-import {useGetAddressList} from '../../../hooks/address/useGetAddressList';
-import {useGetProfileData} from '../../../hooks/profile/useGetProfileData';
+import {
+  useGetAddressList,
+  useGetProfileData,
+  useGetCategorizedFoodtype,
+} from '../../../hooks';
 import {Loader} from '../../../components/common/Loader';
-import {useGetCategorizedFoodtype} from '../../../hooks/home/category/useGetCategorizedFoodtype';
 import {
   PopularItems,
   RecommendedItems,
@@ -35,7 +37,7 @@ export const HomeScreen = ({navigation}) => {
   const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
 
   useEffect(() => {
-    if (addressList && !addressData) {
+    if (addressList !== undefined && addressList.length > 0) {
       const defaultAddress = addressList.find(
         address => address.is_default === true,
       );
@@ -43,7 +45,7 @@ export const HomeScreen = ({navigation}) => {
         setAddressData(defaultAddress);
       }
     }
-  }, [addressList, addressData]);
+  }, [addressList]);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -180,7 +182,9 @@ export const HomeScreen = ({navigation}) => {
                     restaurantOffer="₹125 OFF"
                     restaurantMaxOffer="above ₹249"
                     onPressHandler={() =>
-                      navigation.navigate('RestaurantScreen',{ restaurantId: '10' })
+                      navigation.navigate('RestaurantScreen', {
+                        restaurantId: '10',
+                      })
                     }
                   />
                 </View>

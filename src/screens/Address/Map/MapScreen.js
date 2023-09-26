@@ -10,7 +10,6 @@ import {
 import {Button} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {Colors} from '../../../utils/Colors';
