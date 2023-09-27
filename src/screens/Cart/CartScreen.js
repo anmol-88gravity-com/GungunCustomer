@@ -10,13 +10,23 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Colors } from '../../utils/Colors';
 import { styles } from './cart.styles';
 import { images } from '../../utils/Images';
-import { AddressesScreen } from './AddressesList';
 import { useGetAddressList } from '../../hooks';
+import { useGetCartItemsData } from '../../hooks/cart/useGetCartItemsData';
+import { useDispatch } from 'react-redux';
+import { increaseItemQuantity } from '../../store/cart/cartSlice';
+
 
 export const CartScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [addressData, setAddressData] = useState(null);
   const { addressList, loading } = useGetAddressList();
+  const { cartItems } = useGetCartItemsData('5');
+  const [cartItemsData, setCartItemsData] = useState(null);
 
+  // console.log('cartItemsData------', cartItemsData)
+  useEffect(() => {
+    setCartItemsData(cartItems)
+  }, [cartItems])
 
   useEffect(() => {
     if (addressList !== undefined && addressList.length > 0) {
@@ -28,6 +38,10 @@ export const CartScreen = ({ navigation }) => {
       }
     }
   }, [addressList]);
+
+  // const increaseCartItem = ()=>{
+  //  dispatch(increaseItemQuantity())
+  // }
 
   const DATA = [
     {
@@ -50,71 +64,55 @@ export const CartScreen = ({ navigation }) => {
     </View>
   );
 
+  const CartItem = ({ itemName, itemPrice, itemQuantity }) => {
+    return (
+      <View style={[styles.itemRowStyles, { paddingVertical: 10 }]}>
+        <View style={styles.itemInnerRow}>
+          <MaterialCommunityIcons
+            name="square-circle"
+            size={18}
+            color={Colors.green}
+          />
+          <Text numberOfLines={3} style={[styles.itemName, { textTransform: 'capitalize' }]}>
+            {itemName}
+          </Text>
+        </View>
+        <View style={styles.itemPriceBox}>
+          <Text numberOfLines={1} style={styles.itemPrice}>
+            Rs {itemPrice}
+          </Text>
+        </View>
+        <View style={styles.qtyBox}>
+          <View style={styles.qtyContainer}>
+            <Pressable style={{ padding: 5 }}>
+              <AntDesign name="minus" size={22} color={Colors.primary} />
+            </Pressable>
+            <Text style={styles.qty}>{itemQuantity}</Text>
+            <Pressable style={{ padding: 5 }} 
+            // onPress={increaseCartItem}
+            >
+              <Ionicons name="add" size={20} color={Colors.primary} />
+            </Pressable>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <Text style={styles.heading}>Items Added</Text>
       <View style={styles.cardContainer}>
-        <View style={[styles.itemRowStyles, { paddingVertical: 10 }]}>
-          <View style={styles.itemInnerRow}>
-            <MaterialCommunityIcons
-              name="square-circle"
-              size={18}
-              color={Colors.green}
+        <View>
+          {cartItemsData?.items && cartItemsData?.items?.map((item, index) => (
+            <CartItem
+              key={index}
+              itemName={item.dish_name}
+              itemPrice={item.price}
+              itemQuantity={item.quantity}
             />
-            <Text numberOfLines={3} style={styles.itemName}>
-              Mung Dal Halwa
-            </Text>
-          </View>
-          <View style={styles.itemPriceBox}>
-            <Text numberOfLines={1} style={styles.itemPrice}>
-              Rs 220
-            </Text>
-          </View>
-          <View style={styles.qtyBox}>
-            <View style={styles.qtyContainer}>
-              <Pressable style={{ padding: 5 }}>
-                <AntDesign name="minus" size={22} color={Colors.primary} />
-              </Pressable>
-              <Text style={styles.qty}>1</Text>
-              <Pressable style={{ padding: 5 }}>
-                <Ionicons name="add" size={20} color={Colors.primary} />
-              </Pressable>
-            </View>
-          </View>
-        </View>
-        <View
-          style={[
-            styles.itemRowStyles,
-            {
-              marginTop: 20,
-            },
-          ]}>
-          <View style={styles.itemInnerRow}>
-            <MaterialCommunityIcons
-              name="square-circle"
-              size={18}
-              color={Colors.green}
-            />
-            <Text numberOfLines={3} style={styles.itemName}>
-              Mung Dal Halwa
-            </Text>
-          </View>
-          <View style={styles.itemPriceBox}>
-            <Text numberOfLines={1} style={styles.itemPrice}>
-              Rs 220
-            </Text>
-          </View>
-          <View style={styles.qtyBox}>
-            <View style={styles.qtyContainer}>
-              <Pressable style={{ padding: 5 }}>
-                <AntDesign name="minus" size={22} color={Colors.primary} />
-              </Pressable>
-              <Text style={styles.qty}>1</Text>
-              <Pressable style={{ padding: 5 }}>
-                <Ionicons name="add" size={20} color={Colors.primary} />
-              </Pressable>
-            </View>
-          </View>
+          ))}
         </View>
         <Pressable style={styles.addMoreRow}>
           <View style={styles.rowStyles}>
