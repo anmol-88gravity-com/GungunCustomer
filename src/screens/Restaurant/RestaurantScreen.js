@@ -1,40 +1,40 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  Image,
-  Pressable,
   FlatList,
+  Image,
   Modal,
+  Pressable,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Divider, FAB, Switch, TextInput } from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Button, Divider, FAB, Switch, TextInput} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { showMessage } from 'react-native-flash-message';
-import { useDispatch } from 'react-redux';
+import {showMessage} from 'react-native-flash-message';
+import {useDispatch} from 'react-redux';
 
-import { FONT_SIZES } from '../../utils/FontSize';
-import { Font_Family } from '../../utils/Fontfamily';
-import { Colors } from '../../utils/Colors';
-import { ModalComponent } from '../Dashboard/HomeScreen/components';
-import { AllCategories } from '../../data/AllCategories';
-import { styles } from './Restaurant.styles';
+import {FONT_SIZES} from '../../utils/FontSize';
+import {Font_Family} from '../../utils/Fontfamily';
+import {Colors} from '../../utils/Colors';
+import {ModalComponent} from '../Dashboard/HomeScreen/components';
+import {AllCategories} from '../../data/AllCategories';
+import {styles} from './Restaurant.styles';
 import Config from '../../config';
-import { Loader } from '../../components/common/Loader';
-import { useGetRestaurantDetails } from '../../hooks';
-import { useError } from '../../context/ErrorProvider';
+import {Loader} from '../../components/common/Loader';
+import {useGetRestaurantDetails} from '../../hooks';
+import {useError} from '../../context/ErrorProvider';
+import {addToCart} from '../../store/cart/cartSlice';
 
-export const RestaurantScreen = ({ navigation, route }) => {
-  const { restaurantId } = route.params;
-  const { restaurantDetails, loading } = useGetRestaurantDetails({ restaurantId });
+export const RestaurantScreen = ({navigation, route}) => {
+  const {restaurantId} = route.params;
+  const {restaurantDetails, loading} = useGetRestaurantDetails({restaurantId});
   const MenuList = restaurantDetails?.menu;
 
   const [count, setCount] = useState(0);
-
   const [isVegSwitchOn, setIsVegSwitchOn] = useState(false);
   const [isNonVegSwitchOn, setIsNonVegSwitchOn] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -67,7 +67,7 @@ export const RestaurantScreen = ({ navigation, route }) => {
 
   const dispatch = useDispatch();
   const setError = useError();
-  const addToCartHandler = async ({ dishId, storeId, price, quantity }) => {
+  const addToCartHandler = async ({dishId, storeId, price, quantity}) => {
     try {
       await dispatch(
         addToCart({
@@ -92,7 +92,7 @@ export const RestaurantScreen = ({ navigation, route }) => {
     }
   };
 
-  const Item = ({ dishes, categoryName }) => {
+  const Item = ({dishes, categoryName}) => {
     const filteredDishes = dishes
       .filter(item => {
         if (isVegSwitchOn && isNonVegSwitchOn) {
@@ -111,125 +111,117 @@ export const RestaurantScreen = ({ navigation, route }) => {
     return (
       <View>
         <Text style={styles.categoryName}>{categoryName}</Text>
-
-        {filteredDishes.length > 0 ? (
-          filteredDishes.map(item => (
-            <View style={styles.foodCard} key={item.id}>
-              <View style={styles.cardInnerContainer}>
-                <View style={styles.foodImage}>
-                  <Image
-                    source={{ uri: Config.API_URL + item?.dish_image }}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      borderRadius: 12,
-                      borderWidth: 1,
-                      borderColor: Colors.secondary,
-                    }}
-                  />
-                  {count > 0 ? (
-                    <View style={styles.countRow}>
-                      <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity
-                          style={styles.buttonDecrement}
-                          onPress={decrement}>
-                          <Entypo name="minus" size={18} color={Colors.primary} />
-                        </TouchableOpacity>
-                        <View style={styles.numberContainer}>
-                          <Text style={styles.number}>{count}</Text>
-                        </View>
-                        <TouchableOpacity
-                          style={styles.buttonIncrement}
-                          onPress={increment}>
-                          <Entypo name="plus" size={18} color={Colors.primary} />
-                        </TouchableOpacity>
+        {filteredDishes.map(item => (
+          <View style={styles.foodCard} key={item.id}>
+            <View style={styles.cardInnerContainer}>
+              <View style={styles.foodImage}>
+                <Image
+                  source={{uri: Config.API_URL + item?.dish_image}}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 12,
+                    borderWidth: 1,
+                    borderColor: Colors.secondary,
+                  }}
+                />
+                {count > 0 ? (
+                  <View style={styles.countRow}>
+                    <View style={{flexDirection: 'row'}}>
+                      <TouchableOpacity
+                        style={styles.buttonDecrement}
+                        onPress={decrement}>
+                        <Entypo name="minus" size={18} color={Colors.primary} />
+                      </TouchableOpacity>
+                      <View style={styles.numberContainer}>
+                        <Text style={styles.number}>{count}</Text>
                       </View>
+                      <TouchableOpacity
+                        style={styles.buttonIncrement}
+                        onPress={increment}>
+                        <Entypo name="plus" size={18} color={Colors.primary} />
+                      </TouchableOpacity>
                     </View>
-                  ) : (
-                    <Button
-                      onPress={() => {
-                        setCount(1);
-                        addToCartHandler({
-                          dishId: item.id,
-                          storeId: item.partner_user,
-                          price: item.dish_price,
-                          quantity: 1,
-                        });
-                      }}
-                      mode={'outlined'}
-                      compact={true}
-                      theme={{ roundness: 1, colors: { outline: Colors.primary } }}
-                      style={{
-                        position: 'absolute',
-                        bottom: -15,
-                        width: '70%',
-                        alignSelf: 'center',
-                      }}
-                      contentStyle={{
-                        backgroundColor: '#fff',
-                      }}
-                      activeOutlineColor={Colors.primary}
-                      labelStyle={{
-                        fontFamily: Font_Family.semiBold,
-                        fontSize: FONT_SIZES.fifteen,
-                        color: Colors.primary,
-                      }}>
-                      ADD
-                    </Button>
-                  )}
-                </View>
-                <View style={styles.foodRowStyles}>
-                  {item?.dish_type === 'V' ? (
-                    <MaterialCommunityIcons
-                      name="square-circle"
-                      size={20}
-                      color={Colors.green}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons
-                      name="square-circle"
-                      size={20}
-                      color={Colors.red}
-                    />
-                  )}
-                  <Text style={styles.foodName} numberOfLines={3}>
-                    {item.dish_name} Chimese Manuchurian Platter
-                  </Text>
-                  <Text style={styles.foodPrice}>₹ {item.dish_price}</Text>
+                  </View>
+                ) : (
                   <Button
                     onPress={() => {
-                      setDishDetails(item);
-                      setIsModalVisible(true);
+                      setCount(1);
+                      addToCartHandler({
+                        dishId: item.id,
+                        storeId: item.partner_user,
+                        price: item.dish_price,
+                        quantity: 1,
+                      });
                     }}
-                    theme={{ colors: Colors.secondary }}
-                    mode={'text'}
+                    mode={'outlined'}
                     compact={true}
+                    theme={{roundness: 1, colors: {outline: Colors.primary}}}
                     style={{
-                      alignSelf: 'flex-end',
+                      position: 'absolute',
+                      bottom: -15,
+                      width: '70%',
+                      alignSelf: 'center',
                     }}
+                    contentStyle={{
+                      backgroundColor: '#fff',
+                    }}
+                    activeOutlineColor={Colors.primary}
                     labelStyle={{
-                      fontFamily: Font_Family.medium,
-                      fontSize: FONT_SIZES.tweleve,
-                      color: Colors.secondary,
-                      textDecorationLine: 'underline',
+                      fontFamily: Font_Family.semiBold,
+                      fontSize: FONT_SIZES.fifteen,
+                      color: Colors.primary,
                     }}>
-                    See More
+                    ADD
                   </Button>
-                </View>
+                )}
+              </View>
+              <View style={styles.foodRowStyles}>
+                {item?.dish_type === 'V' ? (
+                  <MaterialCommunityIcons
+                    name="square-circle"
+                    size={20}
+                    color={Colors.green}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="square-circle"
+                    size={20}
+                    color={Colors.red}
+                  />
+                )}
+                <Text style={styles.foodName} numberOfLines={3}>
+                  {item.dish_name}
+                </Text>
+                <Text style={styles.foodPrice}>₹ {item.dish_price}</Text>
+                <Button
+                  onPress={() => {
+                    setDishDetails(item);
+                    setIsModalVisible(true);
+                  }}
+                  theme={{colors: {outline: Colors.secondary}}}
+                  mode={'outlined'}
+                  compact={true}
+                  style={{
+                    alignSelf: 'flex-end',
+                  }}
+                  labelStyle={{
+                    fontFamily: Font_Family.medium,
+                    fontSize: FONT_SIZES.tweleve,
+                    color: Colors.secondary,
+                    textDecorationLine: 'underline',
+                  }}>
+                  See More
+                </Button>
               </View>
             </View>
-          ))
-
-        ) : (
-          <Text style={styles.noDataFoundText}>No Data found</Text>
-        )}
-
+          </View>
+        ))}
       </View>
-
-    )
+    );
   };
 
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({item, index}) => (
     <Pressable key={index} style={styles.menuItem}>
       <Text
         style={{
@@ -260,7 +252,7 @@ export const RestaurantScreen = ({ navigation, route }) => {
       ) : (
         <FlatList
           data={MenuList}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <Item dishes={item.dishes} categoryName={item.category_name} />
           )}
           keyExtractor={item => item.id}
@@ -303,7 +295,7 @@ export const RestaurantScreen = ({ navigation, route }) => {
                     <Text
                       style={[
                         styles.restaurantCategory,
-                        { textTransform: 'capitalize' },
+                        {textTransform: 'capitalize'},
                       ]}>
                       {MenuList &&
                         MenuList.slice(0, 3)
@@ -314,14 +306,14 @@ export const RestaurantScreen = ({ navigation, route }) => {
                 </View>
                 <View>
                   <Text style={styles.menuText}>Menu</Text>
-                  <View style={{ marginHorizontal: 10 }}>
+                  <View style={{marginHorizontal: 10}}>
                     <TextInput
                       style={styles.searchBarStyles}
                       placeholder="Search here"
                       placeholderTextColor="#808080"
                       mode={'outlined'}
-                      outlineStyle={{ borderColor: '#cdcdcd' }}
-                      theme={{ roundness: 15 }}
+                      outlineStyle={{borderColor: '#cdcdcd'}}
+                      theme={{roundness: 15}}
                       activeOutlineColor={Colors.primary}
                       left={
                         <TextInput.Icon icon="search1" color={Colors.primary} />
@@ -386,7 +378,7 @@ export const RestaurantScreen = ({ navigation, route }) => {
             <View style={styles.menuInnerModel}>
               <Text style={styles.modelHeading}>Menu</Text>
               <Pressable
-                style={{ paddingHorizontal: 5 }}
+                style={{paddingHorizontal: 5}}
                 onPress={() => {
                   setVisible(!visible);
                 }}>
