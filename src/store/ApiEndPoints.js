@@ -25,10 +25,14 @@ export const ApiEndpoints = {
   categoryFoodType: {
     foodType: 'api/food-type/',
   },
-  resturantDetail:{
-    resturantDetails:'api/restaurant/STORE_ID/',
+  resturantDetail: {
+    resturantDetails: 'api/restaurant/STORE_ID/',
   },
   home: {
     searchQuery: '/api/search/',
+  },
+  cart: {
+    createCart: 'api/cards/',
+    addCartItem: '/api/card-items/',
   },
 };

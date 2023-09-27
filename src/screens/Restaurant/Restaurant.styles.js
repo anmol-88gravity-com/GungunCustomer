@@ -32,11 +32,14 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.eighteen,
     color: Colors.primary,
     margin: 15,
-    textTransform:'capitalize'
+    textTransform: 'capitalize',
   },
-  noDataFoundText:{padding:20,textAlign:'center',fontFamily:Font_Family.medium,fontSize:FONT_SIZES.eighteen,color:Colors.black},
+  noDataFoundText:{padding:20,textAlign:'center',
+  fontFamily:Font_Family.medium,
+  fontSize:FONT_SIZES.fifteen,
+  color:Colors.black},
   foodCard: {
-    padding: 20,
+    paddingBottom: 20,
     marginBottom: 15,
     marginHorizontal: 15,
     backgroundColor: 'white',
@@ -49,32 +52,29 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    width:'90%',
-    alignSelf:'center',
-    
-    
+    width: '90%',
+    alignSelf: 'center',
   },
   cardInnerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    padding: 12,
   },
   foodImage: {
-    width: 90,
-    height: 90,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: Colors.secondary,
+    width: 110,
+    height: 110,
   },
   foodRowStyles: {
     marginLeft: 10,
-    width: '100%',
-    justifyContent: 'center',
+    width: '65%',
+    height: 90,
   },
   foodName: {
     fontFamily: Font_Family.semiBold,
     fontSize: 16,
-    color: Colors.primary,
+    color: Colors.black,
     textTransform: 'capitalize',
+    marginBottom: 5,
   },
   foodPrice: {
     fontFamily: Font_Family.regular,
@@ -97,7 +97,6 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-
   },
   flatListStyles: {
     backgroundColor: 'rgba(0,92,121,0.1)',
@@ -149,7 +148,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.tweleve,
     fontFamily: Font_Family.regular,
     color: Colors.black,
-    textTransform:'capitalize'
+    textTransform: 'capitalize',
   },
   timerStyles: {
     width: 15,
@@ -194,8 +193,6 @@ export const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     marginVertical: 15,
-    
-    
   },
   filterRow: {
     flexDirection: 'row',
@@ -240,5 +237,54 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.bold,
     fontSize: FONT_SIZES.fifteen,
     color: Colors.primary,
+  },
+  buttonDecrement: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
+    padding: 3,
+  },
+  buttonIncrement: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+    padding: 3,
+  },
+  minus: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginRight: 5,
+    color: Colors.primary,
+  },
+  numberContainer: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderTopWidth: 1,
+    borderTopColor: Colors.primary,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.primary,
+  },
+  number: {
+    color: Colors.primary,
+    fontFamily: Font_Family.bold,
+    fontSize: FONT_SIZES.fifteen,
+  },
+  countRow: {
+    position: 'absolute',
+    bottom: -15,
+    width: '70%',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    backgroundColor: Colors.white,
   },
 });
