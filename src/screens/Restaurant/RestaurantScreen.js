@@ -1,10 +1,21 @@
 import React, {useState} from 'react';
-import {View, Text, Image, Pressable, FlatList, Modal} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  FlatList,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Divider, FAB, Switch, TextInput} from 'react-native-paper';
+import {Button, Divider, FAB, Switch, TextInput} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {showMessage} from 'react-native-flash-message';
+import {useDispatch} from 'react-redux';
 
 import {FONT_SIZES} from '../../utils/FontSize';
 import {Font_Family} from '../../utils/Fontfamily';
@@ -15,11 +26,14 @@ import {styles} from './Restaurant.styles';
 import Config from '../../config';
 import {Loader} from '../../components/common/Loader';
 import {useGetRestaurantDetails} from '../../hooks';
+import {useError} from '../../context/ErrorProvider';
 
 export const RestaurantScreen = ({navigation, route}) => {
   const {restaurantId} = route.params;
   const {restaurantDetails, loading} = useGetRestaurantDetails({restaurantId});
   const MenuList = restaurantDetails?.menu;
+
+  const [count, setCount] = useState(0);
 
   const [isVegSwitchOn, setIsVegSwitchOn] = useState(false);
   const [isNonVegSwitchOn, setIsNonVegSwitchOn] = useState(false);
@@ -27,6 +41,7 @@ export const RestaurantScreen = ({navigation, route}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(3);
+  const [dishDetails, setDishDetails] = useState(null);
 
   const handleToggleVegSwitch = () => {
     setIsVegSwitchOn(!isVegSwitchOn);
@@ -36,6 +51,45 @@ export const RestaurantScreen = ({navigation, route}) => {
   const handleToggleNonVegSwitch = () => {
     setIsNonVegSwitchOn(!isNonVegSwitchOn);
     setIsVegSwitchOn(false);
+  };
+
+  const increment = () => {
+    setCount(count + 1);
+  };
+
+  const decrement = () => {
+    if (count === 1) {
+      return;
+    } else {
+      setCount(count - 1);
+    }
+  };
+
+  const dispatch = useDispatch();
+  const setError = useError();
+  const addToCartHandler = async ({dishId, storeId, price, quantity}) => {
+    try {
+      await dispatch(
+        addToCart({
+          dishId,
+          storeId,
+          price,
+          quantity,
+        }),
+      ).unwrap();
+      showMessage({
+        message: 'Add to Cart Successfully.',
+        type: 'default',
+        backgroundColor: Colors.secondary,
+        color: Colors.white,
+        textStyle: {
+          fontSize: FONT_SIZES.fifteen,
+          fontFamily: Font_Family.medium,
+        },
+      });
+    } catch (e) {
+      setError(e.message);
+    }
   };
 
   const Item = ({dishes, categoryName}) => {
@@ -58,15 +112,70 @@ export const RestaurantScreen = ({navigation, route}) => {
       <View>
         <Text style={styles.categoryName}>{categoryName}</Text>
         {filteredDishes.map(item => (
-          <Pressable
-            style={styles.foodCard}
-            onPress={() => setIsModalVisible(true)}
-            key={item.id}>
+          <View style={styles.foodCard} key={item.id}>
             <View style={styles.cardInnerContainer}>
-              <Image
-                source={{uri: Config.API_URL + item?.dish_image}}
-                style={styles.foodImage}
-              />
+              <View style={styles.foodImage}>
+                <Image
+                  source={{uri: Config.API_URL + item?.dish_image}}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 12,
+                    borderWidth: 1,
+                    borderColor: Colors.secondary,
+                  }}
+                />
+                {count > 0 ? (
+                  <View style={styles.countRow}>
+                    <View style={{flexDirection: 'row'}}>
+                      <TouchableOpacity
+                        style={styles.buttonDecrement}
+                        onPress={decrement}>
+                        <Entypo name="minus" size={18} color={Colors.primary} />
+                      </TouchableOpacity>
+                      <View style={styles.numberContainer}>
+                        <Text style={styles.number}>{count}</Text>
+                      </View>
+                      <TouchableOpacity
+                        style={styles.buttonIncrement}
+                        onPress={increment}>
+                        <Entypo name="plus" size={18} color={Colors.primary} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : (
+                  <Button
+                    onPress={() => {
+                      setCount(1);
+                      addToCartHandler({
+                        dishId: item.id,
+                        storeId: item.partner_user,
+                        price: item.dish_price,
+                        quantity: 1,
+                      });
+                    }}
+                    mode={'outlined'}
+                    compact={true}
+                    theme={{roundness: 1, colors: {outline: Colors.primary}}}
+                    style={{
+                      position: 'absolute',
+                      bottom: -15,
+                      width: '70%',
+                      alignSelf: 'center',
+                    }}
+                    contentStyle={{
+                      backgroundColor: '#fff',
+                    }}
+                    activeOutlineColor={Colors.primary}
+                    labelStyle={{
+                      fontFamily: Font_Family.semiBold,
+                      fontSize: FONT_SIZES.fifteen,
+                      color: Colors.primary,
+                    }}>
+                    ADD
+                  </Button>
+                )}
+              </View>
               <View style={styles.foodRowStyles}>
                 {item?.dish_type === 'V' ? (
                   <MaterialCommunityIcons
@@ -81,12 +190,32 @@ export const RestaurantScreen = ({navigation, route}) => {
                     color={Colors.red}
                   />
                 )}
-
-                <Text style={styles.foodName}>{item.dish_name}</Text>
+                <Text style={styles.foodName} numberOfLines={3}>
+                  {item.dish_name} Chimese Manuchurian Platter
+                </Text>
                 <Text style={styles.foodPrice}>₹ {item.dish_price}</Text>
+                <Button
+                  onPress={() => {
+                    setDishDetails(item);
+                    setIsModalVisible(true);
+                  }}
+                  theme={{colors: Colors.secondary}}
+                  mode={'text'}
+                  compact={true}
+                  style={{
+                    alignSelf: 'flex-end',
+                  }}
+                  labelStyle={{
+                    fontFamily: Font_Family.medium,
+                    fontSize: FONT_SIZES.tweleve,
+                    color: Colors.secondary,
+                    textDecorationLine: 'underline',
+                  }}>
+                  See More
+                </Button>
               </View>
             </View>
-          </Pressable>
+          </View>
         ))}
       </View>
     );
@@ -163,20 +292,6 @@ export const RestaurantScreen = ({navigation, route}) => {
                           restaurantDetails?.address?.address2}
                       </Text>
                     </View>
-                    <View style={styles.ratingRow}>
-                      <View style={styles.ratingBox}>
-                        <Text style={styles.rating}>4.2 </Text>
-                        <Ionicons
-                          name="star"
-                          size={15}
-                          color={Colors.secondary}
-                        />
-                      </View>
-                      <Text style={styles.totalRating}>
-                        {' '}
-                        {restaurantDetails?.average_rating}K Rating
-                      </Text>
-                    </View>
                     <Text
                       style={[
                         styles.restaurantCategory,
@@ -244,6 +359,7 @@ export const RestaurantScreen = ({navigation, route}) => {
       <ModalComponent
         isVisible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
+        dishDetails={dishDetails}
       />
 
       <Modal

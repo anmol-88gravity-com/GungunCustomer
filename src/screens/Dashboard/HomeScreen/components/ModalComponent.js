@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,39 +6,50 @@ import {
   TouchableOpacity,
   Pressable,
   Image,
-  FlatList,
+  ImageBackground,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import { Button } from 'react-native-paper';
+import {Button} from 'react-native-paper';
 
-import { styles } from '../HomeScreen.styles';
-import { Colors } from '../../../../utils/Colors';
-import { images } from '../../../../utils/Images';
-import { FONT_SIZES } from '../../../../utils/FontSize';
-import { Font_Family } from '../../../../utils/Fontfamily';
+import {styles} from '../HomeScreen.styles';
+import {Colors} from '../../../../utils/Colors';
+import {images} from '../../../../utils/Images';
+import {FONT_SIZES} from '../../../../utils/FontSize';
+import {Font_Family} from '../../../../utils/Fontfamily';
+import Config from '../../../../config';
+import Entypo from 'react-native-vector-icons/Entypo';
 
-export const ModalComponent = ({ isVisible, onClose }) => {
-  const [count, setCount] = useState(0);
-  const newData = [1, 2, 3, 4, 5];
+export const ModalComponent = ({isVisible, onClose, dishDetails}) => {
+  const [count, setCount] = useState(1);
+  const [details, setDetails] = useState({
+    dish_category: '',
+    dish_description: '',
+    dish_image: '',
+    dish_name: '',
+    dish_price: '',
+    dish_status: false,
+    dish_type: '',
+    id: '',
+    partner_user: '',
+  });
 
-  const starRenderItem = () => {
-    return (
-      <MaterialCommunityIcons
-        name="star-outline"
-        size={15}
-        color="black"
-        style={{ alignContent: 'center' }}
-      />
-    );
-  };
+  useEffect(() => {
+    if (dishDetails !== undefined && dishDetails !== null) {
+      setDetails(dishDetails);
+    }
+  }, [dishDetails]);
 
   const increment = () => {
     setCount(count + 1);
   };
 
   const decrement = () => {
-    setCount(count - 1);
+    if (count === 1) {
+      return;
+    } else {
+      setCount(count - 1);
+    }
   };
 
   return (
@@ -49,107 +60,90 @@ export const ModalComponent = ({ isVisible, onClose }) => {
       onRequestClose={onClose}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <View style={{ alignSelf: 'flex-end' }}>
+          <View style={{alignSelf: 'flex-end'}}>
             <Pressable onPress={onClose}>
               <AntDesign name="close" size={24} color="black" />
             </Pressable>
           </View>
           <View style={styles.modalInnerView}>
-            <View style={{ backgroundColor: Colors.white }}>
-              <View style={{ height: 200, width: '100%', borderRadius: 20 }}>
-                <Image
-                  source={images.kadaiPaneer}
-                  style={{ height: '100%', width: '100%', borderRadius: 10 }}
+            <ImageBackground
+              source={{uri: Config.API_URL + details.dish_image}}
+              resizeMode={'cover'}
+              style={{
+                height: 200,
+                width: '100%',
+                borderRadius: 20,
+              }}>
+              <View style={styles.bestSellerIcon}>
+                <MaterialCommunityIcons
+                  name="share-circle"
+                  size={30}
+                  color={Colors.primary}
                 />
-                <View style={styles.bestSellerIcon}>
-                  <View style={styles.bestSellerView}>
-                    <Image
-                      source={images.medal}
-                      style={{ height: 30, width: 30 }}
-                    />
-                    <Text style={styles.txtBestSeller}>Bestseller </Text>
-                  </View>
-                  <MaterialCommunityIcons
-                    name="share-circle"
-                    size={30}
-                    color="#ffffff"
-                  />
-                </View>
-
-                <View style={styles.countDownBtn}>
-                  <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity
-                      style={styles.buttonIncrement}
-                      onPress={increment}>
-                      <Text style={styles.minus}>+</Text>
-                    </TouchableOpacity>
-                    <View style={styles.numberContainer}>
-                      <Text style={styles.number}>{count}</Text>
-                    </View>
-                    <TouchableOpacity
-                      style={styles.buttonDecrement}
-                      onPress={decrement}>
-                      <Text style={styles.minus}>-</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
               </View>
-            </View>
-            <View style={{ flexDirection: 'row', marginTop: 10 }}>
+            </ImageBackground>
+            <View style={{flexDirection: 'row', marginTop: 10}}>
               <MaterialCommunityIcons
                 name="square-circle"
                 size={18}
-                color={Colors.green}
+                color={details.dish_type === 'V' ? Colors.green : Colors.red}
               />
-              <Text style={styles.itemsName}>Rava Masala Dosa</Text>
+              <Text style={styles.itemsName}>{details.dish_name}</Text>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <FlatList
-                data={newData}
-                horizontal={true}
-                renderItem={starRenderItem}
-              />
-              <Text
-                style={{
-                  fontSize: FONT_SIZES.tweleve,
-                  fontFamily: Font_Family.medium,
-                  color: Colors.black,
-                  textAlign: 'center',
-                  marginRight: '55%',
-                }}>
-                8 ratings
-              </Text>
+            <View style={styles.bestSellerView}>
+              <Image source={images.medal} style={{height: 15, width: 15}} />
+              <Text style={styles.txtBestSeller}>Bestseller </Text>
             </View>
-
             <Text
               style={{
                 marginTop: '3%',
                 fontFamily: Font_Family.regular,
                 fontSize: FONT_SIZES.tweleve,
               }}>
-              Currently rava masala dosa made of rava batter filled with mash
-              potatoes and spices served with tangy sambar and chutney.
+              {details.dish_description}
             </Text>
           </View>
-
-          <Button
-            buttonColor={Colors.secondary}
-            theme={{ roundness: 0 }}
+          <View
             style={{
-              width: '100%',
-              alignSelf: 'center',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               marginTop: 20,
               marginBottom: 10,
-              borderRadius: 8,
-            }}
-            contentStyle={{ height: 50 }}
-            labelStyle={{
-              fontFamily: Font_Family.regular,
-              fontSize: FONT_SIZES.fifteen,
-            }}
-            mode={'contained'}>
-            Add to cart
-          </Button>
+            }}>
+            <View style={styles.countDownBtn}>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity
+                  style={styles.buttonDecrement}
+                  onPress={decrement}>
+                  <Entypo name="minus" size={24} color={Colors.primary} />
+                </TouchableOpacity>
+                <View style={styles.numberContainer}>
+                  <Text style={styles.number}>{count}</Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.buttonIncrement}
+                  onPress={increment}>
+                  <Entypo name="plus" size={24} color={Colors.primary} />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Button
+              buttonColor={Colors.secondary}
+              theme={{roundness: 0}}
+              style={{
+                width: '60%',
+                borderRadius: 8,
+              }}
+              contentStyle={{height: 50}}
+              labelStyle={{
+                fontFamily: Font_Family.regular,
+                fontSize: FONT_SIZES.fifteen,
+              }}
+              mode={'contained'}>
+              Add to cart
+            </Button>
+          </View>
         </View>
       </View>
     </Modal>
