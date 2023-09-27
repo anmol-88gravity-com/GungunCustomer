@@ -10,10 +10,19 @@ export const addToCart = createAsyncThunk(
   async ({dishId, storeId, price, quantity}, thunkAPI) => {
     const {userId} = thunkAPI.getState().auth;
 
+    console.log(
+      'dishId, storeId, price, quantity',
+      dishId,
+      storeId,
+      price,
+      quantity,
+    );
+
     const res = await Axios.post(ApiEndpoints.cart.createCart, {
       user: userId,
     });
     if (res.data.status === 'ok') {
+      console.log('res.data.response.id', res.data.response.id);
       thunkAPI.fulfillWithValue({cartId: res.data.response.id});
       const result = await Axios.post(ApiEndpoints.cart.addCartItem, {
         user: userId,
@@ -24,6 +33,7 @@ export const addToCart = createAsyncThunk(
         quantity: quantity,
       });
       if (result.data.status === 'ok') {
+        console.log('neha', result.data.response);
         return true;
       } else {
         return thunkAPI.rejectWithValue(new Error(result.data.msg));

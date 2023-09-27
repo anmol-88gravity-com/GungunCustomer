@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  Image,
-  Pressable,
   FlatList,
+  Image,
   Modal,
+  Pressable,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -27,6 +27,7 @@ import Config from '../../config';
 import {Loader} from '../../components/common/Loader';
 import {useGetRestaurantDetails} from '../../hooks';
 import {useError} from '../../context/ErrorProvider';
+import {addToCart} from '../../store/cart/cartSlice';
 
 export const RestaurantScreen = ({navigation, route}) => {
   const {restaurantId} = route.params;
@@ -34,7 +35,6 @@ export const RestaurantScreen = ({navigation, route}) => {
   const MenuList = restaurantDetails?.menu;
 
   const [count, setCount] = useState(0);
-
   const [isVegSwitchOn, setIsVegSwitchOn] = useState(false);
   const [isNonVegSwitchOn, setIsNonVegSwitchOn] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -191,7 +191,7 @@ export const RestaurantScreen = ({navigation, route}) => {
                   />
                 )}
                 <Text style={styles.foodName} numberOfLines={3}>
-                  {item.dish_name} Chimese Manuchurian Platter
+                  {item.dish_name}
                 </Text>
                 <Text style={styles.foodPrice}>₹ {item.dish_price}</Text>
                 <Button
@@ -199,8 +199,8 @@ export const RestaurantScreen = ({navigation, route}) => {
                     setDishDetails(item);
                     setIsModalVisible(true);
                   }}
-                  theme={{colors: Colors.secondary}}
-                  mode={'text'}
+                  theme={{colors: {outline: Colors.secondary}}}
+                  mode={'outlined'}
                   compact={true}
                   style={{
                     alignSelf: 'flex-end',

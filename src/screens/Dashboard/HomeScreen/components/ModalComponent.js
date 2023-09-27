@@ -19,9 +19,14 @@ import {FONT_SIZES} from '../../../../utils/FontSize';
 import {Font_Family} from '../../../../utils/Fontfamily';
 import Config from '../../../../config';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {useDispatch} from 'react-redux';
+import {useError} from '../../../../context/ErrorProvider';
+import {addToCart} from '../../../../store/cart/cartSlice';
+import {showMessage} from 'react-native-flash-message';
 
 export const ModalComponent = ({isVisible, onClose, dishDetails}) => {
   const [count, setCount] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState({
     dish_category: '',
     dish_description: '',
@@ -50,6 +55,35 @@ export const ModalComponent = ({isVisible, onClose, dishDetails}) => {
     } else {
       setCount(count - 1);
     }
+  };
+
+  const dispatch = useDispatch();
+  const setError = useError();
+  const addToCartHandler = async () => {
+    setLoading(true);
+    try {
+      await dispatch(
+        addToCart({
+          dishId: details.id,
+          storeId: details.partner_user,
+          price: details.dish_price,
+          quantity: count,
+        }),
+      ).unwrap();
+      showMessage({
+        message: 'Add to Cart Successfully.',
+        type: 'default',
+        backgroundColor: Colors.secondary,
+        color: Colors.white,
+        textStyle: {
+          fontSize: FONT_SIZES.fifteen,
+          fontFamily: Font_Family.medium,
+        },
+      });
+    } catch (e) {
+      setError(e.message);
+    }
+    setLoading(false);
   };
 
   return (
@@ -129,6 +163,9 @@ export const ModalComponent = ({isVisible, onClose, dishDetails}) => {
               </View>
             </View>
             <Button
+              onPress={addToCartHandler}
+              disabled={loading}
+              loading={loading}
               buttonColor={Colors.secondary}
               theme={{roundness: 0}}
               style={{
