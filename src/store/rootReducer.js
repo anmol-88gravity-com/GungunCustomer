@@ -4,6 +4,7 @@ import userReducer from './user/userSlice';
 import addressReducer from './address/addressSlice';
 import forgotPasswordReducer from './auth/forgotPasswordSlice';
 import homeReducer from './home/homeSlice';
+import cartReducer from './cart/cartSlice';
 
 const combinedReducer = combineReducers({
   auth: authReducer,
@@ -11,6 +12,7 @@ const combinedReducer = combineReducers({
   user: userReducer,
   address: addressReducer,
   home: homeReducer,
+  cart: cartReducer,
 });
 
 export const rootReducer = (state, action) => {

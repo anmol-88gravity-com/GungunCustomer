@@ -4,16 +4,18 @@ import {ApiEndpoints} from '../ApiEndPoints';
 import {Axios} from '../../lib/Axios';
 
 export const ADD_TO_CART = '/api/add-to-cart';
+
 export const addToCart = createAsyncThunk(
   ADD_TO_CART,
   async ({dishId, storeId, price, quantity}, thunkAPI) => {
     const {userId} = thunkAPI.getState().auth;
 
-    const res = await Axios.post('api/cards/', {
+    const res = await Axios.post(ApiEndpoints.cart.createCart, {
       user: userId,
     });
     if (res.data.status === 'ok') {
-      const result = await Axios.post(ApiEndpoints.categoryFoodType.foodType, {
+      thunkAPI.fulfillWithValue({cartId: res.data.response.id});
+      const result = await Axios.post(ApiEndpoints.cart.addCartItem, {
         user: userId,
         card: res.data.response.id,
         dish_id: dishId,
@@ -22,7 +24,7 @@ export const addToCart = createAsyncThunk(
         quantity: quantity,
       });
       if (result.data.status === 'ok') {
-        return thunkAPI.fulfillWithValue(result.data.response);
+        return true;
       } else {
         return thunkAPI.rejectWithValue(new Error(result.data.msg));
       }
@@ -32,13 +34,13 @@ export const addToCart = createAsyncThunk(
   },
 );
 
-export const homeSlice = createSlice({
-  name: 'home',
+export const cartSlice = createSlice({
+  name: 'cart',
   initialState: null,
   reducers: {},
   extraReducers: builder => {},
 });
 
-export const {} = homeSlice.actions;
+export const {} = cartSlice.actions;
 
-export default homeSlice.reducer;
+export default cartSlice.reducer;
