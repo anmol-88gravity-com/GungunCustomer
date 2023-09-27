@@ -1,10 +1,10 @@
-import {StyleSheet} from 'react-native';
-import {FONT_SIZES} from '../../utils/FontSize';
-import {Font_Family} from '../../utils/Fontfamily';
-import {Colors} from '../../utils/Colors';
+import { StyleSheet } from 'react-native';
+import { FONT_SIZES } from '../../utils/FontSize';
+import { Font_Family } from '../../utils/Fontfamily';
+import { Colors } from '../../utils/Colors';
 
 export const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: 'white', paddingHorizontal: 15},
+  container: { flex: 1, backgroundColor: 'white', paddingHorizontal: 15 },
   heading: {
     paddingTop: 15,
     fontSize: FONT_SIZES.fifteen,
@@ -139,6 +139,26 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
+  cuponView: {
+    // backgroundColor: Colors.white,
+    height: 100,
+    width: 150,
+    borderRadius: 12,
+    elevation: 6,
+    margin: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  cuponImage: {
+    height: '100%',
+    width: '100%',
+    borderRadius: 12,
+  },
   deliveryInnerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -220,5 +240,47 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.semiBold,
     fontSize: FONT_SIZES.fifteen,
     color: Colors.white,
+  },
+  // Address---
+
+  addressCard: {
+    marginBottom: 15,
+    width: '95%',
+    alignSelf: 'center',
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: Colors.white,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  titleStyles: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  addressTitle: {
+    color: Colors.black,
+    fontFamily: Font_Family.regular,
+    textTransform: 'capitalize',
+  },
+  addressText: {
+    fontFamily: Font_Family.medium,
+    fontSize: FONT_SIZES.fifteen,
+    lineHeight: 28,
+    color: Colors.black,
+    textTransform: 'capitalize',
+  },
+  addressBtn: {
+    marginTop: 5,
+    alignSelf: 'flex-end',
+    fontFamily: Font_Family.medium,
+    fontSize: FONT_SIZES.fifteen,
+    color: Colors.primary,
+    textDecorationLine: 'underline',
   },
 });

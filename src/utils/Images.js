@@ -10,4 +10,7 @@ export const images = {
   medal: require('../assets/dashboardImages/medal.png'),
   restaurant: require('../assets/dashboardImages/restaurant.jpg'),
   success: require('../assets/dashboardImages/success.png'),
+  cuponCard: require('../assets/dashboardImages/cuponCard.png'),
+  cuponCardImg: require('../assets/dashboardImages/cuponCardImg.png'),
+  cuponImg: require('../assets/dashboardImages/cuponImg.png'),
 };

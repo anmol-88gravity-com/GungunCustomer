@@ -23,6 +23,7 @@ import {CartScreen} from '../screens/Cart';
 import {Notification} from '../screens/Notifications';
 import {OrderTrackingScreen} from '../screens/Orders/OrderTrack';
 import {PaymentScreen} from '../screens/Payment';
+import { AddressesScreen } from '../screens/Cart/AddressesList';
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,11 @@ export function DashboardNavigator() {
         name="CartScreen"
         component={CartScreen}
         options={{title: 'My Cart', headerBackTitle: ''}}
+      />
+      <Stack.Screen
+        name="CartAddresses"
+        component={AddressesScreen}
+        options={{title: 'My Addresses', headerBackTitle: ''}}
       />
       <Stack.Screen
         name="Payment"

@@ -1,21 +1,60 @@
-import React from 'react';
-import {View, Text, Pressable, ScrollView} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Pressable, ScrollView, Image, FlatList } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import {Colors} from '../../utils/Colors';
-import {styles} from './cart.styles';
+import { Colors } from '../../utils/Colors';
+import { styles } from './cart.styles';
+import { images } from '../../utils/Images';
+import { AddressesScreen } from './AddressesList';
+import { useGetAddressList } from '../../hooks';
 
-export const CartScreen = ({navigation}) => {
+export const CartScreen = ({ navigation }) => {
+  const [addressData, setAddressData] = useState(null);
+  const { addressList, loading } = useGetAddressList();
+
+
+  useEffect(() => {
+    if (addressList !== undefined && addressList.length > 0) {
+      const defaultAddress = addressList.find(
+        address => address.is_default === true,
+      );
+      if (defaultAddress) {
+        setAddressData(defaultAddress);
+      }
+    }
+  }, [addressList]);
+
+  const DATA = [
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      imageSource: images.cuponCard,
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      imageSource: images.cuponCardImg,
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      imageSource: images.cuponImg,
+    },
+  ];
+
+  const Item = ({ imageSource }) => (
+    <View style={styles.cuponView}>
+      <Image source={imageSource} style={styles.cuponImage} />
+    </View>
+  );
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <Text style={styles.heading}>Items Added</Text>
       <View style={styles.cardContainer}>
-        <View style={[styles.itemRowStyles, {paddingVertical: 10}]}>
+        <View style={[styles.itemRowStyles, { paddingVertical: 10 }]}>
           <View style={styles.itemInnerRow}>
             <MaterialCommunityIcons
               name="square-circle"
@@ -33,11 +72,11 @@ export const CartScreen = ({navigation}) => {
           </View>
           <View style={styles.qtyBox}>
             <View style={styles.qtyContainer}>
-              <Pressable style={{padding: 5}}>
+              <Pressable style={{ padding: 5 }}>
                 <AntDesign name="minus" size={22} color={Colors.primary} />
               </Pressable>
               <Text style={styles.qty}>1</Text>
-              <Pressable style={{padding: 5}}>
+              <Pressable style={{ padding: 5 }}>
                 <Ionicons name="add" size={20} color={Colors.primary} />
               </Pressable>
             </View>
@@ -67,11 +106,11 @@ export const CartScreen = ({navigation}) => {
           </View>
           <View style={styles.qtyBox}>
             <View style={styles.qtyContainer}>
-              <Pressable style={{padding: 5}}>
+              <Pressable style={{ padding: 5 }}>
                 <AntDesign name="minus" size={22} color={Colors.primary} />
               </Pressable>
               <Text style={styles.qty}>1</Text>
-              <Pressable style={{padding: 5}}>
+              <Pressable style={{ padding: 5 }}>
                 <Ionicons name="add" size={20} color={Colors.primary} />
               </Pressable>
             </View>
@@ -105,9 +144,18 @@ export const CartScreen = ({navigation}) => {
           <Entypo name="chevron-small-right" size={24} color={Colors.grey} />
         </View>
       </Pressable>
+      <FlatList
+        data={DATA}
+        renderItem={({ item }) => (
+          <Item title={item.title} imageSource={item.imageSource} />
+        )}
+        keyExtractor={item => item.id}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+      />
       <Pressable style={styles.deliveryBox}>
         <Pressable style={styles.deliveryInnerContainer}>
-          <View style={[styles.rowStyles, {width: '70%'}]}>
+          <View style={[styles.rowStyles, { width: '70%' }]}>
             <Ionicons name="location" size={20} color={Colors.secondary} />
             <View>
               <Text style={styles.deliveryText}>Delivery Location</Text>
@@ -115,12 +163,20 @@ export const CartScreen = ({navigation}) => {
           </View>
 
           <View style={styles.rowStyles}>
-            <Text style={styles.changeText}>Change</Text>
+            <Pressable onPress={() => navigation.navigate('CartAddresses')}>
+              <Text style={styles.changeText}>Change</Text>
+            </Pressable>
             <Entypo name="chevron-small-right" size={24} color={Colors.grey} />
           </View>
         </Pressable>
         <Text numberOfLines={3} style={styles.addressText}>
-          511, Udyog Vihar Phase-5, Gurugram, Haryana 122016
+          {addressData?.address1 +
+            ', ' +
+            addressData?.address2 +
+            ', ' +
+            addressData?.city +
+            ', ' +
+            addressData?.state}
         </Text>
       </Pressable>
       <Text style={styles.billSummary}>Bill Summary</Text>
@@ -137,10 +193,10 @@ export const CartScreen = ({navigation}) => {
           <Text style={styles.amountTitle}>Delivery Partner fee</Text>
           <Text style={styles.amount}>Rs. 40.00</Text>
         </View>
-        <View style={styles.billRow}>
-          <Text style={styles.amountTitle}>Gungun Points</Text>
+        {/* <View style={styles.billRow}>
+          <Text style={styles.amountTitle}>Applied Cupon</Text>
           <Text style={styles.amount}>(-) Rs. 35.00</Text>
-        </View>
+        </View> */}
         <View style={styles.grandTotalRow}>
           <Text style={styles.grandTotalText}>Grand Total</Text>
           <Text style={styles.grandTotal}>Rs. 560.50</Text>
@@ -149,10 +205,10 @@ export const CartScreen = ({navigation}) => {
       <Button
         onPress={() => navigation.navigate('Payment')}
         mode={'contained'}
-        theme={{roundness: 0}}
+        theme={{ roundness: 0 }}
         labelStyle={styles.btnLabelStyles}
-        style={{marginVertical: 20, borderRadius: 15}}
-        contentStyle={{height: 50}}>
+        style={{ marginVertical: 20, borderRadius: 15 }}
+        contentStyle={{ height: 50 }}>
         Proceed to payment
       </Button>
     </ScrollView>
