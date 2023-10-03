@@ -25,7 +25,6 @@ export const addToCart = createAsyncThunk(
       user: userId,
     });
     if (res.data.status === 'ok') {
-      console.log('res.data.response.id', res.data.response.id);
       thunkAPI.fulfillWithValue({cartId: res.data.response.id});
       const result = await Axios.post(ApiEndpoints.cart.addCartItem, {
         user: userId,
@@ -36,8 +35,7 @@ export const addToCart = createAsyncThunk(
         quantity: quantity,
       });
       if (result.data.status === 'ok') {
-        console.log('neha', result.data.response);
-        return true;
+        return thunkAPI.fulfillWithValue(result.data.response);;
       } else {
         return thunkAPI.rejectWithValue(new Error(result.data.msg));
       }
@@ -51,10 +49,11 @@ export const addToCart = createAsyncThunk(
 export const getDataCartItems = createAsyncThunk(
   GET_CART_ITEMS,
   async (_, thunkAPI) => {
+    // console.log('cartId---',cartId)
     const result = await Axios.get(
       ApiEndpoints.cart.getCartItems.replace(
         'DISH_ITEM_ID',
-        String(5),
+        String(68),
       ),
     );
     if (result.data.status === 'ok') {
@@ -67,9 +66,11 @@ export const getDataCartItems = createAsyncThunk(
 
 export const increaseItemQuantity = createAsyncThunk(
   INCREASE_QUANTITY,
-  async (_, thunkAPI) => {
-    const result = await Axios.put(ApiEndpoints.cart.increaseQuantity);
-    console.log('increaseItem--',result?.data)
+  async ({item_id}, thunkAPI) => {
+    console.log('item_id increase--',{item_id})
+    const result = await Axios.put(ApiEndpoints.cart.increaseQuantity, {
+      card_item_id: item_id,
+    });
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue(result.data.response);
     } else {
@@ -80,10 +81,13 @@ export const increaseItemQuantity = createAsyncThunk(
 
 export const decreaseItemQuantity = createAsyncThunk(
   DECREASE_QUANTITY,
-  async (_, thunkAPI) => {
-    const result = await Axios.put(ApiEndpoints.cart.decreaseQuantity);
-    console.log('decreaseItem--',result?.data)
+  async ({item_id}, thunkAPI) => {
+    console.log('item_id decrease--',{item_id})
+    const result = await Axios.put(ApiEndpoints.cart.decreaseQuantity, {
+      card_item_id: item_id,
+    });
     if (result.data.status === 'ok') {
+      // console.log('decreaseItemdata--',result?.data)
       return thunkAPI.fulfillWithValue(result.data.response);
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));

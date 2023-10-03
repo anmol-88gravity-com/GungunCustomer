@@ -35,6 +35,7 @@ export const HomeScreen = ({navigation}) => {
   const {profileData, loading: userLoading} = useGetProfileData();
   const {addressList, loading} = useGetAddressList();
   const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
+  
 
   useEffect(() => {
     if (addressList !== undefined && addressList.length > 0) {
@@ -183,7 +184,7 @@ export const HomeScreen = ({navigation}) => {
                     restaurantMaxOffer="above ₹249"
                     onPressHandler={() =>
                       navigation.navigate('RestaurantScreen', {
-                        restaurantId: '10',
+                        restaurantId: '9',
                       })
                     }
                   />
