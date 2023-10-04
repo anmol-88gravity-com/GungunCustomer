@@ -39,15 +39,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.3)',
-   
-
   },
   modalView: {
+    width: '80%',
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 10,
-    paddingHorizontal: 60,
-    paddingVertical:10,
+    padding: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -76,7 +74,6 @@ const styles = StyleSheet.create({
     fontFamily: Font_Family.regular,
   },
   buttonStyles: {
-    width: '100%',
     alignSelf: 'flex-end',
     borderRadius: 5,
   },

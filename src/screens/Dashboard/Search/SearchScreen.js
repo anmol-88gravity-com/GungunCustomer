@@ -32,7 +32,6 @@ export const SearchScreen = ({route, navigation}) => {
 
   const inputKey = route.params.searchKey;
 
-
   const dispatch = useDispatch();
   const setError = useError();
 
@@ -82,19 +81,19 @@ export const SearchScreen = ({route, navigation}) => {
               marginVertical: 10,
             }}>
             <Chip
-              onPress={() => console.log('Pressed')}
+              // onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
               style={styles.chipStyles}>
               Bikaner Sweets
             </Chip>
             <Chip
-              onPress={() => console.log('Pressed')}
+              // onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
               style={styles.chipStyles}>
               Singla's Sweetsgit
             </Chip>
             <Chip
-              onPress={() => console.log('Pressed')}
+              // onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
               style={styles.chipStyles}>
               Om Sweets and Restaurants
@@ -104,19 +103,19 @@ export const SearchScreen = ({route, navigation}) => {
           <Text style={styles.recommended}>Recommended</Text>
           <View style={styles.chipRow}>
             <Chip
-              onPress={() => console.log('Pressed')}
+              // onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
               style={styles.foodName}>
               Masala Dosa
             </Chip>
             <Chip
-              onPress={() => console.log('Pressed')}
+              // onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
               style={styles.foodName}>
               Pav Bhaji
             </Chip>
             <Chip
-              onPress={() => console.log('Pressed')}
+              // onPress={() => console.log('Pressed')}
               textStyle={{color: Colors.grey}}
               style={styles.foodName}>
               Choco lava
@@ -168,9 +167,7 @@ export const SearchScreen = ({route, navigation}) => {
                   navigation.navigate('RestaurantScreen', {
                     restaurantId: item.partner_user,
                   })
-                }
-                
-                >
+                }>
                 <View
                   style={{
                     flexDirection: 'row',

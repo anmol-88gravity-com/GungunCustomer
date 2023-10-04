@@ -1,41 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Pressable, ScrollView, Image, FlatList, ActivityIndicator } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  Image,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { Button } from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import { Colors } from '../../utils/Colors';
-import { styles } from './cart.styles';
-import { images } from '../../utils/Images';
-import { useGetAddressList } from '../../hooks';
-import { useGetCartItemsData } from '../../hooks/cart/useGetCartItemsData';
-import { useDispatch } from 'react-redux';
-import { decreaseItemQuantity, increaseItemQuantity } from '../../store/cart/cartSlice';
-import { showMessage } from 'react-native-flash-message';
-import { FONT_SIZES } from '../../utils/FontSize';
-import { Font_Family } from '../../utils/Fontfamily';
-import { Loader } from '../../components/common/Loader';
+import {Colors} from '../../utils/Colors';
+import {styles} from './cart.styles';
+import {images} from '../../utils/Images';
+import {useGetAddressList} from '../../hooks';
+import {useGetCartItemsData} from '../../hooks/cart/useGetCartItemsData';
+import {useDispatch} from 'react-redux';
+import {
+  decreaseItemQuantity,
+  increaseItemQuantity,
+} from '../../store/cart/cartSlice';
+import {showMessage} from 'react-native-flash-message';
+import {FONT_SIZES} from '../../utils/FontSize';
+import {Font_Family} from '../../utils/Fontfamily';
+import {Loader} from '../../components/common/Loader';
+import {useError} from '../../context/ErrorProvider';
 
-
-export const CartScreen = ({ navigation }) => {
+export const CartScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const [addressData, setAddressData] = useState(null);
-  const { addressList, loading } = useGetAddressList();
-  const { cartItems } = useGetCartItemsData('68');
+  const {addressList, loading} = useGetAddressList();
+  const {cartItems} = useGetCartItemsData('68');
   const [cartItemsData, setCartItemsData] = useState(null);
 
-
-
-
-
-  // console.log('cartItemsData------', cartItemsData)
+  const setError = useError();
 
   useEffect(() => {
-    setCartItemsData(cartItems)
-  }, [cartItems])
+    setCartItemsData(cartItems);
+  }, [cartItems]);
 
   useEffect(() => {
     if (addressList !== undefined && addressList.length > 0) {
@@ -47,7 +54,6 @@ export const CartScreen = ({ navigation }) => {
       }
     }
   }, [addressList]);
-
 
   const DATA = [
     {
@@ -78,16 +84,22 @@ export const CartScreen = ({ navigation }) => {
 
   //calculate SubTotal
 
-  const Item = ({ imageSource }) => (
+  const Item = ({imageSource}) => (
     <View style={styles.cuponView}>
       <Image source={imageSource} style={styles.cuponImage} />
     </View>
   );
 
-  const CartItem = ({ item_id, itemName, itemPrice, itemQuantity, dish_type }) => {
-    const increaseQuantityhandler = async () => {
+  const CartItem = ({
+    item_id,
+    itemName,
+    itemPrice,
+    itemQuantity,
+    dish_type,
+  }) => {
+    const increaseQuantityHandler = async () => {
       try {
-        await dispatch(increaseItemQuantity({ item_id })).unwrap();
+        await dispatch(increaseItemQuantity({item_id})).unwrap();
         showMessage({
           message: 'Item quantity increased successfully.',
           type: 'default',
@@ -99,13 +111,13 @@ export const CartScreen = ({ navigation }) => {
           },
         });
       } catch (e) {
-        console.log("error---", e.message)
+        setError(e.message);
       }
     };
 
-    const decreaseQuantityhandler = async () => {
+    const decreaseQuantityHandler = async () => {
       try {
-        await dispatch(decreaseItemQuantity({ item_id })).unwrap();
+        await dispatch(decreaseItemQuantity({item_id})).unwrap();
         showMessage({
           message: 'Item quantity decreased successfully.',
           type: 'default',
@@ -117,25 +129,31 @@ export const CartScreen = ({ navigation }) => {
           },
         });
       } catch (e) {
-        // setError(e.message);
-        console.log("error---", e.message)
+        setError(e.message);
       }
     };
+
     const totalPrice = itemPrice * itemQuantity;
 
     return (
-      <View style={[styles.itemRowStyles, { paddingVertical: 10 }]}>
+      <View style={[styles.itemRowStyles, {paddingVertical: 10}]}>
         <View style={styles.itemInnerRow}>
-          {dish_type == "V" ? (<MaterialCommunityIcons
-            name="square-circle"
-            size={18}
-            color={Colors.green}
-          />) : (<MaterialCommunityIcons
-            name="square-circle"
-            size={18}
-            color={Colors.red}
-          />)}
-          <Text numberOfLines={3} style={[styles.itemName, { textTransform: 'capitalize' }]}>
+          {dish_type == 'V' ? (
+            <MaterialCommunityIcons
+              name="square-circle"
+              size={18}
+              color={Colors.green}
+            />
+          ) : (
+            <MaterialCommunityIcons
+              name="square-circle"
+              size={18}
+              color={Colors.red}
+            />
+          )}
+          <Text
+            numberOfLines={3}
+            style={[styles.itemName, {textTransform: 'capitalize'}]}>
             {itemName}
           </Text>
         </View>
@@ -146,11 +164,11 @@ export const CartScreen = ({ navigation }) => {
         </View>
         <View style={styles.qtyBox}>
           <View style={styles.qtyContainer}>
-            <Pressable style={{ padding: 5 }} onPress={decreaseQuantityhandler}>
+            <Pressable style={{padding: 5}} onPress={decreaseQuantityHandler}>
               <AntDesign name="minus" size={22} color={Colors.primary} />
             </Pressable>
             <Text style={styles.qty}>{itemQuantity}</Text>
-            <Pressable style={{ padding: 5 }} onPress={increaseQuantityhandler} >
+            <Pressable style={{padding: 5}} onPress={increaseQuantityHandler}>
               <Ionicons name="add" size={20} color={Colors.primary} />
             </Pressable>
           </View>
@@ -162,30 +180,33 @@ export const CartScreen = ({ navigation }) => {
   const handleAddMoreItems = () => {
     if (cartItemsData?.items) {
       cartItemsData.items.forEach(item => {
-        navigation.navigate('RestaurantScreen', { restaurantId: item.store_id });
+        navigation.navigate('RestaurantScreen', {restaurantId: item.store_id});
       });
     }
   };
 
-
-
   return (
     <>
-      {loading ? (<Loader />) : (
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.container}>
           <Text style={styles.heading}>Items Added</Text>
           <View style={styles.cardContainer}>
             <View>
-              {cartItemsData?.items && cartItemsData?.items?.map((item, index) => (
-                <CartItem
-                  key={index}
-                  item_id={item?.item_id}
-                  itemName={item?.dish_name}
-                  itemPrice={item?.price}
-                  itemQuantity={item?.quantity}
-                  dish_type={item?.dish_type}
-                />
-              ))}
+              {cartItemsData?.items &&
+                cartItemsData?.items?.map((item, index) => (
+                  <CartItem
+                    key={index}
+                    item_id={item?.item_id}
+                    itemName={item?.dish_name}
+                    itemPrice={item?.price}
+                    itemQuantity={item?.quantity}
+                    dish_type={item?.dish_type}
+                  />
+                ))}
             </View>
             <Pressable style={styles.addMoreRow} onPress={handleAddMoreItems}>
               <View style={styles.rowStyles}>
@@ -194,7 +215,6 @@ export const CartScreen = ({ navigation }) => {
               </View>
               <Entypo name="chevron-small-right" size={24} color="black" />
             </Pressable>
-
           </View>
           <Pressable style={styles.shadowCard}>
             <View style={styles.rowStyles}>
@@ -213,12 +233,16 @@ export const CartScreen = ({ navigation }) => {
             </View>
             <View style={styles.rowStyles}>
               <Text style={styles.viewAllText}>View All</Text>
-              <Entypo name="chevron-small-right" size={24} color={Colors.grey} />
+              <Entypo
+                name="chevron-small-right"
+                size={24}
+                color={Colors.grey}
+              />
             </View>
           </Pressable>
           <FlatList
             data={DATA}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <Item title={item.title} imageSource={item.imageSource} />
             )}
             keyExtractor={item => item.id}
@@ -227,7 +251,7 @@ export const CartScreen = ({ navigation }) => {
           />
           <Pressable style={styles.deliveryBox}>
             <Pressable style={styles.deliveryInnerContainer}>
-              <View style={[styles.rowStyles, { width: '70%' }]}>
+              <View style={[styles.rowStyles, {width: '70%'}]}>
                 <Ionicons name="location" size={20} color={Colors.secondary} />
                 <View>
                   <Text style={styles.deliveryText}>Delivery Location</Text>
@@ -238,7 +262,11 @@ export const CartScreen = ({ navigation }) => {
                 <Pressable onPress={() => navigation.navigate('CartAddresses')}>
                   <Text style={styles.changeText}>Change</Text>
                 </Pressable>
-                <Entypo name="chevron-small-right" size={24} color={Colors.grey} />
+                <Entypo
+                  name="chevron-small-right"
+                  size={24}
+                  color={Colors.grey}
+                />
               </View>
             </Pressable>
             <Text numberOfLines={3} style={styles.addressText}>
@@ -255,7 +283,9 @@ export const CartScreen = ({ navigation }) => {
           <View style={styles.billBox}>
             <View style={styles.billRow}>
               <Text style={styles.amountTitle}>Sub Total</Text>
-              <Text style={styles.amount}>Rs. {calculateSubTotal().toFixed(2)}</Text>
+              <Text style={styles.amount}>
+                Rs. {calculateSubTotal().toFixed(2)}
+              </Text>
             </View>
             <View style={styles.billRow}>
               <Text style={styles.amountTitle}>GST</Text>
@@ -273,18 +303,14 @@ export const CartScreen = ({ navigation }) => {
           <Button
             onPress={() => navigation.navigate('Payment')}
             mode={'contained'}
-            theme={{ roundness: 0 }}
+            theme={{roundness: 0}}
             labelStyle={styles.btnLabelStyles}
-            style={{ marginVertical: 20, borderRadius: 15 }}
-            contentStyle={{ height: 50 }}>
+            style={{marginVertical: 20, borderRadius: 15}}
+            contentStyle={{height: 50}}>
             Proceed to payment
           </Button>
-
         </ScrollView>
-
       )}
     </>
-
-
   );
 };

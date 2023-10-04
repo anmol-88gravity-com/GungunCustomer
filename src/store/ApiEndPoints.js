@@ -32,10 +32,10 @@ export const ApiEndpoints = {
     searchQuery: '/api/search/',
   },
   cart: {
-    createCart: 'api/cards/',   // {"user": 24} create card
-    addCartItem: '/api/card-items/', //{ id = 47 == card=47}
-    getCartItems:'/api/cards/list/DISH_ITEM_ID/',
-    increaseQuantity:'/api/card-items/increase-quantity/',
-    decreaseQuantity:'/api/card-items/decrease-quantity/'
+    createCart: 'api/cards/',
+    addCartItem: '/api/card-items/',
+    getCartItems: '/api/cards/list/DISH_ITEM_ID/',
+    increaseQuantity: '/api/card-items/increase-quantity/',
+    decreaseQuantity: '/api/card-items/decrease-quantity/',
   },
 };

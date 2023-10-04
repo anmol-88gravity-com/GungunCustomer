@@ -43,6 +43,7 @@ import {useError} from '../../context/ErrorProvider';
 import {FONT_SIZES} from '../../utils/FontSize';
 import {Font_Family} from '../../utils/Fontfamily';
 import {Loader} from '../../components/common/Loader';
+import Config from '../../config';
 
 export const ProfileScreen = () => {
   const dispatch = useDispatch();
@@ -248,7 +249,7 @@ export const ProfileScreen = () => {
                       borderColor: Colors.secondary,
                     }}>
                     <Image
-                      source={{uri: values.profilePic?.uri}}
+                      source={{uri: Config.API_URL + values.profilePic?.uri}}
                       style={{
                         width: '100%',
                         height: '100%',
