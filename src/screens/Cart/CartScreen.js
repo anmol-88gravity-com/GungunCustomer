@@ -35,8 +35,11 @@ export const CartScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const [addressData, setAddressData] = useState(null);
   const {addressList, loading} = useGetAddressList();
-  const {cartItems} = useGetCartItemsData('68');
-  const [cartItemsData, setCartItemsData] = useState(null);
+  const {cartItems, loading: isLoading} = useGetCartItemsData();
+  const [cartItemsData, setCartItemsData] = useState([]);
+  const [incLoader, setIncLoader] = useState(false);
+  const [decLoader, setDecLoader] = useState(false);
+  const [selected, setSelected] = useState(null);
 
   const setError = useError();
 
@@ -73,8 +76,8 @@ export const CartScreen = ({navigation}) => {
   //calculate SubTotal
   const calculateSubTotal = () => {
     let subTotal = 0;
-    if (cartItemsData?.items) {
-      cartItemsData.items.forEach(item => {
+    if (cartItemsData !== undefined && cartItemsData.length > 0) {
+      cartItemsData.forEach(item => {
         const totalPrice = item.price * item.quantity;
         subTotal += totalPrice;
       });
@@ -97,9 +100,11 @@ export const CartScreen = ({navigation}) => {
     itemQuantity,
     dish_type,
   }) => {
-    const increaseQuantityHandler = async () => {
+    const increaseQuantityHandler = async itemId => {
+      setSelected(itemId);
+      setIncLoader(true);
       try {
-        await dispatch(increaseItemQuantity({item_id})).unwrap();
+        await dispatch(increaseItemQuantity({itemId})).unwrap();
         showMessage({
           message: 'Item quantity increased successfully.',
           type: 'default',
@@ -110,14 +115,18 @@ export const CartScreen = ({navigation}) => {
             fontFamily: Font_Family.medium,
           },
         });
+        setIncLoader(false);
       } catch (e) {
         setError(e.message);
       }
+      setIncLoader(false);
     };
 
-    const decreaseQuantityHandler = async () => {
+    const decreaseQuantityHandler = async itemId => {
+      setSelected(itemId);
+      setDecLoader(true);
       try {
-        await dispatch(decreaseItemQuantity({item_id})).unwrap();
+        await dispatch(decreaseItemQuantity({itemId})).unwrap();
         showMessage({
           message: 'Item quantity decreased successfully.',
           type: 'default',
@@ -128,9 +137,11 @@ export const CartScreen = ({navigation}) => {
             fontFamily: Font_Family.medium,
           },
         });
+        setDecLoader(false);
       } catch (e) {
         setError(e.message);
       }
+      setDecLoader(false);
     };
 
     const totalPrice = itemPrice * itemQuantity;
@@ -138,7 +149,7 @@ export const CartScreen = ({navigation}) => {
     return (
       <View style={[styles.itemRowStyles, {paddingVertical: 10}]}>
         <View style={styles.itemInnerRow}>
-          {dish_type == 'V' ? (
+          {dish_type === 'V' ? (
             <MaterialCommunityIcons
               name="square-circle"
               size={18}
@@ -164,11 +175,27 @@ export const CartScreen = ({navigation}) => {
         </View>
         <View style={styles.qtyBox}>
           <View style={styles.qtyContainer}>
-            <Pressable style={{padding: 5}} onPress={decreaseQuantityHandler}>
+            <Pressable
+              style={{padding: 5}}
+              onPress={() => decreaseQuantityHandler(item_id)}>
               <AntDesign name="minus" size={22} color={Colors.primary} />
             </Pressable>
-            <Text style={styles.qty}>{itemQuantity}</Text>
-            <Pressable style={{padding: 5}} onPress={increaseQuantityHandler}>
+            {(incLoader || decLoader) && item_id === selected ? (
+              <ActivityIndicator
+                size={'small'}
+                color={Colors.primary}
+                style={{
+                  alignSelf: 'center',
+                  paddingVertical: 5,
+                  paddingHorizontal: 10,
+                }}
+              />
+            ) : (
+              <Text style={styles.qty}>{itemQuantity}</Text>
+            )}
+            <Pressable
+              style={{padding: 5}}
+              onPress={() => increaseQuantityHandler(item_id)}>
               <Ionicons name="add" size={20} color={Colors.primary} />
             </Pressable>
           </View>
@@ -178,8 +205,8 @@ export const CartScreen = ({navigation}) => {
   };
 
   const handleAddMoreItems = () => {
-    if (cartItemsData?.items) {
-      cartItemsData.items.forEach(item => {
+    if (cartItemsData) {
+      cartItemsData.forEach(item => {
         navigation.navigate('RestaurantScreen', {restaurantId: item.store_id});
       });
     }
@@ -187,7 +214,7 @@ export const CartScreen = ({navigation}) => {
 
   return (
     <>
-      {loading ? (
+      {loading || isLoading ? (
         <Loader />
       ) : (
         <ScrollView
@@ -196,8 +223,8 @@ export const CartScreen = ({navigation}) => {
           <Text style={styles.heading}>Items Added</Text>
           <View style={styles.cardContainer}>
             <View>
-              {cartItemsData?.items &&
-                cartItemsData?.items?.map((item, index) => (
+              {cartItemsData.length > 0 &&
+                cartItemsData.map((item, index) => (
                   <CartItem
                     key={index}
                     item_id={item?.item_id}
@@ -211,7 +238,7 @@ export const CartScreen = ({navigation}) => {
             <Pressable style={styles.addMoreRow} onPress={handleAddMoreItems}>
               <View style={styles.rowStyles}>
                 <MaterialIcons name="add-box" size={24} color="black" />
-                <Text style={styles.addMoreItemsText}>Add more Itemsxxx</Text>
+                <Text style={styles.addMoreItemsText}>Add more Items</Text>
               </View>
               <Entypo name="chevron-small-right" size={24} color="black" />
             </Pressable>

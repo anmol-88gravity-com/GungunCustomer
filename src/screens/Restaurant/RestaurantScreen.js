@@ -36,7 +36,7 @@ import {
 
 export const RestaurantScreen = ({navigation, route}) => {
   const {restaurantId} = route.params;
-  const {cartId} = useSelector(state => state.cart);
+  const {cartId, cartList} = useSelector(state => state.cart);
   const {restaurantDetails, loading} = useGetRestaurantDetails({restaurantId});
   const MenuList = restaurantDetails?.menu;
 
@@ -48,9 +48,6 @@ export const RestaurantScreen = ({navigation, route}) => {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(3);
   const [dishDetails, setDishDetails] = useState(null);
-  const [selectedId, setSelectedId] = useState(null);
-
-  console.log('cartId', cartId);
 
   const handleToggleVegSwitch = () => {
     setIsVegSwitchOn(!isVegSwitchOn);
@@ -114,7 +111,6 @@ export const RestaurantScreen = ({navigation, route}) => {
     price,
     quantity,
   }) => {
-    console.log('I am working');
     try {
       const res = await dispatch(createCart()).unwrap();
       if (res) {
@@ -148,7 +144,10 @@ export const RestaurantScreen = ({navigation, route}) => {
 
   const addToCartHandler = async ({dishId, storeId, price, quantity}) => {
     console.log('I am working  addToCartHandler');
-
+    if (cartList[0].store_id !== storeId) {
+      alert('not the same store');
+      return;
+    }
     try {
       await dispatch(
         addToCart({

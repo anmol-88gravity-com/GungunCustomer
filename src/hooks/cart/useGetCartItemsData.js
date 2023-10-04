@@ -1,10 +1,11 @@
 import {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
-
-import { getDataCartItems } from '../../store/cart/cartSlice';
-import { useError } from '../../context/ErrorProvider';
+import {getDataCartItems} from '../../store/cart/cartSlice';
+import {useError} from '../../context/ErrorProvider';
+import {load} from '../../utils/storage';
+import Config from '../../config';
 
 export const useGetCartItemsData = () => {
   const navigation = useNavigation();
@@ -12,26 +13,25 @@ export const useGetCartItemsData = () => {
   const setError = useError();
 
   const [loading, setLoading] = useState(true);
-  const [cartItems, setCartItems] = useState();
-
-  const getCartItemsData = async () => {
-    try {
-      const res = await dispatch(getDataCartItems()).unwrap();
-      if (res) {
-        setCartItems(res);
-        setLoading(false);
-      }
-    } catch (e) {
-      setError(e.message);
-      setLoading(false);
-    }
-  };
+  const {cartList: cartItems} = useSelector(state => state.cart);
 
   useEffect(() => {
-    return navigation.addListener('focus', () => {
-        getCartItemsData();
+    return navigation.addListener('focus', async () => {
+      const cartId = await load(Config.CART_ID);
+      if (cartId) {
+        try {
+          const res = await dispatch(getDataCartItems({cartId})).unwrap();
+          if (res) {
+            // setCartItems(res);
+            setLoading(false);
+          }
+        } catch (e) {
+          setError(e.message);
+          setLoading(false);
+        }
+      }
     });
-  }, [navigation]);
+  }, [dispatch, navigation, setError]);
 
   return {
     cartItems,

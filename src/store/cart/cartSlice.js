@@ -2,6 +2,8 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 import {ApiEndpoints} from '../ApiEndPoints';
 import {Axios} from '../../lib/Axios';
+import {save} from '../../utils/storage';
+import Config from '../../config';
 
 export const CREATE_CART = '/api/create-cart';
 export const ADD_TO_CART = '/api/add-to-cart';
@@ -16,6 +18,7 @@ export const createCart = createAsyncThunk(CREATE_CART, async (_, thunkAPI) => {
     user: userId,
   });
   if (res.data.status === 'ok') {
+    await save(Config.CART_ID, res.data.response.id);
     return thunkAPI.fulfillWithValue(res.data.response.id);
   } else {
     return thunkAPI.rejectWithValue(new Error(res.data.msg));
@@ -53,12 +56,12 @@ export const addToCart = createAsyncThunk(
 
 export const getDataCartItems = createAsyncThunk(
   GET_CART_ITEMS,
-  async (_, thunkAPI) => {
+  async ({cartId}, thunkAPI) => {
     const result = await Axios.get(
-      ApiEndpoints.cart.getCartItems.replace('DISH_ITEM_ID', String(68)),
+      ApiEndpoints.cart.getCartItems.replace('DISH_ITEM_ID', String(cartId)),
     );
     if (result.data.status === 'ok') {
-      return thunkAPI.fulfillWithValue(result.data.response);
+      return thunkAPI.fulfillWithValue(result.data.response.items);
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));
     }
@@ -67,13 +70,13 @@ export const getDataCartItems = createAsyncThunk(
 
 export const increaseItemQuantity = createAsyncThunk(
   INCREASE_QUANTITY,
-  async ({item_id}, thunkAPI) => {
-    console.log('item_id', item_id);
+  async ({itemId}, thunkAPI) => {
+    console.log('item_id', itemId);
     const result = await Axios.put(ApiEndpoints.cart.increaseQuantity, {
-      card_item_id: item_id,
+      card_item_id: itemId,
     });
     if (result.data.status === 'ok') {
-      return thunkAPI.fulfillWithValue(result.data.response);
+      return thunkAPI.fulfillWithValue(itemId);
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));
     }
@@ -82,12 +85,12 @@ export const increaseItemQuantity = createAsyncThunk(
 
 export const decreaseItemQuantity = createAsyncThunk(
   DECREASE_QUANTITY,
-  async ({item_id}, thunkAPI) => {
+  async ({itemId}, thunkAPI) => {
     const result = await Axios.put(ApiEndpoints.cart.decreaseQuantity, {
-      card_item_id: item_id,
+      card_item_id: itemId,
     });
     if (result.data.status === 'ok') {
-      return thunkAPI.fulfillWithValue(result.data.response);
+      return thunkAPI.fulfillWithValue(itemId);
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));
     }
@@ -96,11 +99,28 @@ export const decreaseItemQuantity = createAsyncThunk(
 
 export const cartSlice = createSlice({
   name: 'cart',
-  initialState: {cartId: null},
+  initialState: {cartId: null, cartList: [], itemId: null},
   reducers: {},
   extraReducers: builder => {
     builder.addCase(createCart.fulfilled, (state, action) => {
       state.cartId = action.payload;
+    });
+    builder.addCase(getDataCartItems.fulfilled, (state, action) => {
+      state.cartList = action.payload;
+    });
+    builder.addCase(increaseItemQuantity.fulfilled, (state, action) => {
+      state.itemId = action.payload;
+      const index = state.cartList.findIndex(i => i.item_id === action.payload);
+      if (index > -1) {
+        state.cartList[index].quantity = state.cartList[index].quantity + 1;
+      }
+    });
+    builder.addCase(decreaseItemQuantity.fulfilled, (state, action) => {
+      state.itemId = action.payload;
+      const index = state.cartList.findIndex(i => i.item_id === action.payload);
+      if (index > -1) {
+        state.cartList[index].quantity = state.cartList[index].quantity - 1;
+      }
     });
   },
 });
