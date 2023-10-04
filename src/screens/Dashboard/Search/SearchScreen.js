@@ -27,7 +27,7 @@ const height = Dimensions.get('screen').height;
 
 const data = [1, 2, 3];
 export const SearchScreen = ({route, navigation}) => {
-  const [search, setSearch] = useState('vada');
+  const [search, setSearch] = useState('');
   const [filterData, setFilterData] = useState([]);
 
   const inputKey = route.params.searchKey;
@@ -80,44 +80,26 @@ export const SearchScreen = ({route, navigation}) => {
               flexWrap: 'wrap',
               marginVertical: 10,
             }}>
-            <Chip
-              // onPress={() => console.log('Pressed')}
-              textStyle={{color: Colors.grey}}
-              style={styles.chipStyles}>
+            <Chip textStyle={{color: Colors.grey}} style={styles.chipStyles}>
               Bikaner Sweets
             </Chip>
-            <Chip
-              // onPress={() => console.log('Pressed')}
-              textStyle={{color: Colors.grey}}
-              style={styles.chipStyles}>
+            <Chip textStyle={{color: Colors.grey}} style={styles.chipStyles}>
               Singla's Sweetsgit
             </Chip>
-            <Chip
-              // onPress={() => console.log('Pressed')}
-              textStyle={{color: Colors.grey}}
-              style={styles.chipStyles}>
+            <Chip textStyle={{color: Colors.grey}} style={styles.chipStyles}>
               Om Sweets and Restaurants
             </Chip>
           </View>
           <Divider />
           <Text style={styles.recommended}>Recommended</Text>
           <View style={styles.chipRow}>
-            <Chip
-              // onPress={() => console.log('Pressed')}
-              textStyle={{color: Colors.grey}}
-              style={styles.foodName}>
+            <Chip textStyle={{color: Colors.grey}} style={styles.foodName}>
               Masala Dosa
             </Chip>
-            <Chip
-              // onPress={() => console.log('Pressed')}
-              textStyle={{color: Colors.grey}}
-              style={styles.foodName}>
+            <Chip textStyle={{color: Colors.grey}} style={styles.foodName}>
               Pav Bhaji
             </Chip>
-            <Chip
-              // onPress={() => console.log('Pressed')}
-              textStyle={{color: Colors.grey}}
-              style={styles.foodName}>
+            <Chip textStyle={{color: Colors.grey}} style={styles.foodName}>
               Choco lava
             </Chip>
           </View>
@@ -138,9 +120,15 @@ export const SearchScreen = ({route, navigation}) => {
             return (
               <>
                 <Text style={styles.dishesText}>Dishes</Text>
-                {data.map(m => (
-                  <DishCard />
-                ))}
+                <View style={{}}>
+                  <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+                    {data.map(m => (
+                      <DishCard item={m} />
+                    ))}
+                  </ScrollView>
+                </View>
                 <Text style={styles.seeMore}>See More</Text>
                 <Text style={styles.restaurantText}>Restaurants</Text>
               </>

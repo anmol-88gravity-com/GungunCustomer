@@ -33,6 +33,7 @@ import {
   decreaseItemQuantity,
   increaseItemQuantity,
 } from '../../store/cart/cartSlice';
+import {ReplaceCartModel} from '../../components/common/ReplaceCartModel';
 
 export const RestaurantScreen = ({navigation, route}) => {
   const {restaurantId} = route.params;
@@ -48,6 +49,7 @@ export const RestaurantScreen = ({navigation, route}) => {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(3);
   const [dishDetails, setDishDetails] = useState(null);
+  const [cartModel, setCartModel] = useState(false);
 
   const handleToggleVegSwitch = () => {
     setIsVegSwitchOn(!isVegSwitchOn);
@@ -145,7 +147,7 @@ export const RestaurantScreen = ({navigation, route}) => {
   const addToCartHandler = async ({dishId, storeId, price, quantity}) => {
     console.log('I am working  addToCartHandler');
     if (cartList[0].store_id !== storeId) {
-      alert('not the same store');
+      setCartModel(true);
       return;
     }
     try {
@@ -498,6 +500,11 @@ export const RestaurantScreen = ({navigation, route}) => {
           </View>
         </Pressable>
       </Modal>
+      <ReplaceCartModel
+        onClose={() => setCartModel(false)}
+        visible={cartModel}
+        updateCart={() => createAndAddToCartHandler()}
+      />
     </SafeAreaView>
   );
 };

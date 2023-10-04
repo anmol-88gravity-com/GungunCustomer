@@ -37,5 +37,6 @@ export const ApiEndpoints = {
     getCartItems: '/api/cards/list/DISH_ITEM_ID/',
     increaseQuantity: '/api/card-items/increase-quantity/',
     decreaseQuantity: '/api/card-items/decrease-quantity/',
+    billSummary: '/api/bill-summary/',
   },
 };

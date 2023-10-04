@@ -4,9 +4,8 @@ import {
   Text,
   Pressable,
   ScrollView,
-  Image,
-  FlatList,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -17,7 +16,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {Colors} from '../../utils/Colors';
 import {styles} from './cart.styles';
-import {images} from '../../utils/Images';
 import {useGetAddressList} from '../../hooks';
 import {useGetCartItemsData} from '../../hooks/cart/useGetCartItemsData';
 import {useDispatch} from 'react-redux';
@@ -30,12 +28,15 @@ import {FONT_SIZES} from '../../utils/FontSize';
 import {Font_Family} from '../../utils/Fontfamily';
 import {Loader} from '../../components/common/Loader';
 import {useError} from '../../context/ErrorProvider';
+import {useGetBillSummary} from '../../hooks/cart/useGetBillSummary';
 
 export const CartScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const [addressData, setAddressData] = useState(null);
   const {addressList, loading} = useGetAddressList();
+  const {billData, loading: loadBill} = useGetBillSummary();
   const {cartItems, loading: isLoading} = useGetCartItemsData();
+
   const [cartItemsData, setCartItemsData] = useState([]);
   const [incLoader, setIncLoader] = useState(false);
   const [decLoader, setDecLoader] = useState(false);
@@ -58,40 +59,40 @@ export const CartScreen = ({navigation}) => {
     }
   }, [addressList]);
 
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      imageSource: images.cuponCard,
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      imageSource: images.cuponCardImg,
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      imageSource: images.cuponImg,
-    },
-  ];
+  // const DATA = [
+  //   {
+  //     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+  //     imageSource: images.cuponCard,
+  //   },
+  //   {
+  //     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+  //     imageSource: images.cuponCardImg,
+  //   },
+  //   {
+  //     id: '58694a0f-3da1-471f-bd96-145571e29d72',
+  //     imageSource: images.cuponImg,
+  //   },
+  // ];
+
+  // //calculate SubTotal
+  // const calculateSubTotal = () => {
+  //   let subTotal = 0;
+  //   if (cartItemsData !== undefined && cartItemsData.length > 0) {
+  //     cartItemsData.forEach(item => {
+  //       const totalPrice = item.price * item.quantity;
+  //       subTotal += totalPrice;
+  //     });
+  //   }
+  //   return subTotal;
+  // };
 
   //calculate SubTotal
-  const calculateSubTotal = () => {
-    let subTotal = 0;
-    if (cartItemsData !== undefined && cartItemsData.length > 0) {
-      cartItemsData.forEach(item => {
-        const totalPrice = item.price * item.quantity;
-        subTotal += totalPrice;
-      });
-    }
-    return subTotal;
-  };
 
-  //calculate SubTotal
-
-  const Item = ({imageSource}) => (
-    <View style={styles.cuponView}>
-      <Image source={imageSource} style={styles.cuponImage} />
-    </View>
-  );
+  // const Item = ({imageSource}) => (
+  //   <View style={styles.cuponView}>
+  //     <Image source={imageSource} style={styles.cuponImage} />
+  //   </View>
+  // );
 
   const CartItem = ({
     item_id,
@@ -214,8 +215,39 @@ export const CartScreen = ({navigation}) => {
 
   return (
     <>
-      {loading || isLoading ? (
+      {loading || isLoading || loadBill ? (
         <Loader />
+      ) : cartItems.length === 0 ? (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: Colors.white,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Image
+            source={require('../../assets/icons/empty-cart.png')}
+            style={{width: 200, height: 200}}
+            resizeMode={'contain'}
+          />
+          <Text
+            style={{
+              fontFamily: Font_Family.semiBold,
+              fontSize: FONT_SIZES.eighteen,
+              color: 'black',
+              paddingHorizontal: 10,
+              textAlign: 'center',
+            }}>
+            Your cart is empty
+          </Text>
+          <Text
+            style={[
+              styles.addMoreItemsText,
+              {textAlign: 'center', width: '60%', marginTop: 10},
+            ]}>
+            Looks like you haven't added anything to your cart yet.
+          </Text>
+        </View>
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -243,39 +275,39 @@ export const CartScreen = ({navigation}) => {
               <Entypo name="chevron-small-right" size={24} color="black" />
             </Pressable>
           </View>
-          <Pressable style={styles.shadowCard}>
-            <View style={styles.rowStyles}>
-              <MaterialCommunityIcons
-                name="brightness-percent"
-                size={24}
-                color={Colors.secondary}
-              />
-              <View>
-                <Text style={styles.couponHeading}>
-                  {/*Apply Coupon*/}
-                  Coupon Applied
-                </Text>
-                <Text style={styles.couponText}>EXTRA200</Text>
-              </View>
-            </View>
-            <View style={styles.rowStyles}>
-              <Text style={styles.viewAllText}>View All</Text>
-              <Entypo
-                name="chevron-small-right"
-                size={24}
-                color={Colors.grey}
-              />
-            </View>
-          </Pressable>
-          <FlatList
-            data={DATA}
-            renderItem={({item}) => (
-              <Item title={item.title} imageSource={item.imageSource} />
-            )}
-            keyExtractor={item => item.id}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          />
+          {/*<Pressable style={styles.shadowCard}>*/}
+          {/*<View style={styles.rowStyles}>*/}
+          {/*  <MaterialCommunityIcons*/}
+          {/*    name="brightness-percent"*/}
+          {/*    size={24}*/}
+          {/*    color={Colors.secondary}*/}
+          {/*  />*/}
+          {/*  <View>*/}
+          {/*    <Text style={styles.couponHeading}>*/}
+          {/*      /!*Apply Coupon*!/*/}
+          {/*      Coupon Applied*/}
+          {/*    </Text>*/}
+          {/*    <Text style={styles.couponText}>EXTRA200</Text>*/}
+          {/*  </View>*/}
+          {/*</View>*/}
+          {/*  <View style={styles.rowStyles}>*/}
+          {/*    <Text style={styles.viewAllText}>View All</Text>*/}
+          {/*    <Entypo*/}
+          {/*      name="chevron-small-right"*/}
+          {/*      size={24}*/}
+          {/*      color={Colors.grey}*/}
+          {/*    />*/}
+          {/*  </View>*/}
+          {/*</Pressable>*/}
+          {/*<FlatList*/}
+          {/*  data={DATA}*/}
+          {/*  renderItem={({item}) => (*/}
+          {/*    <Item title={item.title} imageSource={item.imageSource} />*/}
+          {/*  )}*/}
+          {/*  keyExtractor={item => item.id}*/}
+          {/*  horizontal={true}*/}
+          {/*  showsHorizontalScrollIndicator={false}*/}
+          {/*/>*/}
           <Pressable style={styles.deliveryBox}>
             <Pressable style={styles.deliveryInnerContainer}>
               <View style={[styles.rowStyles, {width: '70%'}]}>
@@ -310,21 +342,19 @@ export const CartScreen = ({navigation}) => {
           <View style={styles.billBox}>
             <View style={styles.billRow}>
               <Text style={styles.amountTitle}>Sub Total</Text>
-              <Text style={styles.amount}>
-                Rs. {calculateSubTotal().toFixed(2)}
-              </Text>
+              <Text style={styles.amount}>Rs. {billData.subtotal}</Text>
             </View>
             <View style={styles.billRow}>
               <Text style={styles.amountTitle}>GST</Text>
-              <Text style={styles.amount}>Rs. 115.50</Text>
+              <Text style={styles.amount}>Rs. {billData.gst}</Text>
             </View>
-            <View style={styles.billRow}>
-              <Text style={styles.amountTitle}>Applied Cupon</Text>
-              <Text style={styles.amount}>(-) Rs. 35.00</Text>
-            </View>
+            {/*<View style={styles.billRow}>*/}
+            {/*  <Text style={styles.amountTitle}>Applied Cupon</Text>*/}
+            {/*  <Text style={styles.amount}>(-) Rs. 35.00</Text>*/}
+            {/*</View>*/}
             <View style={styles.grandTotalRow}>
               <Text style={styles.grandTotalText}>Grand Total</Text>
-              <Text style={styles.grandTotal}>Rs. 560.50</Text>
+              <Text style={styles.grandTotal}>Rs. {billData.net_payable}</Text>
             </View>
           </View>
           <Button

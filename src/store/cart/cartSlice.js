@@ -10,6 +10,7 @@ export const ADD_TO_CART = '/api/add-to-cart';
 export const GET_CART_ITEMS = '/api/cards/list';
 export const INCREASE_QUANTITY = '/api/card-items/increase-quantity';
 export const DECREASE_QUANTITY = '/api/card-items/decrease-quantity';
+export const BILL_SUMMARY = '/api/bill-summary';
 
 export const createCart = createAsyncThunk(CREATE_CART, async (_, thunkAPI) => {
   const {userId} = thunkAPI.getState().auth;
@@ -61,6 +62,7 @@ export const getDataCartItems = createAsyncThunk(
       ApiEndpoints.cart.getCartItems.replace('DISH_ITEM_ID', String(cartId)),
     );
     if (result.data.status === 'ok') {
+      console.log('result.data.response', result.data.response);
       return thunkAPI.fulfillWithValue(result.data.response.items);
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));
@@ -91,6 +93,17 @@ export const decreaseItemQuantity = createAsyncThunk(
     });
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue(itemId);
+    } else {
+      return thunkAPI.rejectWithValue(new Error(result.data.msg));
+    }
+  },
+);
+export const billSummary = createAsyncThunk(
+  BILL_SUMMARY,
+  async (_, thunkAPI) => {
+    const result = await Axios.get(ApiEndpoints.cart.billSummary);
+    if (result.data.status === 'ok') {
+      return thunkAPI.fulfillWithValue(result.data.response);
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));
     }

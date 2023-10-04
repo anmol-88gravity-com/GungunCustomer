@@ -12,23 +12,20 @@ export const useGetCartItemsData = () => {
   const dispatch = useDispatch();
   const setError = useError();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const {cartList: cartItems} = useSelector(state => state.cart);
 
   useEffect(() => {
     return navigation.addListener('focus', async () => {
       const cartId = await load(Config.CART_ID);
+      console.log('cartId', cartId);
       if (cartId) {
         try {
-          const res = await dispatch(getDataCartItems({cartId})).unwrap();
-          if (res) {
-            // setCartItems(res);
-            setLoading(false);
-          }
+          await dispatch(getDataCartItems({cartId})).unwrap();
         } catch (e) {
           setError(e.message);
-          setLoading(false);
         }
+        setLoading(false);
       }
     });
   }, [dispatch, navigation, setError]);

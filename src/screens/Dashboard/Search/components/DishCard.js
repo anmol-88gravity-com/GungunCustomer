@@ -6,16 +6,17 @@ import {Colors} from '../../../../utils/Colors';
 import {Font_Family} from '../../../../utils/Fontfamily';
 import {FONT_SIZES} from '../../../../utils/FontSize';
 
-export const DishCard = () => {
+export const DishCard = m => {
   return (
     <Pressable
       style={{
         backgroundColor: 'white',
         borderRadius: 20,
+        marginLeft: m.item === 1 ? 2 : 0,
         padding: 10,
-        marginBottom: 10,
-        alignSelf: 'center',
-        width: '95%',
+        marginVertical: 10,
+        marginRight: 15,
+        width: 300,
         shadowColor: '#000',
         shadowOffset: {
           width: 0,
