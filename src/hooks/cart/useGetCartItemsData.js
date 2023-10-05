@@ -18,7 +18,6 @@ export const useGetCartItemsData = () => {
   useEffect(() => {
     return navigation.addListener('focus', async () => {
       const cartId = await load(Config.CART_ID);
-      console.log('cartId', cartId);
       if (cartId) {
         try {
           await dispatch(getDataCartItems({cartId})).unwrap();

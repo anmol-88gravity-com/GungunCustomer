@@ -18,7 +18,7 @@ import {Colors} from '../../utils/Colors';
 import {styles} from './cart.styles';
 import {useGetAddressList} from '../../hooks';
 import {useGetCartItemsData} from '../../hooks/cart/useGetCartItemsData';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   decreaseItemQuantity,
   increaseItemQuantity,
@@ -36,6 +36,7 @@ export const CartScreen = ({navigation}) => {
   const {addressList, loading} = useGetAddressList();
   const {billData, loading: loadBill} = useGetBillSummary();
   const {cartItems, loading: isLoading} = useGetCartItemsData();
+  const {cartList} = useSelector(state => state.cart);
 
   const [cartItemsData, setCartItemsData] = useState([]);
   const [incLoader, setIncLoader] = useState(false);
@@ -138,6 +139,7 @@ export const CartScreen = ({navigation}) => {
             fontFamily: Font_Family.medium,
           },
         });
+
         setDecLoader(false);
       } catch (e) {
         setError(e.message);

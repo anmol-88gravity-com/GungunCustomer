@@ -2,8 +2,9 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 import {ApiEndpoints} from '../ApiEndPoints';
 import {Axios} from '../../lib/Axios';
-import {save} from '../../utils/storage';
+import {remove, save} from '../../utils/storage';
 import Config from '../../config';
+import {logout} from '../auth/authSlice';
 
 export const CREATE_CART = '/api/create-cart';
 export const ADD_TO_CART = '/api/add-to-cart';
@@ -28,25 +29,19 @@ export const createCart = createAsyncThunk(CREATE_CART, async (_, thunkAPI) => {
 
 export const addToCart = createAsyncThunk(
   ADD_TO_CART,
-  async ({dishId, storeId, price, quantity}, thunkAPI) => {
+  async ({dishId, storeId, price, quantity, cart}, thunkAPI) => {
     const {userId} = thunkAPI.getState().auth;
-    const {cartId} = thunkAPI.getState().cart;
-
-    console.log(
-      'dishId, storeId, price, quantity',
-      dishId,
-      storeId,
-      price,
-      quantity,
-    );
+    // const {cartId} = thunkAPI.getState().cart;
+    console.log(dishId, storeId, price, quantity, cart, userId);
     const result = await Axios.post(ApiEndpoints.cart.addCartItem, {
       user: userId,
-      card: cartId,
+      card: cart,
       dish_id: dishId,
       store_id: storeId,
       price: price,
       quantity: quantity,
     });
+    console.log('result.data.status', result.data);
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue(result.data.response.card);
     } else {
@@ -62,7 +57,6 @@ export const getDataCartItems = createAsyncThunk(
       ApiEndpoints.cart.getCartItems.replace('DISH_ITEM_ID', String(cartId)),
     );
     if (result.data.status === 'ok') {
-      console.log('result.data.response', result.data.response);
       return thunkAPI.fulfillWithValue(result.data.response.items);
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));
@@ -73,7 +67,6 @@ export const getDataCartItems = createAsyncThunk(
 export const increaseItemQuantity = createAsyncThunk(
   INCREASE_QUANTITY,
   async ({itemId}, thunkAPI) => {
-    console.log('item_id', itemId);
     const result = await Axios.put(ApiEndpoints.cart.increaseQuantity, {
       card_item_id: itemId,
     });
@@ -132,7 +125,16 @@ export const cartSlice = createSlice({
       state.itemId = action.payload;
       const index = state.cartList.findIndex(i => i.item_id === action.payload);
       if (index > -1) {
-        state.cartList[index].quantity = state.cartList[index].quantity - 1;
+        if (state.cartList[index].quantity === 1) {
+          state.cartList.splice(index, 1);
+          if (state.cartList.length === 0) {
+            remove(Config.CART_ID).then(r => {
+              console.log('cart deleted successfully !');
+            });
+          }
+        } else {
+          state.cartList[index].quantity = state.cartList[index].quantity - 1;
+        }
       }
     });
   },

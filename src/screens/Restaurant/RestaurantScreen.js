@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -34,12 +34,16 @@ import {
   increaseItemQuantity,
 } from '../../store/cart/cartSlice';
 import {ReplaceCartModel} from '../../components/common/ReplaceCartModel';
+import {load} from '../../utils/storage';
 
 export const RestaurantScreen = ({navigation, route}) => {
   const {restaurantId} = route.params;
-  const {cartId, cartList} = useSelector(state => state.cart);
+  const {cartList} = useSelector(state => state.cart);
   const {restaurantDetails, loading} = useGetRestaurantDetails({restaurantId});
   const MenuList = restaurantDetails?.menu;
+
+  const dispatch = useDispatch();
+  const setError = useError();
 
   const [count, setCount] = useState(0);
   const [isVegSwitchOn, setIsVegSwitchOn] = useState(false);
@@ -50,6 +54,7 @@ export const RestaurantScreen = ({navigation, route}) => {
   const [selected, setSelected] = useState(3);
   const [dishDetails, setDishDetails] = useState(null);
   const [cartModel, setCartModel] = useState(false);
+  const [cartId, setCartId] = useState(null);
 
   const handleToggleVegSwitch = () => {
     setIsVegSwitchOn(!isVegSwitchOn);
@@ -104,9 +109,25 @@ export const RestaurantScreen = ({navigation, route}) => {
       }
     }
   };
-
-  const dispatch = useDispatch();
-  const setError = useError();
+  const checkHandler = async ({dishId, storeId, price, quantity}) => {
+    const id = await load(Config.CART_ID);
+    if (id) {
+      setCartId(id);
+      await addToCartHandler({
+        dishId,
+        storeId,
+        price,
+        quantity,
+      });
+    } else {
+      await createAndAddToCartHandler({
+        dishId,
+        storeId,
+        price,
+        quantity,
+      });
+    }
+  };
   const createAndAddToCartHandler = async ({
     dishId,
     storeId,
@@ -116,6 +137,7 @@ export const RestaurantScreen = ({navigation, route}) => {
     try {
       const res = await dispatch(createCart()).unwrap();
       if (res) {
+        setCartId(res);
         try {
           await dispatch(
             addToCart({
@@ -123,6 +145,7 @@ export const RestaurantScreen = ({navigation, route}) => {
               storeId,
               price,
               quantity,
+              cart: res,
             }),
           ).unwrap();
           showMessage({
@@ -144,35 +167,42 @@ export const RestaurantScreen = ({navigation, route}) => {
     }
   };
 
-  const addToCartHandler = async ({dishId, storeId, price, quantity}) => {
-    console.log('I am working  addToCartHandler');
-    if (cartList[0].store_id !== storeId) {
-      setCartModel(true);
-      return;
-    }
-    try {
-      await dispatch(
-        addToCart({
-          dishId,
-          storeId,
-          price,
-          quantity,
-        }),
-      ).unwrap();
-      showMessage({
-        message: 'Add to Cart Successfully.',
-        type: 'default',
-        backgroundColor: Colors.secondary,
-        color: Colors.white,
-        textStyle: {
-          fontSize: FONT_SIZES.fifteen,
-          fontFamily: Font_Family.medium,
-        },
-      });
-    } catch (e) {
-      setError(e.message);
-    }
-  };
+  const addToCartHandler = useCallback(
+    async ({dishId, storeId, price, quantity}) => {
+      console.log('I am working  addToCartHandler', cartId);
+      if (cartList.length > 0 && cartList[0].store_id !== storeId) {
+        setCartModel(true);
+        return;
+      }
+      const id = await load(Config.CART_ID);
+      if (id) {
+        try {
+          await dispatch(
+            addToCart({
+              dishId,
+              storeId,
+              price,
+              quantity,
+              cart: id,
+            }),
+          ).unwrap();
+          showMessage({
+            message: 'Add to Cart Successfully.',
+            type: 'default',
+            backgroundColor: Colors.secondary,
+            color: Colors.white,
+            textStyle: {
+              fontSize: FONT_SIZES.fifteen,
+              fontFamily: Font_Family.medium,
+            },
+          });
+        } catch (e) {
+          setError(e.message);
+        }
+      }
+    },
+    [cartId, cartList, dispatch, setError],
+  );
 
   const Item = ({dishes, categoryName}) => {
     const filteredDishes = dishes
@@ -237,23 +267,14 @@ export const RestaurantScreen = ({navigation, route}) => {
                       </View>
                     ) : (
                       <Button
-                        onPress={() => {
-                          if (cartId === null) {
-                            createAndAddToCartHandler({
-                              dishId: item.id,
-                              storeId: item.partner_user,
-                              price: item.dish_price,
-                              quantity: 1,
-                            });
-                          } else {
-                            addToCartHandler({
-                              dishId: item.id,
-                              storeId: item.partner_user,
-                              price: item.dish_price,
-                              quantity: 1,
-                            });
-                          }
-                        }}
+                        onPress={() =>
+                          checkHandler({
+                            dishId: item.id,
+                            storeId: item.partner_user,
+                            price: item.dish_price,
+                            quantity: 1,
+                          })
+                        }
                         mode={'outlined'}
                         compact={true}
                         theme={{
@@ -465,6 +486,7 @@ export const RestaurantScreen = ({navigation, route}) => {
         isVisible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
         dishDetails={dishDetails}
+        onPressHandler={addToCartHandler}
       />
 
       <Modal
