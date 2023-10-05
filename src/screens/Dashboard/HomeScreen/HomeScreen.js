@@ -29,13 +29,13 @@ import {
   RestaurantTopPlaces,
 } from './components';
 
+const data = [1, 2, 3, 4, 5];
 export const HomeScreen = ({navigation}) => {
   const [addressData, setAddressData] = useState(null);
 
   const {profileData, loading: userLoading} = useGetProfileData();
   const {addressList, loading} = useGetAddressList();
   const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
-  
 
   useEffect(() => {
     if (addressList !== undefined && addressList.length > 0) {
@@ -172,22 +172,25 @@ export const HomeScreen = ({navigation}) => {
                     />
                     <Text style={styles.title}>Top places near you</Text>
                   </View>
-                  <RestaurantTopPlaces
-                    source={images.restaurant}
-                    icon="cards-heart-outline"
-                    restaurantName="Manorama"
-                    restaurantRating="3.8(10K+) . 29 mins"
-                    restDishType="North Indian, Chinese,Biryani"
-                    restAddress="DLF Phase 3 . 4.3 km"
-                    restType=""
-                    restaurantOffer="₹125 OFF"
-                    restaurantMaxOffer="above ₹249"
-                    onPressHandler={() =>
-                      navigation.navigate('RestaurantScreen', {
-                        restaurantId: '9',
-                      })
-                    }
-                  />
+                  {data.map(i => (
+                    <RestaurantTopPlaces
+                      key={i}
+                      source={images.restaurant}
+                      icon="cards-heart-outline"
+                      restaurantName="Manorama"
+                      restaurantRating="3.8(10K+) . 29 mins"
+                      restDishType="North Indian, Chinese,Biryani"
+                      restAddress="DLF Phase 3 . 4.3 km"
+                      restType=""
+                      restaurantOffer="₹125 OFF"
+                      restaurantMaxOffer="above ₹249"
+                      onPressHandler={() =>
+                        navigation.navigate('RestaurantScreen', {
+                          restaurantId: '9',
+                        })
+                      }
+                    />
+                  ))}
                 </View>
               </View>
             </View>

@@ -13,43 +13,39 @@ export const useGetProfileData = () => {
   const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState(null);
 
-  const getProfileData = async () => {
-    try {
-      const res = await dispatch(getUserProfile()).unwrap();
-      if (res) {
-        setProfileData({
-          fullName: res.name,
-          email: res.email,
-          phoneNumber: res.phone_number,
-          birthday: res.birthday ? res.birthday : '',
-          anniversary: res.anniversary ? res.anniversary : '',
-          profileImage: res.profile_image
-            ? {
-                uri: res.profile_image,
-                type: 'image/jpg',
-                name: 'userImage.jpg',
-              }
-            : {
-                uri: '',
-                type: '',
-                name: '',
-              },
-          gender: res.gender,
-        });
+  useEffect(() => {
+    return navigation.addListener('focus', async () => {
+      try {
+        const res = await dispatch(getUserProfile()).unwrap();
+        if (res) {
+          setProfileData({
+            fullName: res.name,
+            email: res.email,
+            phoneNumber: res.phone_number,
+            birthday: res.birthday ? res.birthday : '',
+            anniversary: res.anniversary ? res.anniversary : '',
+            profileImage: res.profile_image
+              ? {
+                  uri: res.profile_image,
+                  type: 'image/jpg',
+                  name: 'userImage.jpg',
+                }
+              : {
+                  uri: '',
+                  type: '',
+                  name: '',
+                },
+            gender: res.gender,
+          });
 
+          setLoading(false);
+        }
+      } catch (e) {
+        setError(e.message);
         setLoading(false);
       }
-    } catch (e) {
-      setError(e.message);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    return navigation.addListener('focus', () => {
-      getProfileData();
     });
-  }, [navigation]);
+  }, [dispatch, navigation, setError]);
 
   return {
     profileData,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -8,21 +8,57 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch} from 'react-redux';
 
 import {UserProfile} from './UserProfile';
-import {images} from '../../utils/Images';
 import {Font_Family} from '../../utils/Fontfamily';
 import {useError} from '../../context/ErrorProvider';
 import {logout} from '../../store/auth/authSlice';
 import {showMessage} from 'react-native-flash-message';
 import {Colors} from '../../utils/Colors';
 import {FONT_SIZES} from '../../utils/FontSize';
-import { useGetProfileData } from '../../hooks/profile/useGetProfileData';
+import {getUserProfile} from '../../store/user/userSlice';
+import Config from '../../config';
+import {Loader} from '../../components/common/Loader';
 
 export function CustomDrawerContent(props) {
-
-  const {profileData, loading} = useGetProfileData();
-
   const dispatch = useDispatch();
   const setError = useError();
+
+  const [loading, setLoading] = useState(true);
+  const [profileData, setProfileData] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await dispatch(getUserProfile()).unwrap();
+        if (res) {
+          setProfileData({
+            fullName: res.name,
+            email: res.email,
+            phoneNumber: res.phone_number,
+            birthday: res.birthday ? res.birthday : '',
+            anniversary: res.anniversary ? res.anniversary : '',
+            profileImage: res.profile_image
+              ? {
+                  uri: res.profile_image,
+                  type: 'image/jpg',
+                  name: 'userImage.jpg',
+                }
+              : {
+                  uri: '',
+                  type: '',
+                  name: '',
+                },
+            gender: res.gender,
+          });
+
+          setLoading(false);
+        }
+      } catch (e) {
+        setError(e.message);
+        setLoading(false);
+      }
+    })();
+  }, [dispatch, setError]);
+
   const logoutHandler = async () => {
     try {
       await dispatch(logout());
@@ -49,11 +85,14 @@ export function CustomDrawerContent(props) {
 
   return (
     <DrawerContentScrollView {...props}>
-      <UserProfile
-        imageSource={images.profile}
-        firstName="John"
-        lastName="Doe"
-      />
+      {loading ? (
+        <Loader />
+      ) : (
+        <UserProfile
+          imageSource={Config.API_URL + profileData.profileImage.uri}
+          firstName={profileData.fullName}
+        />
+      )}
       <DrawerItemList {...props} />
       <View>
         <View />

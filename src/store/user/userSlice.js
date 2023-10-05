@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 import {ApiEndpoints} from '../ApiEndPoints';
 import {Axios} from '../../lib/Axios';
+import {Platform} from 'react-native';
 
 export const CHANGE_PASSWORD = '/api/change-Password';
 export const USER_PROFILE = '/api/customer-profile';
@@ -52,9 +53,12 @@ export const updateUserProfile = createAsyncThunk(
     formData.append('name', fullName);
     formData.append('email', email);
     formData.append('phone_number', phoneNumber);
-    if (profilePic.uri) {
+    if (profilePic.name) {
       formData.append('profile_image', {
-        uri: profilePic.uri,
+        uri:
+          Platform.OS === 'ios'
+            ? profilePic?.uri?.replace('file://', '')
+            : profilePic.uri,
         name: profilePic.name,
         type: profilePic.type,
       });
@@ -69,6 +73,7 @@ export const updateUserProfile = createAsyncThunk(
       },
     );
     if (result.data.status === 'ok') {
+      console.log('result.data.status', result.data.status);
       return true;
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));

@@ -3,13 +3,11 @@ import {Image, View, Text} from 'react-native';
 import {Font_Family} from '../../utils/Fontfamily';
 import {Colors} from '../../utils/Colors';
 
-
-export function UserProfile({imageSource, firstName, lastName}) {
-
+export function UserProfile({imageSource, firstName}) {
   return (
     <View style={{alignItems: 'center', padding: 10}}>
       <Image
-        source={imageSource}
+        source={{uri: imageSource}}
         style={{
           width: 100,
           height: 100,
@@ -26,7 +24,7 @@ export function UserProfile({imageSource, firstName, lastName}) {
           color: '#000000',
           fontFamily: Font_Family.medium,
         }}>
-        {firstName} {lastName}
+        {firstName}
       </Text>
     </View>
   );

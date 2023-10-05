@@ -73,7 +73,11 @@ export const ProfileScreen = () => {
       setUserPhone(profileData.phoneNumber);
       setUserBirthday(profileData.birthday);
       setUserAnniversary(profileData.anniversary);
-      setUserImage(profileData.profileImage);
+      setUserImage({
+        uri: Config.API_URL + profileData.profileImage.uri,
+        type: profileData.profileImage.type,
+        name: profileData.profileImage.name,
+      });
     }
   }, [profileData]);
 
@@ -157,7 +161,7 @@ export const ProfileScreen = () => {
     check(
       Platform.OS === 'ios'
         ? PERMISSIONS.IOS.PHOTO_LIBRARY
-        : PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        : PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
     )
       .then(result => {
         switch (result) {
@@ -175,7 +179,7 @@ export const ProfileScreen = () => {
             request(
               Platform.OS === 'ios'
                 ? PERMISSIONS.IOS.PHOTO_LIBRARY
-                : PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+                : PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
             ).then(requestResult => {
               if (requestResult === RESULTS.GRANTED) {
                 if (type === 'camera') {
@@ -223,7 +227,7 @@ export const ProfileScreen = () => {
                 gender: userGender,
                 birthday: userBirthday,
                 anniversary: userAnniversary,
-                profilePic: userImage,
+                profilePic: userImage.uri,
               }}
               onSubmit={onSubmit}
               enableReinitialize={true}
@@ -249,7 +253,7 @@ export const ProfileScreen = () => {
                       borderColor: Colors.secondary,
                     }}>
                     <Image
-                      source={{uri: Config.API_URL + values.profilePic?.uri}}
+                      source={{uri: values.profilePic}}
                       style={{
                         width: '100%',
                         height: '100%',
@@ -297,6 +301,7 @@ export const ProfileScreen = () => {
                       onChangeText={handleChange('email')}
                       onBlur={handleBlur('email')}
                       value={values.email}
+                      editable={false}
                     />
                   </View>
                   {errors.email && (
@@ -316,6 +321,7 @@ export const ProfileScreen = () => {
                       onChangeText={handleChange('phoneNumber')}
                       onBlur={handleBlur('phoneNumber')}
                       value={values.phoneNumber}
+                      editable={false}
                     />
                   </View>
                   {errors.phoneNumber && (

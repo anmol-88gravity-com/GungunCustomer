@@ -36,7 +36,6 @@ export const CartScreen = ({navigation}) => {
   const {addressList, loading} = useGetAddressList();
   const {billData, loading: loadBill} = useGetBillSummary();
   const {cartItems, loading: isLoading} = useGetCartItemsData();
-  const {cartList} = useSelector(state => state.cart);
 
   const [cartItemsData, setCartItemsData] = useState([]);
   const [incLoader, setIncLoader] = useState(false);
