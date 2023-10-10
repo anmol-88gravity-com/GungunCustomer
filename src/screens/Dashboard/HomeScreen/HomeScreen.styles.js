@@ -50,6 +50,7 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.regular,
     marginLeft: 5,
     color: Colors.black,
+    textTransform: 'capitalize',
   },
   textAddress: {
     fontFamily: Font_Family.light,

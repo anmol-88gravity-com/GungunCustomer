@@ -9,7 +9,7 @@ export const getRestaurantDetails = createAsyncThunk(
   GET_RESTAURANT_DETAILS,
   async ({restaurantId}, thunkAPI) => {
     const result = await Axios.get(
-      ApiEndpoints.resturantDetail.resturantDetails.replace(
+      ApiEndpoints.restaurantDetail.restaurantDetails.replace(
         'STORE_ID',
         String(restaurantId),
       ),

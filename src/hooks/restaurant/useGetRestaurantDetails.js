@@ -11,26 +11,24 @@ export const useGetRestaurantDetails = ({restaurantId}) => {
   const setError = useError();
 
   const [loading, setLoading] = useState(true);
-  const [restaurantDetails, setRestaurantDetails] = useState();
-
-  const getRestaurantDetail = async () => {
-    try {
-      const res = await dispatch(getRestaurantDetails({restaurantId})).unwrap();
-      if (res) {
-        setRestaurantDetails(res);
-        setLoading(false);
-      }
-    } catch (e) {
-      setError(e.message);
-      setLoading(false);
-    }
-  };
+  const [restaurantDetails, setRestaurantDetails] = useState(null);
 
   useEffect(() => {
-    return navigation.addListener('focus', () => {
-      getRestaurantDetail();
+    return navigation.addListener('focus', async () => {
+      try {
+        const res = await dispatch(
+          getRestaurantDetails({restaurantId}),
+        ).unwrap();
+        if (res) {
+          setRestaurantDetails(res);
+          setLoading(false);
+        }
+      } catch (e) {
+        setError(e.message);
+        setLoading(false);
+      }
     });
-  }, [navigation]);
+  }, [dispatch, navigation, restaurantId, setError]);
 
   return {
     restaurantDetails,

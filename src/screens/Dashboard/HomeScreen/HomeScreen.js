@@ -28,14 +28,16 @@ import {
   RecommendedItems,
   RestaurantTopPlaces,
 } from './components';
+import {useGetRestaurantList} from '../../../hooks/home/dashBoard/useGetRestaurantList';
+import Config from '../../../config';
 
-const data = [1, 2, 3, 4, 5];
 export const HomeScreen = ({navigation}) => {
   const [addressData, setAddressData] = useState(null);
 
   const {profileData, loading: userLoading} = useGetProfileData();
   const {addressList, loading} = useGetAddressList();
   const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
+  const {restaurantList, loader} = useGetRestaurantList();
 
   useEffect(() => {
     if (addressList !== undefined && addressList.length > 0) {
@@ -51,7 +53,7 @@ export const HomeScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.mainContainer}>
       <ScreenHeader headerTitle={profileData?.fullName} />
-      {userLoading || loading || isLoading ? (
+      {userLoading || loading || isLoading || loader ? (
         <Loader />
       ) : (
         <>
@@ -158,40 +160,49 @@ export const HomeScreen = ({navigation}) => {
                     navigation.navigate('Search', {searchKey: item})
                   }
                 />
-                <View style={{flex: 1}}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      marginBottom: 8,
-                    }}>
-                    <MaterialIcons
-                      name="location-on"
-                      size={25}
-                      color={Colors.red}
-                    />
-                    <Text style={styles.title}>Top places near you</Text>
+                {restaurantList.length > 0 && (
+                  <View style={{flex: 1}}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginBottom: 8,
+                      }}>
+                      <MaterialIcons
+                        name="location-on"
+                        size={25}
+                        color={Colors.red}
+                      />
+                      <Text style={styles.title}>Top places near you</Text>
+                    </View>
+                    {restaurantList.slice(0, 4).map((i, index) => (
+                      <RestaurantTopPlaces
+                        key={i + index}
+                        source={i.profile_image}
+                        icon="cards-heart-outline"
+                        restaurantName={i.store_name}
+                        restaurantRating={
+                          `${i.average_rating}` + 'K . ' + `${i.speed}` + 'mins'
+                        }
+                        restDishType={
+                          i.category_names.length < 3
+                            ? i.category_names.map(a => a)
+                            : i.category_names.splice(0, 2).map(b => b)
+                        }
+                        restAddress={i.address.address1}
+                        restDistance={' (' + `${i.distance}` + ' km)'}
+                        restType=""
+                        restaurantOffer=""
+                        restaurantMaxOffer=""
+                        onPressHandler={() =>
+                          navigation.navigate('RestaurantScreen', {
+                            restaurantId: i.store_id,
+                          })
+                        }
+                      />
+                    ))}
                   </View>
-                  {data.map(i => (
-                    <RestaurantTopPlaces
-                      key={i}
-                      source={images.restaurant}
-                      icon="cards-heart-outline"
-                      restaurantName="Manorama"
-                      restaurantRating="3.8(10K+) . 29 mins"
-                      restDishType="North Indian, Chinese,Biryani"
-                      restAddress="DLF Phase 3 . 4.3 km"
-                      restType=""
-                      restaurantOffer="₹125 OFF"
-                      restaurantMaxOffer="above ₹249"
-                      onPressHandler={() =>
-                        navigation.navigate('RestaurantScreen', {
-                          restaurantId: '9',
-                        })
-                      }
-                    />
-                  ))}
-                </View>
+                )}
               </View>
             </View>
           </ScrollView>

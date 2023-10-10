@@ -5,11 +5,24 @@ import {Axios} from '../../lib/Axios';
 
 export const GET_FOOD_TYPE = '/api/customer-profile';
 export const SEARCH_QUERY = '/api/search-query';
+export const GET_RESTAURANT_LISt = '/api/restaurant-list';
 
 export const getDataOnYourMind = createAsyncThunk(
   GET_FOOD_TYPE,
   async (_, thunkAPI) => {
     const result = await Axios.get(ApiEndpoints.categoryFoodType.foodType);
+    if (result.data.status === 'ok') {
+      return thunkAPI.fulfillWithValue(result.data.response);
+    } else {
+      return thunkAPI.rejectWithValue(new Error(result.data.msg));
+    }
+  },
+);
+
+export const getRestaurantList = createAsyncThunk(
+  GET_RESTAURANT_LISt,
+  async (_, thunkAPI) => {
+    const result = await Axios.get(ApiEndpoints.home.restaurantList);
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue(result.data.response);
     } else {

@@ -25,9 +25,9 @@ export const ModalComponent = ({
   onClose,
   dishDetails,
   onPressHandler,
+  cartLoading,
 }) => {
   const [count, setCount] = useState(1);
-  const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState({
     dish_category: '',
     dish_description: '',
@@ -142,8 +142,8 @@ export const ModalComponent = ({
                   quantity: count,
                 })
               }
-              disabled={loading}
-              loading={loading}
+              disabled={cartLoading}
+              loading={cartLoading}
               buttonColor={Colors.secondary}
               theme={{roundness: 0}}
               style={{
