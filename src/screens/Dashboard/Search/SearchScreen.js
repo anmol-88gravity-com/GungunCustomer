@@ -4,31 +4,34 @@ import {
   Text,
   FlatList,
   Image,
-  ScrollView,
   Pressable,
-  Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import {Chip, Divider, TextInput} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {Colors} from '../../../utils/Colors';
 import {PopularItems} from '../HomeScreen/components';
 import {images} from '../../../utils/Images';
-import {DishCard} from './components/DishCard';
 import {styles} from './SearchScreeen.styles';
 import {useError} from '../../../context/ErrorProvider';
-import {getSearchResults} from '../../../store/home/homeSlice';
+import {
+  deleteSuggestion,
+  getRecentSearches,
+  getSearchResults,
+} from '../../../store/home/homeSlice';
 import Config from '../../../config';
 
-const height = Dimensions.get('screen').height;
-
-const data = [1, 2, 3];
 export const SearchScreen = ({route, navigation}) => {
   const [search, setSearch] = useState('');
   const [filterData, setFilterData] = useState([]);
+  const [recentSearchList, setRecentSearchList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedChip, setSelectedChip] = useState(null);
+  const {recentSearch} = useSelector(state => state.home);
 
   const inputKey = route.params.searchKey;
 
@@ -42,58 +45,101 @@ export const SearchScreen = ({route, navigation}) => {
   }, [inputKey, route]);
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(async () => {
+    if (recentSearch.length > 0) {
+      setRecentSearchList(recentSearch);
+    }
+  }, [recentSearch]);
+
+  useEffect(() => {
+    (async () => {
       try {
-        const res = await dispatch(getSearchResults({search})).unwrap();
-        if (res) {
-          setFilterData(res);
-        }
+        await dispatch(getRecentSearches()).unwrap();
       } catch (e) {
         setError(e.message);
       }
-    }, 3000);
+    })();
+  }, [dispatch, setError]);
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [dispatch, search, setError]);
+  const searchFilterFunction = async text => {
+    setSearch(text);
+    try {
+      const res = await dispatch(getSearchResults({text})).unwrap();
+      if (res) {
+        setFilterData(res);
+      }
+    } catch (e) {
+      setError(e.message);
+    }
+  };
+
+  const onCloseHandler = async id => {
+    setLoading(true);
+    setSelectedChip(id);
+    try {
+      await dispatch(deleteSuggestion({id})).unwrap();
+    } catch (e) {
+      setError(e.message);
+    }
+    setLoading(false);
+  };
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.inputStyles}
         value={search}
-        onChangeText={setSearch}
+        onChangeText={text => searchFilterFunction(text)}
         placeholder="Search here"
         placeholderTextColor="#808080"
         mode={'outlined'}
         outlineStyle={{borderColor: '#cdcdcd'}}
-        autoFocus={true}
         theme={{roundness: 15}}
         activeOutlineColor={Colors.primary}
         left={<TextInput.Icon icon="search1" color={Colors.primary} />}
       />
-      {filterData === [] ? (
-        <>
-          <Text style={styles.recentSearches}>Recent Searches</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              marginVertical: 10,
-            }}>
-            <Chip textStyle={{color: Colors.grey}} style={styles.chipStyles}>
-              Bikaner Sweets
-            </Chip>
-            <Chip textStyle={{color: Colors.grey}} style={styles.chipStyles}>
-              Singla's Sweetsgit
-            </Chip>
-            <Chip textStyle={{color: Colors.grey}} style={styles.chipStyles}>
-              Om Sweets and Restaurants
-            </Chip>
-          </View>
+      {filterData.length === 0 ? (
+        <View>
+          {recentSearchList.length > 0 && (
+            <>
+              <Text style={styles.recentSearches}>Recent Searches</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  marginVertical: 10,
+                  paddingHorizontal: 20,
+                }}>
+                {recentSearchList.map(m => (
+                  <Chip
+                    textStyle={{color: Colors.grey}}
+                    closeIcon={() =>
+                      loading && selectedChip === m.id ? (
+                        <ActivityIndicator size={'small'} color={Colors.grey} />
+                      ) : (
+                        <Ionicons
+                          name={'close'}
+                          color={Colors.grey}
+                          size={18}
+                        />
+                      )
+                    }
+                    disabled={loading}
+                    style={styles.chipStyles}
+                    onClose={() => onCloseHandler(m.id)}
+                    onPress={() => setSearch(m.keyword)}>
+                    {m.keyword}
+                  </Chip>
+                ))}
+              </View>
+            </>
+          )}
           <Divider />
           <Text style={styles.recommended}>Recommended</Text>
           <View style={styles.chipRow}>
-            <Chip textStyle={{color: Colors.grey}} style={styles.foodName}>
+            <Chip
+              textStyle={{color: Colors.grey}}
+              style={styles.foodName}
+              onPress={() => setSearch(m.keyword)}>
               Masala Dosa
             </Chip>
             <Chip textStyle={{color: Colors.grey}} style={styles.foodName}>
@@ -111,100 +157,111 @@ export const SearchScreen = ({route, navigation}) => {
             subTitle="Prem Di hatti"
             price="₹ 249"
           />
-        </>
+        </View>
       ) : (
-        <FlatList
-          keyExtractor={item => String(item.partner_user)}
-          showsVerticalScrollIndicator={false}
-          ListHeaderComponent={() => {
-            return (
-              <>
-                <Text style={styles.dishesText}>Dishes</Text>
-                <View style={{}}>
-                  <ScrollView
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}>
-                    {data.map(m => (
-                      <DishCard item={m} />
-                    ))}
-                  </ScrollView>
-                </View>
-                <Text style={styles.seeMore}>See More</Text>
-                <Text style={styles.restaurantText}>Restaurants</Text>
-              </>
-            );
-          }}
-          data={filterData}
-          nestedScrollEnabled={true}
-          renderItem={({item}) => {
-            const ratingArr = Array.from(Array(item.store_rating), i => i + 1);
-            const nonRatingArr = Array.from(
-              Array(5 - item.store_rating),
-              i => i + 1,
-            );
-            return (
-              <Pressable
-                style={[
-                  styles.mainView,
-                  {
-                    height:
-                      item.dishes.length >= 2 ? height * 0.4 : height * 0.3,
-                  },
-                ]}
-                onPress={() =>
-                  navigation.navigate('RestaurantScreen', {
-                    restaurantId: item.partner_user,
-                  })
-                }>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
-                  <Text style={styles.dishText}>{item.store_name}</Text>
-                  <AntDesign
-                    name="arrowright"
-                    size={18}
-                    color={Colors.primary}
-                  />
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginTop: 5,
-                  }}>
-                  <MaterialCommunityIcons
-                    name="star-circle"
-                    size={20}
-                    color={Colors.green}
-                    style={styles.restuIcon}
-                  />
-                  <Text style={styles.dishDetailText}> 15 KM | 20-22 mins</Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginVertical: 5,
-                  }}>
-                  {ratingArr.map(m => (
-                    <Ionicons name="star" size={18} color={Colors.secondary} />
-                  ))}
-                  {nonRatingArr.map(m => (
-                    <Ionicons name="star" size={18} color={Colors.grey} />
-                  ))}
-                </View>
-                <Text style={styles.dishDetailText}>
-                  {item.address.address1} {', '}
-                  {item.address.city}
-                </Text>
-                <View style={{flex: 1}}>
-                  <ScrollView style={{marginTop: 5}} nestedScrollEnabled={true}>
-                    {item.dishes.map(m => (
-                      <View style={styles.mainItemView}>
-                        <View style={{width: '70%'}}>
+        <>
+          <Text style={styles.restaurantText}>Restaurants</Text>
+          <FlatList
+            keyExtractor={item => item.partner_user + Math.random()}
+            showsVerticalScrollIndicator={false}
+            data={filterData}
+            nestedScrollEnabled={true}
+            renderItem={({item}) => {
+              const ratingArr = Array.from(
+                Array(item.store_rating),
+                i => i + 1,
+              );
+              const nonRatingArr = Array.from(
+                Array(5 - item.store_rating),
+                i => i + 1,
+              );
+              return (
+                <View style={[styles.mainView]}>
+                  <Pressable
+                    onPress={() =>
+                      navigation.navigate('RestaurantScreen', {
+                        restaurantId: item.partner_user,
+                        dishId: null,
+                        categoryName: null,
+                      })
+                    }>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                      <Text style={styles.dishText}>{item.store_name}</Text>
+                      <AntDesign
+                        name="arrowright"
+                        size={18}
+                        color={Colors.primary}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginTop: 5,
+                      }}>
+                      <MaterialCommunityIcons
+                        name="star-circle"
+                        size={20}
+                        color={Colors.green}
+                        style={styles.restuIcon}
+                      />
+                      <Text style={styles.dishDetailText}>
+                        {' '}
+                        15 KM | 20-22 mins
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginVertical: 5,
+                      }}>
+                      {ratingArr.map(m => (
+                        <Ionicons
+                          name="star"
+                          size={18}
+                          color={Colors.secondary}
+                        />
+                      ))}
+                      {nonRatingArr.map(m => (
+                        <Ionicons name="star" size={18} color={Colors.grey} />
+                      ))}
+                    </View>
+                    <Text style={styles.dishDetailText}>
+                      {item.address.address1} {', '}
+                      {item.address.city}
+                    </Text>
+                  </Pressable>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      flexWrap: 'wrap',
+                      justifyContent: 'space-between',
+                    }}>
+                    {item.dishes.slice(0, 4).map(m => (
+                      <Pressable
+                        style={styles.mainItemView}
+                        onPress={() =>
+                          navigation.navigate('RestaurantScreen', {
+                            restaurantId: item.partner_user,
+                            dishId: m.dish_id,
+                            categoryName: m.category.category_name,
+                          })
+                        }>
+                        <View style={styles.itemImg}>
+                          <Image
+                            style={styles.itemImgSize}
+                            source={{uri: Config.API_URL + m.dish_image}}
+                            resizeMode={'cover'}
+                          />
+                        </View>
+                        <View style={{}}>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -212,13 +269,14 @@ export const SearchScreen = ({route, navigation}) => {
                               marginTop: 5,
                             }}>
                             <Image
-                              source={images.medal}
+                              source={require('../../../assets/dashboardImages/medal.png')}
                               style={{height: 20, width: 20}}
                             />
                             <Text style={styles.textBestSeller}>
                               Bestseller
                             </Text>
                           </View>
+
                           <View
                             style={{
                               flexDirection: 'row',
@@ -227,12 +285,14 @@ export const SearchScreen = ({route, navigation}) => {
                             }}>
                             <MaterialCommunityIcons
                               name="square-circle"
-                              size={20}
+                              size={18}
                               color={
                                 m.dish_type === 'V' ? Colors.green : Colors.red
                               }
                             />
-                            <Text style={[styles.dishText, {marginLeft: 8}]}>
+                            <Text
+                              numberOfLines={2}
+                              style={[styles.dishText, {marginHorizontal: 8}]}>
                               {m.dish_name}
                             </Text>
                           </View>
@@ -244,22 +304,14 @@ export const SearchScreen = ({route, navigation}) => {
                             ₹ {m.dish_price}
                           </Text>
                         </View>
-
-                        <View style={styles.itemImg}>
-                          <Image
-                            style={styles.itemImgSize}
-                            source={{uri: Config.API_URL + m.dish_image}}
-                            resizeMode={'cover'}
-                          />
-                        </View>
-                      </View>
+                      </Pressable>
                     ))}
-                  </ScrollView>
+                  </View>
                 </View>
-              </Pressable>
-            );
-          }}
-        />
+              );
+            }}
+          />
+        </>
       )}
     </View>
   );

@@ -29,7 +29,6 @@ import {
   RestaurantTopPlaces,
 } from './components';
 import {useGetRestaurantList} from '../../../hooks/home/dashBoard/useGetRestaurantList';
-import Config from '../../../config';
 
 export const HomeScreen = ({navigation}) => {
   const [addressData, setAddressData] = useState(null);
@@ -177,7 +176,7 @@ export const HomeScreen = ({navigation}) => {
                     </View>
                     {restaurantList.slice(0, 4).map((i, index) => (
                       <RestaurantTopPlaces
-                        key={i + index}
+                        key={i + Math.random()}
                         source={i.profile_image}
                         icon="cards-heart-outline"
                         restaurantName={i.store_name}
@@ -197,6 +196,8 @@ export const HomeScreen = ({navigation}) => {
                         onPressHandler={() =>
                           navigation.navigate('RestaurantScreen', {
                             restaurantId: i.store_id,
+                            dishId: null,
+                            categoryName: null,
                           })
                         }
                       />

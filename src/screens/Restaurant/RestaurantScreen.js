@@ -644,7 +644,7 @@ import {ReplaceCartModel} from '../../components/common/ReplaceCartModel';
 import {load} from '../../utils/storage';
 
 export const RestaurantScreen = ({navigation, route}) => {
-  const {restaurantId} = route.params;
+  const {restaurantId, dishId, categoryName} = route.params;
   const {cartList} = useSelector(state => state.cart);
   const {restaurantDetails, loading} = useGetRestaurantDetails({restaurantId});
 
@@ -687,8 +687,24 @@ export const RestaurantScreen = ({navigation, route}) => {
       const x = newData.filter(m => m.data.length > 0);
       setMenuList(x);
       setUpdatedMenuList(x);
+      if (dishId !== null && categoryName !== null) {
+        const t = x.findIndex(b => b.title === categoryName);
+        if (t > -1) {
+          const m = x[t].data.findIndex(n => n.id === dishId);
+          if (m > -1) {
+            const timer = setTimeout(() => {
+              sectionListRef.current.scrollToLocation({
+                sectionIndex: t,
+                viewPosition: 0,
+                itemIndex: m,
+              });
+            }, 1000);
+            return () => clearTimeout(timer);
+          }
+        }
+      }
     }
-  }, [restaurantDetails]);
+  }, [categoryName, dishId, restaurantDetails]);
 
   useEffect(() => {
     if (isVegSwitchOn === false && isNonVegSwitchOn === false) {

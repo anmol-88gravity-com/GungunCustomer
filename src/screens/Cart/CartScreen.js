@@ -209,7 +209,11 @@ export const CartScreen = ({navigation}) => {
   const handleAddMoreItems = () => {
     if (cartItemsData) {
       cartItemsData.forEach(item => {
-        navigation.navigate('RestaurantScreen', {restaurantId: item.store_id});
+        navigation.navigate('RestaurantScreen', {
+          restaurantId: item.store_id,
+          dishId: null,
+          categoryName: null,
+        });
       });
     }
   };

@@ -1,21 +1,23 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {Font_Family} from '../../../utils/Fontfamily';
 import {FONT_SIZES} from '../../../utils/FontSize';
 import {Colors} from '../../../utils/Colors';
 
+const WIDTH = Dimensions.get('screen').width;
+
 export const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: 'white', paddingHorizontal: 10},
+  container: {flex: 1, backgroundColor: '#fcfcfc'},
   inputStyles: {
     backgroundColor: 'white',
-    width: '100%',
+    width: '92%',
     alignSelf: 'center',
     marginVertical: 15,
   },
   recentSearches: {
-    marginTop: 20,
     fontFamily: Font_Family.semiBold,
     fontSize: FONT_SIZES.thirteen,
     color: Colors.grey,
+    paddingHorizontal: 20,
   },
   chipStyles: {
     marginRight: 10,
@@ -30,11 +32,13 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.semiBold,
     fontSize: FONT_SIZES.thirteen,
     color: Colors.grey,
+    paddingHorizontal: 20,
   },
   chipRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginVertical: 10,
+    paddingHorizontal: 20,
   },
   foodName: {
     marginRight: 10,
@@ -49,6 +53,7 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.semiBold,
     fontSize: FONT_SIZES.thirteen,
     color: Colors.black,
+    paddingHorizontal: 20,
   },
   dishesText: {
     marginVertical: 10,
@@ -64,17 +69,18 @@ export const styles = StyleSheet.create({
     textAlign: 'right',
   },
   restaurantText: {
-    marginBottom: 20,
+    marginBottom: 10,
     fontFamily: Font_Family.semiBold,
     fontSize: FONT_SIZES.fifteen,
     color: Colors.secondary,
+    marginHorizontal: 12,
   },
   //
   mainView: {
     backgroundColor: Colors.white,
     padding: 12,
-    width: '95%',
-    alignSelf: 'center',
+    // width: '95%',
+    // alignSelf: 'center',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -85,6 +91,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     marginBottom: 25,
+    marginTop: 5,
   },
   adView: {
     backgroundColor: '#ccc',
@@ -94,7 +101,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
   },
   dishText: {
-    fontSize: FONT_SIZES.eighteen,
+    fontSize: FONT_SIZES.fifteen,
     fontFamily: Font_Family.bold,
     textTransform: 'capitalize',
   },
@@ -123,13 +130,20 @@ export const styles = StyleSheet.create({
     alignContent: 'center',
   },
   mainItemView: {
-    flexDirection: 'row',
-    marginTop: 5,
-    borderWidth: 1,
-    borderColor: Colors.secondary,
+    marginTop: 10,
     borderRadius: 10,
-    width: '100%',
+    width: WIDTH / 2.25,
     padding: 8,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   itemImg: {
     height: 90,
@@ -138,8 +152,8 @@ export const styles = StyleSheet.create({
   itemImgSize: {
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: Colors.primary,
-    width: '30%',
+    borderColor: Colors.secondary,
+    width: '100%',
     height: '100%',
   },
   textBestSeller: {
