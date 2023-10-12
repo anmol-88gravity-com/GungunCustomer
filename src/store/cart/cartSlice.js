@@ -2,9 +2,8 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 import {ApiEndpoints} from '../ApiEndPoints';
 import {Axios} from '../../lib/Axios';
-import {remove, save} from '../../utils/storage';
+import {load, remove, save} from '../../utils/storage';
 import Config from '../../config';
-import {logout} from '../auth/authSlice';
 
 export const CREATE_CART = '/api/create-cart';
 export const ADD_TO_CART = '/api/add-to-cart';
@@ -12,6 +11,7 @@ export const GET_CART_ITEMS = '/api/cards/list';
 export const INCREASE_QUANTITY = '/api/card-items/increase-quantity';
 export const DECREASE_QUANTITY = '/api/card-items/decrease-quantity';
 export const BILL_SUMMARY = '/api/bill-summary';
+export const DELETE_CART = '/api/delete-cart';
 
 export const createCart = createAsyncThunk(CREATE_CART, async (_, thunkAPI) => {
   const {userId} = thunkAPI.getState().auth;
@@ -31,8 +31,6 @@ export const addToCart = createAsyncThunk(
   ADD_TO_CART,
   async ({dishId, storeId, price, quantity, cart}, thunkAPI) => {
     const {userId} = thunkAPI.getState().auth;
-    // const {cartId} = thunkAPI.getState().cart;
-    console.log(dishId, storeId, price, quantity, cart, userId);
     const result = await Axios.post(ApiEndpoints.cart.addCartItem, {
       user: userId,
       card: cart,
@@ -41,7 +39,6 @@ export const addToCart = createAsyncThunk(
       price: price,
       quantity: quantity,
     });
-    console.log('result.data.status', result.data);
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue(result.data.response.card);
     } else {
@@ -77,6 +74,20 @@ export const increaseItemQuantity = createAsyncThunk(
     }
   },
 );
+
+export const deleteCart = createAsyncThunk(DELETE_CART, async (_, thunkAPI) => {
+  const cartId = await load(Config.CART_ID);
+  const result = await Axios.delete(
+    ApiEndpoints.cart.deleteCart.replace('CART_ID', String(cartId)),
+  );
+  console.log('result.data', result.data);
+  if (result.data.status === 'ok') {
+    await remove(Config.CART_ID);
+    return true;
+  } else {
+    return thunkAPI.rejectWithValue(new Error(result.data.msg));
+  }
+});
 
 export const decreaseItemQuantity = createAsyncThunk(
   DECREASE_QUANTITY,
@@ -115,22 +126,18 @@ export const cartSlice = createSlice({
       state.cartList = action.payload;
     });
     builder.addCase(increaseItemQuantity.fulfilled, (state, action) => {
-      state.itemId = action.payload;
       const index = state.cartList.findIndex(i => i.item_id === action.payload);
       if (index > -1) {
         state.cartList[index].quantity = state.cartList[index].quantity + 1;
       }
     });
     builder.addCase(decreaseItemQuantity.fulfilled, (state, action) => {
-      state.itemId = action.payload;
       const index = state.cartList.findIndex(i => i.item_id === action.payload);
       if (index > -1) {
         if (state.cartList[index].quantity === 1) {
           state.cartList.splice(index, 1);
           if (state.cartList.length === 0) {
-            remove(Config.CART_ID).then(r => {
-              console.log('cart deleted successfully !');
-            });
+            deleteCart();
           }
         } else {
           state.cartList[index].quantity = state.cartList[index].quantity - 1;

@@ -18,7 +18,7 @@ import {Colors} from '../../utils/Colors';
 import {styles} from './cart.styles';
 import {useGetAddressList} from '../../hooks';
 import {useGetCartItemsData} from '../../hooks/cart/useGetCartItemsData';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {
   decreaseItemQuantity,
   increaseItemQuantity,
@@ -58,41 +58,6 @@ export const CartScreen = ({navigation}) => {
       }
     }
   }, [addressList]);
-
-  // const DATA = [
-  //   {
-  //     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-  //     imageSource: images.cuponCard,
-  //   },
-  //   {
-  //     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-  //     imageSource: images.cuponCardImg,
-  //   },
-  //   {
-  //     id: '58694a0f-3da1-471f-bd96-145571e29d72',
-  //     imageSource: images.cuponImg,
-  //   },
-  // ];
-
-  // //calculate SubTotal
-  // const calculateSubTotal = () => {
-  //   let subTotal = 0;
-  //   if (cartItemsData !== undefined && cartItemsData.length > 0) {
-  //     cartItemsData.forEach(item => {
-  //       const totalPrice = item.price * item.quantity;
-  //       subTotal += totalPrice;
-  //     });
-  //   }
-  //   return subTotal;
-  // };
-
-  //calculate SubTotal
-
-  // const Item = ({imageSource}) => (
-  //   <View style={styles.cuponView}>
-  //     <Image source={imageSource} style={styles.cuponImage} />
-  //   </View>
-  // );
 
   const CartItem = ({
     item_id,
