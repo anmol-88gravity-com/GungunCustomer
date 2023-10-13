@@ -2,11 +2,30 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 import {ApiEndpoints} from '../ApiEndPoints';
 import {Axios} from '../../lib/Axios';
+import {Platform} from 'react-native';
 
 export const GET_FOOD_TYPE = '/api/customer-profile';
 export const SEARCH_QUERY = '/api/search-query';
 export const GET_RESTAURANT_LISt = '/api/restaurant-list';
 export const DELETE_SUGGESTION = '/api/delete-suggestion';
+export const USER_LOCATION = '/api/user-location';
+
+export const addUserLocation = createAsyncThunk(
+  USER_LOCATION,
+  async ({lat, long}, thunkAPI) => {
+    const {userId} = thunkAPI.getState().auth;
+    const result = await Axios.post(ApiEndpoints.home.currentLocation, {
+      user: userId,
+      latitude: lat,
+      longitude: long,
+    });
+    if (result.data.status === 'ok') {
+      return true;
+    } else {
+      return thunkAPI.rejectWithValue(new Error(result.data.msg));
+    }
+  },
+);
 
 export const getDataOnYourMind = createAsyncThunk(
   GET_FOOD_TYPE,

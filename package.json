@@ -29,10 +29,12 @@
     "react-native-flash-message": "^0.4.2",
     "react-native-floating-label-input": "^1.4.2",
     "react-native-gesture-handler": "^2.12.1",
+    "react-native-get-location": "^4.0.0",
     "react-native-google-places-autocomplete": "^2.5.1",
     "react-native-image-picker": "^7.0.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.2",
+    "react-native-maps": "^1.8.0",
     "react-native-paper": "^5.10.1",
     "react-native-permissions": "^3.9.2",
     "react-native-progress": "^5.0.0",
@@ -47,8 +49,8 @@
     "redux-thunk": "^2.4.2",
     "yup": "^1.2.0"
   },
-  "reactNativePermissionsIOS" :[
-     "Camera",
+  "reactNativePermissionsIOS": [
+    "Camera",
     "PhotoLibrary"
   ],
   "devDependencies": {

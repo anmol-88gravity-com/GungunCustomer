@@ -28,6 +28,13 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>New Exception Domain</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -38,9 +45,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>need camera access to upload image</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>need access of your location to show it on map</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>need gallery access to upload image</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>need access of your location to show it on map</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Metropolis-Black.otf</string>
@@ -76,6 +85,11 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Octicons.ttf</string>
 		<string>Zocial.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>

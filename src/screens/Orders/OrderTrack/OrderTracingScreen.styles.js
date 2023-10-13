@@ -1,7 +1,9 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, Platform, StyleSheet} from 'react-native';
 import {Colors} from '../../../utils/Colors';
 import {Font_Family} from '../../../utils/Fontfamily';
 import {FONT_SIZES} from '../../../utils/FontSize';
+
+const HEIGHT = Dimensions.get('screen').height;
 
 export const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: 'white'},
@@ -12,7 +14,10 @@ export const styles = StyleSheet.create({
 
   myLocation: {
     position: 'absolute',
-    bottom: 15,
+    bottom:
+      Platform.OS === 'ios'
+        ? HEIGHT - (HEIGHT - HEIGHT / 3.5)
+        : HEIGHT - (HEIGHT - HEIGHT / 3.8),
     width: '50%',
     alignSelf: 'center',
     backgroundColor: Colors.white,
@@ -43,7 +48,7 @@ export const styles = StyleSheet.create({
   bottomCard: {
     //  margin: 15,
     padding: 20,
-    flex: 1,
+    // flex: 1,
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
   },
@@ -124,5 +129,16 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.medium,
     fontSize: FONT_SIZES.fifteen,
     color: '#b7b7b7',
+  },
+  //
+  container1: {
+    ...StyleSheet.absoluteFillObject,
+    height: 400,
+    width: 400,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
 });

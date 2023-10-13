@@ -34,6 +34,7 @@ export const ApiEndpoints = {
       '/api/nearby-stores/?latitude=28.498987&longitude=77.085049',
     recentSearches: '/api/recent-searches/',
     deleteSearch: '/api/recent-searches/delete/',
+    currentLocation: '/api/current/',
   },
   cart: {
     createCart: 'api/cards/',

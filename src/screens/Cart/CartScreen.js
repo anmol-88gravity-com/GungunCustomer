@@ -13,17 +13,17 @@ import {Button} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {showMessage} from 'react-native-flash-message';
+import {useDispatch} from 'react-redux';
 
 import {Colors} from '../../utils/Colors';
 import {styles} from './cart.styles';
 import {useGetAddressList} from '../../hooks';
 import {useGetCartItemsData} from '../../hooks/cart/useGetCartItemsData';
-import {useDispatch} from 'react-redux';
 import {
   decreaseItemQuantity,
   increaseItemQuantity,
 } from '../../store/cart/cartSlice';
-import {showMessage} from 'react-native-flash-message';
 import {FONT_SIZES} from '../../utils/FontSize';
 import {Font_Family} from '../../utils/Fontfamily';
 import {Loader} from '../../components/common/Loader';

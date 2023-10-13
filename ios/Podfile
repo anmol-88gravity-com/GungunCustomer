@@ -11,7 +11,7 @@
  node_require('react-native/scripts/react_native_pods.rb')
  node_require('react-native-permissions/scripts/setup.rb')
 
-platform :ios, min_ios_version_supported
+platform :ios, '13.0' # platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
 setup_permissions([
@@ -21,9 +21,9 @@ setup_permissions([
   'Camera',
   # 'Contacts',
   # 'FaceID',
-  # 'LocationAccuracy',
-  # 'LocationAlways',
-  # 'LocationWhenInUse',
+   'LocationAccuracy',
+   'LocationAlways',
+   'LocationWhenInUse',
   #  'MediaLibrary',
   # 'Microphone',
   # 'Motion',
@@ -51,6 +51,9 @@ if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
   use_frameworks! :linkage => linkage.to_sym
 end
+
+rn_maps_path = '../node_modules/react-native-maps'
+pod 'react-native-google-maps', :path => rn_maps_path
 
 target 'GungunCustomer' do
   config = use_native_modules!

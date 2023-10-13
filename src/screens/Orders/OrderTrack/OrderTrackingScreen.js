@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, Text, ImageBackground, Dimensions, Image} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import {View, Text, Dimensions, Image} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Button} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 
 import {Colors} from '../../../utils/Colors';
 import {styles} from './OrderTracingScreen.styles';
@@ -16,52 +17,71 @@ const HEIGHT = Dimensions.get('screen').height;
 export const OrderTrackingScreen = () => {
   return (
     <SafeAreaView edges={['bottom']} style={styles.container}>
-      <ImageBackground
-        source={require('../../../assets/data/map.png')}
-        style={{height: HEIGHT - HEIGHT / 2.6, width: '100%'}}
-        resizeMode={'cover'}>
+      <View
+        style={{
+          height: HEIGHT - HEIGHT / 2.6,
+          width: '100%',
+        }}>
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          style={styles.map}
+          region={{
+            latitude: 28.498991,
+            longitude: 77.085052,
+            latitudeDelta: 0.015,
+            longitudeDelta: 0.0121,
+          }}>
+          <Marker
+            coordinate={{
+              latitude: 28.498991,
+              longitude: 77.085052,
+            }}
+          />
+        </MapView>
+      </View>
+      <View
+        style={{
+          alignSelf: 'center',
+          backgroundColor: Colors.white,
+          marginTop: 20,
+          padding: 10,
+          borderRadius: 10,
+          borderWidth: 1,
+          borderColor: Colors.white,
+          position: 'absolute',
+          top: 0,
+        }}>
+        <Text
+          style={{
+            fontFamily: Font_Family.medium,
+            fontSize: FONT_SIZES.thirteen,
+            color: Colors.black,
+            textAlign: 'center',
+          }}>
+          Your Order is preparing in the restaurant.
+        </Text>
+      </View>
+      <View style={styles.myLocation}>
         <View
           style={{
-            alignSelf: 'center',
-            backgroundColor: Colors.white,
-            marginTop: 20,
-            padding: 10,
-            borderRadius: 10,
-            borderWidth: 1,
-            borderColor: Colors.white,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}>
-          <Text
-            style={{
-              fontFamily: Font_Family.medium,
-              fontSize: FONT_SIZES.thirteen,
-              color: Colors.black,
-              textAlign: 'center',
-            }}>
-            Your Order is preparing in the restaurant.
-          </Text>
-        </View>
-        <View style={styles.myLocation}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <Image source={images.profile} style={{height: 30, width: 30}} />
-            <View>
-              <Text style={styles.locationText}>Eko Sanchez </Text>
-              <Text style={styles.locationSubText}>Your rider</Text>
-            </View>
-            <View style={styles.phoneIcon}>
-              <MaterialCommunityIcons
-                name="phone"
-                size={25}
-                style={{alignSelf: 'center'}}
-              />
-            </View>
+          <Image source={images.profile} style={{height: 30, width: 30}} />
+          <View>
+            <Text style={styles.locationText}>Eko Sanchez </Text>
+            <Text style={styles.locationSubText}>Your rider</Text>
+          </View>
+          <View style={styles.phoneIcon}>
+            <MaterialCommunityIcons
+              name="phone"
+              size={25}
+              style={{alignSelf: 'center'}}
+            />
           </View>
         </View>
-      </ImageBackground>
+      </View>
       <View style={styles.bottomCard}>
         <View style={{flexDirection: 'row'}}>
           <View style={styles.iconBackground}>

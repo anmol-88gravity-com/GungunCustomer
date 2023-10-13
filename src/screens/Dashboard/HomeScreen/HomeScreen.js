@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -7,11 +7,21 @@ import {
   TouchableOpacity,
   Image,
   Pressable,
+  Platform,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TextInput} from 'react-native-paper';
+import {
+  check,
+  openSettings,
+  PERMISSIONS,
+  request,
+  RESULTS,
+} from 'react-native-permissions';
+import GetLocation from 'react-native-get-location';
+import {useDispatch} from 'react-redux';
 
 import {images} from '../../../utils/Images';
 import {styles} from './HomeScreen.styles';
@@ -29,14 +39,89 @@ import {
   RestaurantTopPlaces,
 } from './components';
 import {useGetRestaurantList} from '../../../hooks/home/dashBoard/useGetRestaurantList';
+import {useError} from '../../../context/ErrorProvider';
+import {addUserLocation} from '../../../store/home/homeSlice';
 
 export const HomeScreen = ({navigation}) => {
   const [addressData, setAddressData] = useState(null);
+  const setError = useError();
+  const dispatch = useDispatch();
 
   const {profileData, loading: userLoading} = useGetProfileData();
   const {addressList, loading} = useGetAddressList();
   const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
   const {restaurantList, loader} = useGetRestaurantList();
+
+  const getLocation = useCallback(() => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    })
+      .then(async location => {
+        try {
+          await dispatch(
+            addUserLocation({
+              lat: location.latitude,
+              long: location.longitude,
+            }),
+          ).unwrap();
+        } catch (e) {
+          // setError(e.message);
+          console.log(e.message);
+        }
+      })
+      .catch(error => {
+        const {code, message} = error;
+        setError('Error : ' + code + ' ' + message);
+      });
+  }, [dispatch, setError]);
+
+  useEffect(() => {
+    (async () => {
+      check(
+        Platform.OS === 'ios'
+          ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+          : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      )
+        .then(result => {
+          switch (result) {
+            case RESULTS.GRANTED:
+              getLocation();
+              break;
+            case RESULTS.UNAVAILABLE:
+              setError('This feature is not available on this device!');
+              break;
+            case RESULTS.DENIED:
+              request(
+                Platform.OS === 'ios'
+                  ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+                  : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+              ).then(requestResult => {
+                if (requestResult === RESULTS.GRANTED) {
+                  getLocation();
+                }
+              });
+              break;
+            case RESULTS.LIMITED:
+              getLocation();
+              break;
+            case RESULTS.BLOCKED:
+              setError(
+                'The permission is denied! Please enable storage permission.',
+              );
+              openSettings().catch(settingsErr =>
+                setError('Unable to open settings!'),
+              );
+              break;
+          }
+        })
+        .catch(e => {
+          setError(e.message);
+        });
+    })();
+
+    return () => {};
+  }, [getLocation, setError]);
 
   useEffect(() => {
     if (addressList !== undefined && addressList.length > 0) {
@@ -176,7 +261,7 @@ export const HomeScreen = ({navigation}) => {
                     </View>
                     {restaurantList.slice(0, 4).map((i, index) => (
                       <RestaurantTopPlaces
-                        key={i + Math.random()}
+                        key={index + Math.random()}
                         source={i.profile_image}
                         icon="cards-heart-outline"
                         restaurantName={i.store_name}
