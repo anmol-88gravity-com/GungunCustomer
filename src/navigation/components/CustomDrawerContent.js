@@ -38,7 +38,7 @@ export function CustomDrawerContent(props) {
             anniversary: res.anniversary ? res.anniversary : '',
             profileImage: res.profile_image
               ? {
-                  uri: res.profile_image,
+                  uri: Config.API_URL + res.profile_image,
                   type: 'image/jpg',
                   name: 'userImage.jpg',
                 }
@@ -89,7 +89,11 @@ export function CustomDrawerContent(props) {
         <Loader />
       ) : (
         <UserProfile
-          imageSource={Config.API_URL + profileData.profileImage.uri}
+          imageSource={
+            profileData.profileImage.uri !== ''
+              ? {uri: profileData.profileImage.uri}
+              : require('../../assets/dashboardImages/user.png')
+          }
           firstName={profileData.fullName}
         />
       )}

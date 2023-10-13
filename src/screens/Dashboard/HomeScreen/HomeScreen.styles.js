@@ -54,7 +54,7 @@ export const styles = StyleSheet.create({
   },
   textAddress: {
     fontFamily: Font_Family.light,
-    fontSize: FONT_SIZES.tweleve,
+    fontSize: FONT_SIZES.thirteen,
     textTransform: 'capitalize',
     flexShrink: 1,
   },

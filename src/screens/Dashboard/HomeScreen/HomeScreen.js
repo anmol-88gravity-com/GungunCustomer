@@ -41,39 +41,73 @@ import {
 import {useGetRestaurantList} from '../../../hooks/home/dashBoard/useGetRestaurantList';
 import {useError} from '../../../context/ErrorProvider';
 import {addUserLocation} from '../../../store/home/homeSlice';
+import Config from '../../../config';
 
 export const HomeScreen = ({navigation}) => {
-  const [addressData, setAddressData] = useState(null);
+  const [addressData, setAddressData] = useState('');
+  const [loading, setLoading] = useState(false);
   const setError = useError();
   const dispatch = useDispatch();
 
   const {profileData, loading: userLoading} = useGetProfileData();
-  const {addressList, loading} = useGetAddressList();
   const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
   const {restaurantList, loader} = useGetRestaurantList();
 
+  function getAddressFromCoordinates({latitude, longitude}) {
+    return new Promise((resolve, reject) => {
+      fetch(
+        'https://maps.googleapis.com/maps/api/geocode/json?address=' +
+          latitude +
+          ',' +
+          longitude +
+          '&key=' +
+          Config.googleMapsAPIkey,
+      )
+        .then(response => response.json())
+        .then(responseJson => {
+          if (responseJson.status === 'OK') {
+            resolve(responseJson?.results?.[0]?.formatted_address);
+            setAddressData(responseJson?.results?.[0]?.formatted_address);
+          } else {
+            reject('LOCATION NOT FOUND');
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
   const getLocation = useCallback(() => {
+    setLoading(true);
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 60000,
     })
       .then(async location => {
         try {
+          await getAddressFromCoordinates({
+            latitude: location.latitude,
+            longitude: location.longitude,
+          });
           await dispatch(
             addUserLocation({
               lat: location.latitude,
               long: location.longitude,
             }),
           ).unwrap();
+          setLoading(false);
         } catch (e) {
           // setError(e.message);
           console.log(e.message);
         }
+        setLoading(false);
       })
       .catch(error => {
         const {code, message} = error;
         setError('Error : ' + code + ' ' + message);
       });
+    setLoading(false);
   }, [dispatch, setError]);
 
   useEffect(() => {
@@ -123,17 +157,6 @@ export const HomeScreen = ({navigation}) => {
     return () => {};
   }, [getLocation, setError]);
 
-  useEffect(() => {
-    if (addressList !== undefined && addressList.length > 0) {
-      const defaultAddress = addressList.find(
-        address => address.is_default === true,
-      );
-      if (defaultAddress) {
-        setAddressData(defaultAddress);
-      }
-    }
-  }, [addressList]);
-
   return (
     <SafeAreaView style={styles.mainContainer}>
       <ScreenHeader headerTitle={profileData?.fullName} />
@@ -162,17 +185,11 @@ export const HomeScreen = ({navigation}) => {
                 width: '83%',
                 paddingVertical: 8,
               }}>
-              <Text style={styles.addressTitle}>
-                {addressData?.address_type}
-              </Text>
-              <Text style={styles.textAddress}>
-                {addressData?.address1 +
-                  ', ' +
-                  addressData?.address2 +
-                  ', ' +
-                  addressData?.city +
-                  ', ' +
-                  addressData?.state}
+              {/*<Text style={styles.addressTitle}>*/}
+              {/*  {addressData?.address_type}*/}
+              {/*</Text>*/}
+              <Text numberOfLines={2} style={styles.textAddress}>
+                {addressData}
               </Text>
             </View>
             <Ionicons name="chevron-down" size={24} color={Colors.primary} />

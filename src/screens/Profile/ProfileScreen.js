@@ -74,7 +74,10 @@ export const ProfileScreen = () => {
       setUserBirthday(profileData.birthday);
       setUserAnniversary(profileData.anniversary);
       setUserImage({
-        uri: Config.API_URL + profileData.profileImage.uri,
+        uri:
+          profileData.profileImage.uri === ''
+            ? ''
+            : Config.API_URL + profileData.profileImage.uri,
         type: profileData.profileImage.type,
         name: profileData.profileImage.name,
       });
@@ -253,7 +256,11 @@ export const ProfileScreen = () => {
                       borderColor: Colors.secondary,
                     }}>
                     <Image
-                      source={{uri: values.profilePic}}
+                      source={
+                        values.profilePic === ''
+                          ? require('../../assets/dashboardImages/user.png')
+                          : {uri: values.profilePic}
+                      }
                       style={{
                         width: '100%',
                         height: '100%',
