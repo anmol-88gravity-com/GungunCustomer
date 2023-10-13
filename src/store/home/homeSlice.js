@@ -2,7 +2,6 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 import {ApiEndpoints} from '../ApiEndPoints';
 import {Axios} from '../../lib/Axios';
-import {Platform} from 'react-native';
 
 export const GET_FOOD_TYPE = '/api/customer-profile';
 export const SEARCH_QUERY = '/api/search-query';
