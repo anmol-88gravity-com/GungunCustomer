@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
-import { FONT_SIZES } from '../../utils/FontSize';
-import { Font_Family } from '../../utils/Fontfamily';
-import { Colors } from '../../utils/Colors';
+import {StyleSheet} from 'react-native';
+import {FONT_SIZES} from '../../utils/FontSize';
+import {Font_Family} from '../../utils/Fontfamily';
+import {Colors} from '../../utils/Colors';
 
 export const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: 'white', paddingHorizontal: 15 },
+  container: {flex: 1, backgroundColor: 'white', paddingHorizontal: 15},
   heading: {
     paddingTop: 15,
     fontSize: FONT_SIZES.fifteen,
@@ -266,13 +266,6 @@ export const styles = StyleSheet.create({
   addressTitle: {
     color: Colors.black,
     fontFamily: Font_Family.regular,
-    textTransform: 'capitalize',
-  },
-  addressText: {
-    fontFamily: Font_Family.medium,
-    fontSize: FONT_SIZES.fifteen,
-    lineHeight: 28,
-    color: Colors.black,
     textTransform: 'capitalize',
   },
   addressBtn: {

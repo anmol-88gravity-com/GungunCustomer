@@ -17,8 +17,7 @@ export function UserProfile({imageSource, firstName}) {
         }}>
         <Image
           source={imageSource}
-          resizeMode={'contain'}
-          style={{width: '100%', height: '100%'}}
+          style={{width: '100%', height: '100%', borderRadius: 50}}
         />
       </View>
       <Text

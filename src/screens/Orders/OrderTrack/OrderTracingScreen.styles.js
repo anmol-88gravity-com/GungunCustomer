@@ -1,4 +1,4 @@
-import {Dimensions, Platform, StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {Colors} from '../../../utils/Colors';
 import {Font_Family} from '../../../utils/Fontfamily';
 import {FONT_SIZES} from '../../../utils/FontSize';
@@ -14,10 +14,7 @@ export const styles = StyleSheet.create({
 
   myLocation: {
     position: 'absolute',
-    bottom:
-      Platform.OS === 'ios'
-        ? HEIGHT - (HEIGHT - HEIGHT / 3.5)
-        : HEIGHT - (HEIGHT - HEIGHT / 3.8),
+    bottom: HEIGHT - (HEIGHT - HEIGHT / 3.5),
     width: '50%',
     alignSelf: 'center',
     backgroundColor: Colors.white,

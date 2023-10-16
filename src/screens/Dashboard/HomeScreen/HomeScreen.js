@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -7,31 +7,18 @@ import {
   TouchableOpacity,
   Image,
   Pressable,
-  Platform,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TextInput} from 'react-native-paper';
-import {
-  check,
-  openSettings,
-  PERMISSIONS,
-  request,
-  RESULTS,
-} from 'react-native-permissions';
-import GetLocation from 'react-native-get-location';
 import {useDispatch} from 'react-redux';
 
 import {images} from '../../../utils/Images';
 import {styles} from './HomeScreen.styles';
 import ScreenHeader from '../../../components/header/ScreenHeader';
 import {Colors} from '../../../utils/Colors';
-import {
-  useGetAddressList,
-  useGetProfileData,
-  useGetCategorizedFoodtype,
-} from '../../../hooks';
+import {useGetProfileData, useGetCategorizedFoodtype} from '../../../hooks';
 import {Loader} from '../../../components/common/Loader';
 import {
   PopularItems,
@@ -40,8 +27,9 @@ import {
 } from './components';
 import {useGetRestaurantList} from '../../../hooks/home/dashBoard/useGetRestaurantList';
 import {useError} from '../../../context/ErrorProvider';
-import {addUserLocation} from '../../../store/home/homeSlice';
 import Config from '../../../config';
+import {useGetUserCurrentLocation} from '../../../hooks/user/useGetUserCurrentLocation';
+import {addUserLocation} from '../../../store/home/homeSlice';
 
 export const HomeScreen = ({navigation}) => {
   const [addressData, setAddressData] = useState('');
@@ -52,11 +40,12 @@ export const HomeScreen = ({navigation}) => {
   const {profileData, loading: userLoading} = useGetProfileData();
   const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
   const {restaurantList, loader} = useGetRestaurantList();
+  const {lat, long, loader: load} = useGetUserCurrentLocation();
 
   function getAddressFromCoordinates({latitude, longitude}) {
     return new Promise((resolve, reject) => {
       fetch(
-        'https://maps.googleapis.com/maps/api/geocode/json?address=' +
+        Config.googleGetAddress +
           latitude +
           ',' +
           longitude +
@@ -78,22 +67,18 @@ export const HomeScreen = ({navigation}) => {
     });
   }
 
-  const getLocation = useCallback(() => {
-    setLoading(true);
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 60000,
-    })
-      .then(async location => {
+  useEffect(() => {
+    (async () => {
+      if (lat !== 0 && long !== 0) {
         try {
           await getAddressFromCoordinates({
-            latitude: location.latitude,
-            longitude: location.longitude,
+            latitude: lat,
+            longitude: long,
           });
           await dispatch(
             addUserLocation({
-              lat: location.latitude,
-              long: location.longitude,
+              latitude: lat,
+              longitude: long,
             }),
           ).unwrap();
           setLoading(false);
@@ -101,66 +86,16 @@ export const HomeScreen = ({navigation}) => {
           // setError(e.message);
           console.log(e.message);
         }
-        setLoading(false);
-      })
-      .catch(error => {
-        const {code, message} = error;
-        setError('Error : ' + code + ' ' + message);
-      });
-    setLoading(false);
-  }, [dispatch, setError]);
-
-  useEffect(() => {
-    (async () => {
-      check(
-        Platform.OS === 'ios'
-          ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-          : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      )
-        .then(result => {
-          switch (result) {
-            case RESULTS.GRANTED:
-              getLocation();
-              break;
-            case RESULTS.UNAVAILABLE:
-              setError('This feature is not available on this device!');
-              break;
-            case RESULTS.DENIED:
-              request(
-                Platform.OS === 'ios'
-                  ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-                  : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-              ).then(requestResult => {
-                if (requestResult === RESULTS.GRANTED) {
-                  getLocation();
-                }
-              });
-              break;
-            case RESULTS.LIMITED:
-              getLocation();
-              break;
-            case RESULTS.BLOCKED:
-              setError(
-                'The permission is denied! Please enable storage permission.',
-              );
-              openSettings().catch(settingsErr =>
-                setError('Unable to open settings!'),
-              );
-              break;
-          }
-        })
-        .catch(e => {
-          setError(e.message);
-        });
+      }
     })();
 
     return () => {};
-  }, [getLocation, setError]);
+  }, [dispatch, lat, long, setError]);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
       <ScreenHeader headerTitle={profileData?.fullName} />
-      {userLoading || loading || isLoading || loader ? (
+      {userLoading || loading || isLoading || loader || load ? (
         <Loader />
       ) : (
         <>
@@ -185,9 +120,6 @@ export const HomeScreen = ({navigation}) => {
                 width: '83%',
                 paddingVertical: 8,
               }}>
-              {/*<Text style={styles.addressTitle}>*/}
-              {/*  {addressData?.address_type}*/}
-              {/*</Text>*/}
               <Text numberOfLines={2} style={styles.textAddress}>
                 {addressData}
               </Text>

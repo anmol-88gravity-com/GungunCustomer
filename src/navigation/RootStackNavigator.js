@@ -23,7 +23,7 @@ import {CartScreen} from '../screens/Cart';
 import {Notification} from '../screens/Notifications';
 import {OrderTrackingScreen} from '../screens/Orders/OrderTrack';
 import {PaymentScreen} from '../screens/Payment';
-import { AddressesScreen } from '../screens/Cart/AddressesList';
+import {AddressesScreen} from '../screens/Cart/AddressesList';
 
 const Stack = createStackNavigator();
 
@@ -82,7 +82,7 @@ export function AddressNavigator() {
         component={AddressScreen}
         options={{
           header: ({navigation}) => (
-            <Header headerTitle={'My Addresses'} navigation={navigation} />
+            <Header headerTitle={'Saved Addresses'} navigation={navigation} />
           ),
         }}
       />

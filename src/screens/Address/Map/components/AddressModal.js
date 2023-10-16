@@ -22,22 +22,31 @@ import {
   updateAddress,
 } from '../../../../store/address/addressSlice';
 
-export const AddressModal = ({open, onClose, addressId}) => {
-  const [addressTitle, setAddressTitle] = useState('');
+export const AddressModal = ({
+  open,
+  onClose,
+  addressId,
+  address2,
+  lat,
+  long,
+}) => {
+  const [addressTitle, setAddressTitle] = useState('home');
   const [add1, setAddress1] = useState('');
   const [add2, setAddress2] = useState('');
   const [landmark, setLandmark] = useState('');
 
   const {addressDetails, loading} = useGetSingleAddress(addressId);
 
+  // console.log('address2', address2);
+
   useEffect(() => {
-    if (addressDetails) {
-      setAddressTitle(addressDetails.address_type);
-      setAddress1(addressDetails.address1);
-      setAddress2(addressDetails.address2);
-      setLandmark(addressDetails.landmark);
-    }
-  }, [addressDetails]);
+    // if (addressDetails) {
+    //   setAddressTitle(addressDetails.address_type);
+    //   setAddress1(addressDetails.address1);
+    setAddress2(address2);
+    //   setLandmark(addressDetails.landmark);
+    // }
+  }, [address2]);
 
   const validationSchema = Yup.object().shape({
     address1: Yup.string().required(
@@ -53,7 +62,17 @@ export const AddressModal = ({open, onClose, addressId}) => {
   const onSubmit = async ({address1, address2, landmark, addressType}) => {
     try {
       await dispatch(
-        addAddress({address1, address2, landmark, addressType}),
+        addAddress({
+          address1,
+          address2,
+          landmark,
+          addressType,
+          lat,
+          long,
+          // pincode, // not required anymore
+          // city, // not required anymore
+          // state, // not required anymore
+        }),
       ).unwrap();
       showMessage({
         message: 'Added Successfully.',
@@ -106,7 +125,8 @@ export const AddressModal = ({open, onClose, addressId}) => {
       visible={open}
       onRequestClose={onClose}>
       <View style={styles.centeredView}>
-        <View style={[styles.modalView, {bottom: keyboardHeight}]}>
+        <View style={[styles.modalView]}>
+          {/*<View style={[styles.modalView, {bottom: keyboardHeight}]}>*/}
           <KeyboardAwareScrollView behavior={'padding'} scrollEnabled={false}>
             <View style={styles.modalContainer}>
               <Text style={styles.exactAddress}>Enter the Exact Address</Text>

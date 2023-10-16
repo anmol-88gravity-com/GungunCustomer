@@ -1,20 +1,39 @@
-import React from 'react';
-import {View, Text, Dimensions, Image} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {View, Text, Dimensions, Image, StyleSheet} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Button} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
+import MapViewDirections from 'react-native-maps-directions';
 
 import {Colors} from '../../../utils/Colors';
 import {styles} from './OrderTracingScreen.styles';
 import {images} from '../../../utils/Images';
 import {Font_Family} from '../../../utils/Fontfamily';
 import {FONT_SIZES} from '../../../utils/FontSize';
+import Config from '../../../config';
 
 const HEIGHT = Dimensions.get('screen').height;
+const WIDTH = Dimensions.get('screen').width;
 
 export const OrderTrackingScreen = () => {
+  const [coordinates, setCoordinates] = useState([
+    {
+      latitude: 28.5048174,
+      longitude: 77.0839702,
+    },
+    {
+      latitude: 28.49929,
+      longitude: 77.08248,
+    },
+  ]);
+  const [duration, setDuration] = useState(null);
+  const [distance, setDistance] = useState(null);
+  const [deliveryLocation, setDeliveryLocation] = useState('');
+
+  const mapViewRef = useRef(null);
+
   return (
     <SafeAreaView edges={['bottom']} style={styles.container}>
       <View
@@ -23,20 +42,53 @@ export const OrderTrackingScreen = () => {
           width: '100%',
         }}>
         <MapView
-          provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          region={{
-            latitude: 28.498991,
-            longitude: 77.085052,
-            latitudeDelta: 0.015,
+          style={{...StyleSheet.absoluteFillObject}}
+          ref={mapViewRef}
+          initialRegion={{
+            latitude: coordinates[0].latitude,
+            longitude: coordinates[0].longitude,
+            latitudeDelta: 0.0622,
             longitudeDelta: 0.0121,
           }}>
-          <Marker
-            coordinate={{
-              latitude: 28.498991,
-              longitude: 77.085052,
-            }}
-          />
+          {coordinates.map((coordinate, index) => (
+            <Marker key={`coordinate_${index}`} coordinate={coordinate} />
+          ))}
+          {coordinates.length >= 2 && (
+            <MapViewDirections
+              origin={coordinates[0]}
+              destination={coordinates[coordinates.length - 1]}
+              waypoints={
+                coordinates.length > 2 ? coordinates.slice(1, -1) : undefined
+              }
+              apikey={Config.googleMapsAPIkey}
+              mode={'DRIVING'}
+              timePrecision={'now'}
+              strokeWidth={4}
+              strokeColor={'#1c1c1c'}
+              optimizeWaypoints={true}
+              onStart={params => {
+                console.log(
+                  `Started routing between "${params.origin}" and "${params.destination}"`,
+                );
+              }}
+              onReady={result => {
+                setDistance(`${result.legs[0].distance?.text}`);
+                setDuration(`${result.legs[0].duration_in_traffic?.text}`);
+                setDeliveryLocation(`${result.legs[0].end_address}`);
+                mapViewRef.current.fitToCoordinates(result.coordinates, {
+                  edgePadding: {
+                    right: WIDTH / 20,
+                    left: WIDTH / 20,
+                    bottom: HEIGHT / 250,
+                    top: HEIGHT / 250,
+                  },
+                });
+              }}
+              onError={errorMessage => {
+                console.log(errorMessage + ' GOT AN ERROR');
+              }}
+            />
+          )}
         </MapView>
       </View>
       <View
@@ -99,7 +151,7 @@ export const OrderTrackingScreen = () => {
                 styles.deliveryTime,
                 {color: '#000000', marginTop: '3%'},
               ]}>
-              15 minutes
+              {duration} ({distance})
             </Text>
           </View>
         </View>
@@ -126,11 +178,17 @@ export const OrderTrackingScreen = () => {
           <View style={{marginLeft: '5%', alignSelf: 'center'}}>
             <Text style={styles.deliveryTime}>Delivery Address</Text>
             <Text
+              numberOfLines={2}
               style={[
                 styles.deliveryTime,
-                {color: '#000000', marginTop: '3%'},
+                {
+                  color: '#000000',
+                  marginTop: 5,
+                  width: '55%',
+                  // backgroundColor: 'red',
+                },
               ]}>
-              Solo Jogja Street
+              {deliveryLocation}
             </Text>
           </View>
         </View>
