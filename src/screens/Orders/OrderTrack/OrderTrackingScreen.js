@@ -185,7 +185,6 @@ export const OrderTrackingScreen = () => {
                   color: '#000000',
                   marginTop: 5,
                   width: '55%',
-                  // backgroundColor: 'red',
                 },
               ]}>
               {deliveryLocation}

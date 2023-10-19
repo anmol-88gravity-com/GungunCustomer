@@ -12,8 +12,13 @@ export const LikesScreen = () => {
           icon="heart"
           restaurantName="Manorama"
           restaurantRating="3.8(10K+) . 29 mins"
-          restDishType="North Indian, Chinese,Biryani"
+          restDishType={['North Indian, Chinese,Biryani']}
           restAddress="DLF Phase 3 . 4.3 km"
+          restType={''}
+          restaurantOffer={''}
+          restaurantMaxOffer={''}
+          onPressHandler={''}
+          restDistance={''}
         />
       </View>
     </View>
