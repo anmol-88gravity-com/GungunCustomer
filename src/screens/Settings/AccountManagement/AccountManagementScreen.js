@@ -31,7 +31,7 @@ const RowItem = ({ onPressHandler, heading, icon }) => {
 export const AccountManagement = ({ navigation }) => {
 
   const onPressHandler = async () =>
-  Alert.alert('Wait!', 'Are you sure you want to exit the app ?', [
+  Alert.alert('Wait!', 'Are you sure you want to delete the app ?', [
     {text: 'YES', 
     // onPress: () => logoutHandler()
   },
