@@ -32,10 +32,11 @@ const ScreenHeader = ({headerTitle}) => {
               <View style={{height: 50, width: 50, borderRadius: 100}}>
                 <Image
                   source={
-                    profileData.profileImage.uri !== ''
-                      ? {uri: Config.API_URL + profileData.profileImage.uri}
+                    profileData?.profileImage?.uri !== ''
+                      ? {uri: Config.API_URL + profileData?.profileImage.uri}
                       : require('../../assets/dashboardImages/user.png')
                   }
+                  // source={require('../../assets/dashboardImages/user.png')}
                   style={{width: '100%', height: '100%', borderRadius: 100}}
                   resizeMode={'contain'}
                 />

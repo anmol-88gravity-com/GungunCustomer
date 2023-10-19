@@ -48,9 +48,10 @@ export const CustomerSupportScreen = ({navigation}) => {
                   flexDirection: 'row',
                   marginTop: '5%',
                   marginLeft: '5%',
-                }} onPress={()=>{Linking.openURL('sms:1234567890')}}>
+                }} onPress={()=>{Linking.openURL('mailto:support@gmail.com');
+              }}>
                 <MaterialCommunityIcons
-                  name="message-alert"
+                  name="email-outline"
                   size={20}
                   color={Colors.primary}
                 />
