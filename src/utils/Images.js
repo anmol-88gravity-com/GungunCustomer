@@ -13,4 +13,5 @@ export const images = {
   cuponCard: require('../assets/dashboardImages/cuponCard.png'),
   cuponCardImg: require('../assets/dashboardImages/cuponCardImg.png'),
   cuponImg: require('../assets/dashboardImages/cuponImg.png'),
+  logo: require('../assets/dashboardImages/logo.png'),
 };

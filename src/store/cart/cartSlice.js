@@ -50,7 +50,7 @@ export const addToCart = createAsyncThunk(
 export const getDataCartItems = createAsyncThunk(
   GET_CART_ITEMS,
   async ({cartId}, thunkAPI) => {
-    console.log('qwerty', cartId);
+    // console.log('qwerty', cartId);
     const result = await Axios.get(
       ApiEndpoints.cart.getCartItems.replace('DISH_ITEM_ID', String(cartId)),
     );

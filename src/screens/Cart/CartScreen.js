@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,43 +6,55 @@ import {
   ScrollView,
   ActivityIndicator,
   Image,
+  TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {showMessage} from 'react-native-flash-message';
-import {useDispatch} from 'react-redux';
+import { showMessage } from 'react-native-flash-message';
+import { useDispatch } from 'react-redux';
+import RazorpayCheckout from 'react-native-razorpay';
 
-import {Colors} from '../../utils/Colors';
-import {styles} from './cart.styles';
-import {useGetAddressList} from '../../hooks';
-import {useGetCartItemsData} from '../../hooks/cart/useGetCartItemsData';
+import { Colors } from '../../utils/Colors';
+import { styles } from './cart.styles';
+import { useGetAddressList, useGetProfileData } from '../../hooks';
+import { useGetCartItemsData } from '../../hooks/cart/useGetCartItemsData';
 import {
   decreaseItemQuantity,
   increaseItemQuantity,
 } from '../../store/cart/cartSlice';
-import {FONT_SIZES} from '../../utils/FontSize';
-import {Font_Family} from '../../utils/Fontfamily';
-import {Loader} from '../../components/common/Loader';
-import {useError} from '../../context/ErrorProvider';
-import {useGetBillSummary} from '../../hooks/cart/useGetBillSummary';
+import { FONT_SIZES } from '../../utils/FontSize';
+import { Font_Family } from '../../utils/Fontfamily';
+import { Loader } from '../../components/common/Loader';
+import { useError } from '../../context/ErrorProvider';
+import { useGetBillSummary } from '../../hooks/cart/useGetBillSummary';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import Config from '../../config';
 
-export const CartScreen = ({navigation}) => {
+
+export const CartScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const { profileData } = useGetProfileData();
   const [addressData, setAddressData] = useState(null);
-  const {addressList, loading} = useGetAddressList();
-  const {billData, loading: loadBill} = useGetBillSummary();
-  const {cartItems, loading: isLoading} = useGetCartItemsData();
+  const { addressList, loading } = useGetAddressList();
+  const { billData, loading: loadBill } = useGetBillSummary();
+  const { cartItems, loading: isLoading } = useGetCartItemsData();
 
   const [cartItemsData, setCartItemsData] = useState([]);
   const [incLoader, setIncLoader] = useState(false);
   const [decLoader, setDecLoader] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const setError = useError();
+
+  const handlePress = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     setCartItemsData(cartItems);
@@ -70,7 +82,7 @@ export const CartScreen = ({navigation}) => {
       setSelected(itemId);
       setIncLoader(true);
       try {
-        await dispatch(increaseItemQuantity({itemId})).unwrap();
+        await dispatch(increaseItemQuantity({ itemId })).unwrap();
         showMessage({
           message: 'Item quantity increased successfully.',
           type: 'default',
@@ -92,7 +104,7 @@ export const CartScreen = ({navigation}) => {
       setSelected(itemId);
       setDecLoader(true);
       try {
-        await dispatch(decreaseItemQuantity({itemId})).unwrap();
+        await dispatch(decreaseItemQuantity({ itemId })).unwrap();
         showMessage({
           message: 'Item quantity decreased successfully.',
           type: 'default',
@@ -114,7 +126,7 @@ export const CartScreen = ({navigation}) => {
     const totalPrice = itemPrice * itemQuantity;
 
     return (
-      <View style={[styles.itemRowStyles, {paddingVertical: 10}]}>
+      <View style={[styles.itemRowStyles, { paddingVertical: 10 }]}>
         <View style={styles.itemInnerRow}>
           {dish_type === 'V' ? (
             <MaterialCommunityIcons
@@ -131,7 +143,7 @@ export const CartScreen = ({navigation}) => {
           )}
           <Text
             numberOfLines={3}
-            style={[styles.itemName, {textTransform: 'capitalize'}]}>
+            style={[styles.itemName, { textTransform: 'capitalize' }]}>
             {itemName}
           </Text>
         </View>
@@ -143,7 +155,7 @@ export const CartScreen = ({navigation}) => {
         <View style={styles.qtyBox}>
           <View style={styles.qtyContainer}>
             <Pressable
-              style={{padding: 5}}
+              style={{ padding: 5 }}
               onPress={() => decreaseQuantityHandler(item_id)}>
               <AntDesign name="minus" size={22} color={Colors.primary} />
             </Pressable>
@@ -161,7 +173,7 @@ export const CartScreen = ({navigation}) => {
               <Text style={styles.qty}>{itemQuantity}</Text>
             )}
             <Pressable
-              style={{padding: 5}}
+              style={{ padding: 5 }}
               onPress={() => increaseQuantityHandler(item_id)}>
               <Ionicons name="add" size={20} color={Colors.primary} />
             </Pressable>
@@ -183,6 +195,32 @@ export const CartScreen = ({navigation}) => {
     }
   };
 
+  const handleProceedToPayment = () => {
+    {
+      var options = {
+        description: 'Credits towards consultation',
+        image: Config?.API_URL + profileData?.profileImage?.uri,
+        currency: 'INR',
+        key: Config?.RazorPay_TestKey,
+        amount: '5000',
+        name: 'Gungun',
+        order_id: '',
+        prefill: {
+          email: profileData?.email,
+          contact: profileData?.phoneNumber,
+          name: profileData?.fullName
+
+        },
+        theme: { color: Colors.primary }
+      }
+      RazorpayCheckout.open(options).then((data) => {
+        alert(`Success: ${data.razorpay_payment_id}`);
+      }).catch((error) => {
+        alert(`Error: ${error.code} | ${error.description}`);
+      });
+    }
+  }
+
   return (
     <>
       {loading || isLoading || loadBill ? (
@@ -197,7 +235,7 @@ export const CartScreen = ({navigation}) => {
           }}>
           <Image
             source={require('../../assets/icons/empty-cart.png')}
-            style={{width: 200, height: 200}}
+            style={{ width: 200, height: 200 }}
             resizeMode={'contain'}
           />
           <Text
@@ -213,7 +251,7 @@ export const CartScreen = ({navigation}) => {
           <Text
             style={[
               styles.addMoreItemsText,
-              {textAlign: 'center', width: '60%', marginTop: 10},
+              { textAlign: 'center', width: '60%', marginTop: 10 },
             ]}>
             Looks like you haven't added anything to your cart yet.
           </Text>
@@ -280,7 +318,7 @@ export const CartScreen = ({navigation}) => {
           {/*/>*/}
           <Pressable style={styles.deliveryBox}>
             <Pressable style={styles.deliveryInnerContainer}>
-              <View style={[styles.rowStyles, {width: '70%'}]}>
+              <View style={[styles.rowStyles, { width: '70%' }]}>
                 <Ionicons name="location" size={20} color={Colors.secondary} />
                 <View>
                   <Text style={styles.deliveryText}>Delivery Location</Text>
@@ -327,17 +365,52 @@ export const CartScreen = ({navigation}) => {
               <Text style={styles.grandTotal}>Rs. {billData.net_payable}</Text>
             </View>
           </View>
-          <Button
-            onPress={() => navigation.navigate('Payment')}
-            mode={'contained'}
-            theme={{roundness: 0}}
-            labelStyle={styles.btnLabelStyles}
-            style={{marginVertical: 20, borderRadius: 15}}
-            contentStyle={{height: 50}}>
-            Proceed to payment
-          </Button>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View >
+              <Button
+                onPress={handlePress}
+                mode={'contained'}
+                theme={{ roundness: 0 }}
+                labelStyle={styles.btnLabelStyles}
+                style={{ marginVertical: 20, borderRadius: 15, }}
+                contentStyle={{ height: 50, }} >
+                Pay
+                <Pressable onPress={handlePress}> 
+                  <Icon name="chevron-right" size={25} color="white"  style={{}}/>
+                </Pressable>
+              </Button>
+            
+            </View>
+
+            <View>
+              <Button
+                // onPress={() => navigation.navigate('Payment')}
+                onPress={handleProceedToPayment}
+                mode={'contained'}
+                theme={{ roundness: 0 }}
+                labelStyle={styles.btnLabelStyles}
+                style={{ marginVertical: 20, borderRadius: 15, }}
+                contentStyle={{ height: 50, }}
+              >
+                Proceed
+              </Button>
+            </View>
+
+
+          </View>
+          {isOpen && (
+            <View style={styles.payView}>
+              <Pressable onPress={handleProceedToPayment}>
+                <Text style={styles.payText}>Pay online</Text></Pressable>
+              <View style={styles.textLine}></View>
+              <Pressable onPress={() => navigation.navigate('Payment')}>
+                <Text style={[styles.payText]}>Pay COD</Text></Pressable>
+            </View>
+          )}
         </ScrollView>
       )}
     </>
   );
 };
+
+
