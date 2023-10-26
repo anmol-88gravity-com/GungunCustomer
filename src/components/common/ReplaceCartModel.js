@@ -6,7 +6,12 @@ import {FONT_SIZES} from '../../utils/FontSize';
 import {Colors} from '../../utils/Colors';
 import {Font_Family} from '../../utils/Fontfamily';
 
-export const ReplaceCartModel = ({visible, onClose, updateCart}) => {
+export const ReplaceCartModel = ({
+  visible,
+  onClose,
+  updateCart,
+  cartLoading,
+}) => {
   return (
     <Modal
       animationType="slide"
@@ -37,6 +42,8 @@ export const ReplaceCartModel = ({visible, onClose, updateCart}) => {
             </Button>
             <Button
               onPress={updateCart}
+              disabled={cartLoading}
+              loading={cartLoading}
               buttonColor={Colors.primary}
               theme={{roundness: 0}}
               style={styles.buttonStyles}

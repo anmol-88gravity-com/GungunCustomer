@@ -273,13 +273,14 @@ export const styles = StyleSheet.create({
     color: Colors.primary,
   },
   numberContainer: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
     borderTopWidth: 1,
     borderTopColor: Colors.primary,
     borderBottomWidth: 1,
     borderBottomColor: Colors.primary,
     backgroundColor: Colors.white,
+    width: '35%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   number: {
     color: Colors.primary,

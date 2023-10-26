@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1048895477759",
+    "project_id": "gungun-ded16",
+    "storage_bucket": "gungun-ded16.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048895477759:android:9a25b08053a070df5379ca",
+        "android_client_info": {
+          "package_name": "com.gunguncustomer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfrBxClVoUykUHd6romxkH7fvKSn5bKLs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048895477759:android:f81f6a03ae8cade05379ca",
+        "android_client_info": {
+          "package_name": "com.gungunpartner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfrBxClVoUykUHd6romxkH7fvKSn5bKLs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

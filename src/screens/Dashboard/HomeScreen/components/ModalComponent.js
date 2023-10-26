@@ -7,6 +7,7 @@ import {
   Pressable,
   Image,
   ImageBackground,
+  ActivityIndicator,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
@@ -26,8 +27,11 @@ export const ModalComponent = ({
   dishDetails,
   onPressHandler,
   cartLoading,
+  increment,
+  decrement,
+  qtyLoader,
+  selectDishQty,
 }) => {
-  const [count, setCount] = useState(1);
   const [details, setDetails] = useState({
     dish_category: '',
     dish_description: '',
@@ -38,24 +42,15 @@ export const ModalComponent = ({
     dish_type: '',
     id: '',
     partner_user: '',
+    added_to_cart: false,
+    quantity_in_cart: 0,
+    category_name: '',
   });
   useEffect(() => {
     if (dishDetails !== undefined && dishDetails !== null) {
       setDetails(dishDetails);
     }
   }, [dishDetails]);
-
-  const increment = () => {
-    setCount(count + 1);
-  };
-
-  const decrement = () => {
-    if (count === 1) {
-      return;
-    } else {
-      setCount(count - 1);
-    }
-  };
 
   return (
     <Modal
@@ -116,38 +111,57 @@ export const ModalComponent = ({
               marginTop: 20,
               marginBottom: 10,
             }}>
-            <View style={styles.countDownBtn}>
-              <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity
-                  style={styles.buttonDecrement}
-                  onPress={decrement}>
-                  <Entypo name="minus" size={24} color={Colors.primary} />
-                </TouchableOpacity>
-                <View style={styles.numberContainer}>
-                  <Text style={styles.number}>{count}</Text>
+            {details.added_to_cart && (
+              <View style={styles.countDownBtn}>
+                <View style={{flexDirection: 'row'}}>
+                  <TouchableOpacity
+                    style={styles.buttonDecrement}
+                    disabled={qtyLoader}
+                    onPress={() =>
+                      decrement(details.id, details.category_name)
+                    }>
+                    <Entypo name="minus" size={24} color={Colors.primary} />
+                  </TouchableOpacity>
+                  <View style={styles.numberContainer}>
+                    {qtyLoader && selectDishQty === details.id ? (
+                      <ActivityIndicator
+                        size={18}
+                        color={Colors.primary}
+                        style={{alignSelf: 'center'}}
+                      />
+                    ) : (
+                      <Text style={styles.number}>
+                        {details.quantity_in_cart}
+                      </Text>
+                    )}
+                  </View>
+                  <TouchableOpacity
+                    disabled={qtyLoader}
+                    style={styles.buttonIncrement}
+                    onPress={() =>
+                      increment(details.id, details.category_name)
+                    }>
+                    <Entypo name="plus" size={24} color={Colors.primary} />
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                  style={styles.buttonIncrement}
-                  onPress={increment}>
-                  <Entypo name="plus" size={24} color={Colors.primary} />
-                </TouchableOpacity>
               </View>
-            </View>
+            )}
             <Button
               onPress={() =>
                 onPressHandler({
-                  dishId: details.id,
+                  dishItemId: details.id,
                   storeId: details.partner_user,
                   price: details.dish_price,
-                  quantity: count,
+                  quantity: 1,
+                  categoryItemName: details.category_name,
                 })
               }
-              disabled={cartLoading}
+              disabled={cartLoading || details.added_to_cart}
               loading={cartLoading}
               buttonColor={Colors.secondary}
               theme={{roundness: 0}}
               style={{
-                width: '60%',
+                width: details.added_to_cart ? '60%' : '100%',
                 borderRadius: 8,
               }}
               contentStyle={{height: 50}}
@@ -156,7 +170,7 @@ export const ModalComponent = ({
                 fontSize: FONT_SIZES.fifteen,
               }}
               mode={'contained'}>
-              Add to cart
+              {details.added_to_cart ? 'Added to cart' : 'Add to cart'}
             </Button>
           </View>
         </View>

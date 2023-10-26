@@ -22,6 +22,7 @@ import {useGetAddressList} from '../../hooks';
 import {useGetCartItemsData} from '../../hooks/cart/useGetCartItemsData';
 import {
   decreaseItemQuantity,
+  deleteCart,
   increaseItemQuantity,
 } from '../../store/cart/cartSlice';
 import {FONT_SIZES} from '../../utils/FontSize';
@@ -65,12 +66,20 @@ export const CartScreen = ({navigation}) => {
     itemPrice,
     itemQuantity,
     dish_type,
+    dish_id,
+    category_name,
   }) => {
-    const increaseQuantityHandler = async itemId => {
-      setSelected(itemId);
+    const increaseQuantityHandler = async (
+      itemId,
+      cartItemId,
+      itemCategoryName,
+    ) => {
+      setSelected(cartItemId);
       setIncLoader(true);
       try {
-        await dispatch(increaseItemQuantity({itemId})).unwrap();
+        await dispatch(
+          increaseItemQuantity({itemId, cartItemId, itemCategoryName}),
+        ).unwrap();
         showMessage({
           message: 'Item quantity increased successfully.',
           type: 'default',
@@ -88,11 +97,17 @@ export const CartScreen = ({navigation}) => {
       setIncLoader(false);
     };
 
-    const decreaseQuantityHandler = async itemId => {
-      setSelected(itemId);
+    const decreaseQuantityHandler = async (
+      itemId,
+      cartItemId,
+      itemCategoryName,
+    ) => {
+      setSelected(cartItemId);
       setDecLoader(true);
       try {
-        await dispatch(decreaseItemQuantity({itemId})).unwrap();
+        await dispatch(
+          decreaseItemQuantity({itemId, cartItemId, itemCategoryName}),
+        ).unwrap();
         showMessage({
           message: 'Item quantity decreased successfully.',
           type: 'default',
@@ -103,7 +118,6 @@ export const CartScreen = ({navigation}) => {
             fontFamily: Font_Family.medium,
           },
         });
-
         setDecLoader(false);
       } catch (e) {
         setError(e.message);
@@ -144,7 +158,9 @@ export const CartScreen = ({navigation}) => {
           <View style={styles.qtyContainer}>
             <Pressable
               style={{padding: 5}}
-              onPress={() => decreaseQuantityHandler(item_id)}>
+              onPress={() =>
+                decreaseQuantityHandler(dish_id, item_id, category_name)
+              }>
               <AntDesign name="minus" size={22} color={Colors.primary} />
             </Pressable>
             {(incLoader || decLoader) && item_id === selected ? (
@@ -162,7 +178,9 @@ export const CartScreen = ({navigation}) => {
             )}
             <Pressable
               style={{padding: 5}}
-              onPress={() => increaseQuantityHandler(item_id)}>
+              onPress={() =>
+                increaseQuantityHandler(dish_id, item_id, category_name)
+              }>
               <Ionicons name="add" size={20} color={Colors.primary} />
             </Pressable>
           </View>
@@ -234,6 +252,8 @@ export const CartScreen = ({navigation}) => {
                     itemPrice={item?.price}
                     itemQuantity={item?.quantity}
                     dish_type={item?.dish_type}
+                    dish_id={item?.dish_id}
+                    category_name={item?.category_name}
                   />
                 ))}
             </View>

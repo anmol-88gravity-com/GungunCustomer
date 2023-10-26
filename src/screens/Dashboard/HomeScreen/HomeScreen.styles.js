@@ -264,6 +264,8 @@ export const styles = StyleSheet.create({
     borderTopColor: Colors.primary,
     borderBottomWidth: 1,
     borderBottomColor: Colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   number: {
     color: Colors.primary,
