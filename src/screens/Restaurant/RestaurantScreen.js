@@ -42,6 +42,7 @@ export const RestaurantScreen = ({navigation, route}) => {
   const {restaurantId, dishId, categoryName} = route.params;
   const {cartList} = useSelector(state => state.cart);
   const {restaurantDetails, loading} = useGetRestaurantDetails({restaurantId});
+  // console.log('restaurantDetails////=',restaurantDetails)
   const {cartItems, loading: isLoading} = useGetCartItemsData();
 
   const dispatch = useDispatch();
@@ -296,7 +297,7 @@ export const RestaurantScreen = ({navigation, route}) => {
   const addToCartHandler = useCallback(
     async ({dishItemId, storeId, price, quantity, categoryItemName}) => {
       console.log('My Cart Id =====> ', cartId);
-      if (cartList.length > 0 && cartList[0].store_id !== storeId) {
+      if (cartList?.length > 0 && cartList[0].store_id !== storeId) {
         setCartModel(true);
         setDetails({
           dishItemId: dishItemId,

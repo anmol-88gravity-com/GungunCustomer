@@ -39,6 +39,7 @@ export const createCart = createAsyncThunk(CREATE_CART, async (_, thunkAPI) => {
     user: userId,
   });
   if (res.data.status === 'ok') {
+    console.log('====>>',res)
     await save(Config.CART_ID, res.data.response.id);
     return thunkAPI.fulfillWithValue(res.data.response.id);
   } else {
@@ -62,6 +63,7 @@ export const addToCart = createAsyncThunk(
       quantity: quantity,
     });
     if (result.data.status === 'ok') {
+      console.log('cardId.data.status:-',result.data)
       await save(Config.CART_ID, result.data.response.card);
       const cartItem = {
         item_id: result.data.response.id,
@@ -77,6 +79,7 @@ export const addToCart = createAsyncThunk(
         category_name: result.data.response.category_name,
       };
       return thunkAPI.fulfillWithValue({
+        user: userId,
         categoryName: categoryItemName,
         dishItemId: dishItemId,
         quantity: quantity,
@@ -177,8 +180,9 @@ export const cartSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(addToCart.fulfilled, (state, action) => {
+      console.log('payload--',action.payload)
       const {categoryName, dishItemId, quantity, cartItem} = action.payload;
-      state.cartList.push(cartItem);
+      state?.cartList?.push(cartItem);
 
       const index = state.restaurantDetails.menu.findIndex(
         s => s.category_name === categoryName,

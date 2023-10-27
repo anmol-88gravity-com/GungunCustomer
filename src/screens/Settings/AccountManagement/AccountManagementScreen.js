@@ -5,6 +5,8 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Linking,
+  Alert,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -15,6 +17,7 @@ import { styles } from './AccountManagementScreen.styles';
 import { Colors } from '../../../utils/Colors';
 import { FONT_SIZES } from '../../../utils/FontSize';
 import { Font_Family } from '../../../utils/Fontfamily';
+import BaseConfig from '../../../config';
 
 const RowItem = ({ onPressHandler, heading, icon }) => {
   return (
@@ -26,6 +29,15 @@ const RowItem = ({ onPressHandler, heading, icon }) => {
 };
 
 export const AccountManagement = ({ navigation }) => {
+
+  const onPressHandler = async () =>
+  Alert.alert('Wait!', 'Are you sure you want to delete the app ?', [
+    {text: 'YES', 
+    // onPress: () => logoutHandler()
+  },
+    {text: 'NO'},
+  ]);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -88,7 +100,7 @@ export const AccountManagement = ({ navigation }) => {
               />
               <RowItem
                 heading={'FAQ'}
-                onPressHandler={() => { }}
+                onPressHandler={()=>Linking.openURL(BaseConfig?.faqUrl)}
                 icon={
                   <AntDesign
                     name="questioncircle"
@@ -113,7 +125,7 @@ export const AccountManagement = ({ navigation }) => {
             <View style={styles.mainView}>
               <RowItem
                 heading={'About Us'}
-                onPressHandler={() => { }}
+                onPressHandler={()=>Linking.openURL(BaseConfig?.aboutUsUrl)}
                 icon={
                   <Ionicons
                     name="information-circle-sharp"
@@ -124,7 +136,7 @@ export const AccountManagement = ({ navigation }) => {
               />
               <RowItem
                 heading={'Terms and Conditons'}
-                onPressHandler={() => { }}
+                onPressHandler={()=>Linking.openURL(BaseConfig?.termsAndConditionsUrl)}
                 icon={
                   <Ionicons
                     name="document-text"
@@ -135,7 +147,7 @@ export const AccountManagement = ({ navigation }) => {
               />
               <RowItem
                 heading={'Privacy Policy'}
-                onPressHandler={() => { }}
+                onPressHandler={()=>Linking.openURL(BaseConfig?.privacyPolicyUrl)}
                 icon={
                   <Ionicons
                     name="shield-checkmark-sharp"
@@ -167,7 +179,7 @@ export const AccountManagement = ({ navigation }) => {
             <View style={styles.mainView}>
               <RowItem
                 heading={'Delete Account'}
-                onPressHandler={() => { }}
+                onPressHandler={onPressHandler}
                 icon={
                   <MaterialIcons name="delete" size={20} color={Colors.red} />
                 }

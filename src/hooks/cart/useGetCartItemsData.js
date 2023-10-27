@@ -14,7 +14,8 @@ export const useGetCartItemsData = () => {
 
   const [loading, setLoading] = useState(false);
   const {cartList: cartItems} = useSelector(state => state.cart);
-
+ 
+  
   useEffect(() => {
     return navigation.addListener('focus', async () => {
       const cartId = await load(Config.CART_ID);

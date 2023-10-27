@@ -1,10 +1,10 @@
-import {StyleSheet} from 'react-native';
-import {FONT_SIZES} from '../../utils/FontSize';
-import {Font_Family} from '../../utils/Fontfamily';
-import {Colors} from '../../utils/Colors';
+import { StyleSheet } from 'react-native';
+import { FONT_SIZES } from '../../utils/FontSize';
+import { Font_Family } from '../../utils/Fontfamily';
+import { Colors } from '../../utils/Colors';
 
 export const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: 'white', paddingHorizontal: 15},
+  container: { flex: 1, backgroundColor: 'white', paddingHorizontal: 15 },
   heading: {
     paddingTop: 15,
     fontSize: FONT_SIZES.fifteen,
@@ -276,4 +276,23 @@ export const styles = StyleSheet.create({
     color: Colors.primary,
     textDecorationLine: 'underline',
   },
+  // RazorPay
+
+  payView: {
+    backgroundColor: '#ffffff', 
+    width: '35%',
+    left:'15%',
+    borderRadius: 4, 
+    marginTop: -10, 
+    shadowColor: '#000', 
+    shadowOffset: {
+      width: 0, height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 4,
+    bottom:10
+  },
+  textLine: { height:1, width: '100%', borderWidth: 1, borderColor: Colors.primary },
+  payText: { fontFamily: Font_Family.bold, textAlign: 'center', padding: 5, marginTop: 10,color:Colors.black,paddingBottom:10 }
 });
