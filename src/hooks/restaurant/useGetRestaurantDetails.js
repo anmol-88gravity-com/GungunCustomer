@@ -17,6 +17,7 @@ export const useGetRestaurantDetails = ({restaurantId}) => {
     return navigation.addListener('focus', async () => {
       try {
         await dispatch(getRestaurantDetails({restaurantId})).unwrap();
+
         setLoading(false);
       } catch (e) {
         setError(e.message);

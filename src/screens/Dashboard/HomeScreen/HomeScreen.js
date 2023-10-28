@@ -260,7 +260,7 @@ export const HomeScreen = ({navigation}) => {
                     </View>
                     {restaurantList.slice(0, 4).map((i, index) => (
                       <RestaurantTopPlaces
-                        key={index + Math.random()}
+                        key={Math.random().toString()}
                         source={i.profile_image}
                         icon="cards-heart-outline"
                         restaurantName={i.store_name}

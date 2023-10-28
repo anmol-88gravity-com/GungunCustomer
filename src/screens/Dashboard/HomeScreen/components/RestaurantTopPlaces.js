@@ -23,7 +23,10 @@ export const RestaurantTopPlaces = ({
   restDistance,
 }) => {
   return (
-    <Pressable style={{marginHorizontal: 5}} onPress={onPressHandler}>
+    <Pressable
+      style={{marginHorizontal: 5}}
+      onPress={onPressHandler}
+      key={Math.random().toString()}>
       <View style={styles.resturantPlacesView}>
         <View style={{flexDirection: 'row'}}>
           <View

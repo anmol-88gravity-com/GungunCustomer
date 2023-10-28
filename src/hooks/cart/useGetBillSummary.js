@@ -11,7 +11,6 @@ export const useGetBillSummary = () => {
   const setError = useError();
 
   const {cartList} = useSelector(state => state.cart);
-
   const [loading, setLoading] = useState(true);
   const [billData, setBillData] = useState(null);
 

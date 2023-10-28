@@ -176,6 +176,7 @@ export const MapScreen = ({route, navigation}) => {
         style={{
           height:
             Platform.OS === 'ios' ? HEIGHT - HEIGHT / 2.7 : HEIGHT - HEIGHT / 3,
+          // height:200,
           width: '100%',
         }}>
         <MapView

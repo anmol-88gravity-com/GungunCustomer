@@ -39,7 +39,6 @@ export const createCart = createAsyncThunk(CREATE_CART, async (_, thunkAPI) => {
     user: userId,
   });
   if (res.data.status === 'ok') {
-    console.log('====>>',res)
     await save(Config.CART_ID, res.data.response.id);
     return thunkAPI.fulfillWithValue(res.data.response.id);
   } else {
@@ -63,7 +62,6 @@ export const addToCart = createAsyncThunk(
       quantity: quantity,
     });
     if (result.data.status === 'ok') {
-      console.log('cardId.data.status:-',result.data)
       await save(Config.CART_ID, result.data.response.card);
       const cartItem = {
         item_id: result.data.response.id,
@@ -93,9 +91,10 @@ export const addToCart = createAsyncThunk(
 
 export const getDataCartItems = createAsyncThunk(
   GET_CART_ITEMS,
-  async ({cartId}, thunkAPI) => {
+  async (_, thunkAPI) => {
+    const {userId} = thunkAPI.getState().auth;
     const result = await Axios.get(
-      ApiEndpoints.cart.getCartItems.replace('DISH_ITEM_ID', String(cartId)),
+      ApiEndpoints.cart.getCartItems.replace('USER_ID', String(userId)),
     );
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue(result.data.response.items);
@@ -180,7 +179,6 @@ export const cartSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(addToCart.fulfilled, (state, action) => {
-      console.log('payload--',action.payload)
       const {categoryName, dishItemId, quantity, cartItem} = action.payload;
       state?.cartList?.push(cartItem);
 
@@ -205,7 +203,8 @@ export const cartSlice = createSlice({
       state.cartId = action.payload;
     });
     builder.addCase(getDataCartItems.fulfilled, (state, action) => {
-      state.cartList = action.payload;
+      const a = action.payload.map(m => m.items);
+      state.cartList = a.flat();
     });
     builder.addCase(increaseItemQuantity.fulfilled, (state, action) => {
       const {itemId, cartItemId, itemCategoryName} = action.payload;

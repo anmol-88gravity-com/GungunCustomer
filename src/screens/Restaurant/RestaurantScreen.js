@@ -42,7 +42,6 @@ export const RestaurantScreen = ({navigation, route}) => {
   const {restaurantId, dishId, categoryName} = route.params;
   const {cartList} = useSelector(state => state.cart);
   const {restaurantDetails, loading} = useGetRestaurantDetails({restaurantId});
-  // console.log('restaurantDetails////=',restaurantDetails)
   const {cartItems, loading: isLoading} = useGetCartItemsData();
 
   const dispatch = useDispatch();
@@ -84,9 +83,9 @@ export const RestaurantScreen = ({navigation, route}) => {
   useEffect(() => {
     if (
       restaurantDetails?.menu !== undefined &&
-      restaurantDetails?.menu.length > 0
+      restaurantDetails?.menu?.length > 0
     ) {
-      const newData = restaurantDetails?.menu.map(item => {
+      const newData = restaurantDetails?.menu?.map(item => {
         return {title: item.category_name, data: item.dishes};
       });
       const x = newData.filter(m => m.data.length > 0);
@@ -123,7 +122,7 @@ export const RestaurantScreen = ({navigation, route}) => {
 
     setUpdatedMenuList(() => {
       const arr = [...menuList];
-      const filteredVeg = arr.map(i => {
+      const filteredVeg = arr?.map(i => {
         return {
           title: i.title,
           data: i.data.filter(v => v.dish_type === 'V'),
@@ -139,7 +138,7 @@ export const RestaurantScreen = ({navigation, route}) => {
 
     setUpdatedMenuList(() => {
       const arr = [...menuList];
-      const filteredNonVeg = arr.map(i => {
+      const filteredNonVeg = arr?.map(i => {
         return {
           title: i.title,
           data: i.data.filter(v => v.dish_type === 'N'),
@@ -214,6 +213,7 @@ export const RestaurantScreen = ({navigation, route}) => {
           setQtyLoader(false);
         } catch (e) {
           setError(e.message);
+          console.log('1', e.message);
         }
       }
       setQtyLoader(false);
@@ -286,11 +286,13 @@ export const RestaurantScreen = ({navigation, route}) => {
           setIsModalVisible(false);
         } catch (e) {
           setError(e.message);
+          console.log('2', e.message);
         }
         setCartLoading(false);
       }
     } catch (e) {
       setError(e.message);
+      console.log('3', e.message);
     }
   };
 
@@ -337,6 +339,7 @@ export const RestaurantScreen = ({navigation, route}) => {
           setIsModalVisible(false);
         } catch (e) {
           setError(e.message);
+          console.log('5', e.message);
         }
         setCartLoading(false);
       }
@@ -359,6 +362,7 @@ export const RestaurantScreen = ({navigation, route}) => {
       }
     } catch (e) {
       setError(e.message);
+      console.log('6', e.message);
     }
   };
 
