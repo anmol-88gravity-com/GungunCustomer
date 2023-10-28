@@ -282,7 +282,7 @@ export const CartScreen = ({navigation}) => {
           <View style={styles.cardContainer}>
             <View>
               {cartItemsData?.length > 0 &&
-                cartItemsData.map((item, index) => (
+                cartItemsData?.map((item, index) => (
                   <CartItem
                     key={index}
                     item_id={item?.item_id}

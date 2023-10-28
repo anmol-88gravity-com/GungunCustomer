@@ -90,11 +90,11 @@ export function CustomDrawerContent(props) {
       ) : (
         <UserProfile
           imageSource={
-            profileData.profileImage.uri !== ''
-              ? {uri: profileData.profileImage.uri}
+            profileData?.profileImage?.uri !== ''
+              ? {uri: profileData?.profileImage.uri}
               : require('../../assets/dashboardImages/user.png')
           }
-          firstName={profileData.fullName}
+          firstName={profileData?.fullName}
         />
       )}
       <DrawerItemList {...props} />

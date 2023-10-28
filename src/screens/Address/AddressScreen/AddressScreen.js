@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -8,35 +8,36 @@ import {
   View,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {showMessage} from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {Divider, Menu} from 'react-native-paper';
+import { Divider, Menu } from 'react-native-paper';
 import GetLocation from 'react-native-get-location';
 
-import {Colors} from '../../../utils/Colors';
-import {styles} from './AddressScreen.styles';
-import {useGetAddressList} from '../../../hooks';
-import {Loader} from '../../../components/common/Loader';
-import {FONT_SIZES} from '../../../utils/FontSize';
-import {Font_Family} from '../../../utils/Fontfamily';
-import {useError} from '../../../context/ErrorProvider';
+import { Colors } from '../../../utils/Colors';
+import { styles } from './AddressScreen.styles';
+import { useGetAddressList } from '../../../hooks';
+import { Loader } from '../../../components/common/Loader';
+import { FONT_SIZES } from '../../../utils/FontSize';
+import { Font_Family } from '../../../utils/Fontfamily';
+import { useError } from '../../../context/ErrorProvider';
 import {
   deleteAddress,
   setDefaultAddress,
 } from '../../../store/address/addressSlice';
 
-export const AddressScreen = ({navigation}) => {
+export const AddressScreen = ({ navigation }) => {
   const [addressUpdatedList, setAddressUpdatedList] = useState([]);
-  const [userLocation, setUserLocation] = useState({lat: '', long: ''});
+  const [userLocation, setUserLocation] = useState({ lat: '', long: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [cardId, setCardId] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
-  const {addressList, loading: loader} = useGetAddressList();
+  const { addressList, loading: loader } = useGetAddressList();
+  // console.log('addressesScreen--',addressList)
 
   const dispatch = useDispatch();
   const setError = useError();
@@ -48,11 +49,11 @@ export const AddressScreen = ({navigation}) => {
       timeout: 60000,
     })
       .then(async location => {
-        setUserLocation({lat: location.latitude, long: location.longitude});
+        setUserLocation({ lat: location.latitude, long: location.longitude });
         setLoading(false);
       })
       .catch(error => {
-        const {code, message} = error;
+        const { code, message } = error;
         setError('Error : ' + code + ' ' + message);
       });
     setLoading(false);
@@ -84,7 +85,7 @@ export const AddressScreen = ({navigation}) => {
       }
     }
     try {
-      const res = await dispatch(deleteAddress({addressId}));
+      const res = await dispatch(deleteAddress({ addressId }));
       if (res) {
         setAddressUpdatedList(prevState => {
           const b = [...prevState];
@@ -112,14 +113,14 @@ export const AddressScreen = ({navigation}) => {
 
   const onPressHandler = async addressId =>
     Alert.alert('Wait!', 'Are you sure you want to delete this address ?', [
-      {text: 'YES', onPress: () => deleteHandler(addressId)},
-      {text: 'NO'},
+      { text: 'YES', onPress: () => deleteHandler(addressId) },
+      { text: 'NO' },
     ]);
 
   const handleDefaultAddress = async addressId => {
     setIsLoading(true);
     try {
-      await dispatch(setDefaultAddress({addressId})).unwrap();
+      await dispatch(setDefaultAddress({ addressId })).unwrap();
       showMessage({
         message: 'Primary Address Updated.',
         type: 'default',
@@ -136,16 +137,16 @@ export const AddressScreen = ({navigation}) => {
     setIsLoading(false);
   };
 
-  const renderItem = ({item, index}) => (
+  const renderItem = ({ item, index }) => (
     <Pressable
       key={item.id}
-      style={[styles.addressCard, {marginTop: index === 0 ? 20 : 0}]}>
+      style={[styles.addressCard, { marginTop: index === 0 ? 20 : 0 }]}>
       <View style={styles.titleStyles}>
         <Text style={styles.addressTitle}>📍 {item.address_type}</Text>
         <Menu
           visible={visible && cardId === item.id}
           onDismiss={() => setVisible(false)}
-          contentStyle={{backgroundColor: 'white'}}
+          contentStyle={{ backgroundColor: 'white' }}
           anchor={
             <MaterialCommunityIcons
               onPress={() => {
@@ -158,19 +159,19 @@ export const AddressScreen = ({navigation}) => {
             />
           }>
           <Menu.Item
-            titleStyle={{fontFamily: Font_Family.medium, fontSize: 15}}
+            titleStyle={{ fontFamily: Font_Family.medium, fontSize: 15 }}
             leadingIcon={() => (
               <MaterialIcons name="mode-edit" size={22} color={'#7b7c7c'} />
             )}
             onPress={() => {
               setVisible(false);
-              navigation.navigate('MapScreen', {addressDetails: item});
+              navigation.navigate('MapScreen', { addressDetails: item });
             }}
             title="Edit"
           />
           <Divider />
           <Menu.Item
-            titleStyle={{fontFamily: Font_Family.medium, fontSize: 15}}
+            titleStyle={{ fontFamily: Font_Family.medium, fontSize: 15 }}
             leadingIcon={() => (
               <MaterialIcons name="delete" size={22} color={'#7b7c7c'} />
             )}
@@ -183,7 +184,7 @@ export const AddressScreen = ({navigation}) => {
 
           <Divider />
           <Menu.Item
-            titleStyle={{fontFamily: Font_Family.medium, fontSize: 15}}
+            titleStyle={{ fontFamily: Font_Family.medium, fontSize: 15 }}
             leadingIcon={() => (
               <MaterialIcons
                 name={item.is_default ? 'library-add-check' : 'my-library-add'}
@@ -195,15 +196,15 @@ export const AddressScreen = ({navigation}) => {
               setVisible(false);
               item.is_default
                 ? showMessage({
-                    message: 'Already default address!',
-                    type: 'default',
-                    backgroundColor: Colors.secondary,
-                    color: Colors.white,
-                    textStyle: {
-                      fontSize: FONT_SIZES.fifteen,
-                      fontFamily: Font_Family.medium,
-                    },
-                  })
+                  message: 'Already default address!',
+                  type: 'default',
+                  backgroundColor: Colors.secondary,
+                  color: Colors.white,
+                  textStyle: {
+                    fontSize: FONT_SIZES.fifteen,
+                    fontFamily: Font_Family.medium,
+                  },
+                })
                 : handleDefaultAddress(item.id);
             }}
             title={item.is_default ? 'Default Address' : 'Set as default'}
@@ -211,12 +212,16 @@ export const AddressScreen = ({navigation}) => {
         </Menu>
       </View>
       <View style={styles.titleStyles}>
-        <Text style={[styles.addressText, {width: '90%'}]}>
-          {item.address1 + ', ' + item.address2} , {item.state}, {item.state},
-          Pincode - {item.pincode}, {item.landmark}
+        <Text style={[styles.addressText, { width: '90%' }]}>
+          {console.log('item---', item)}
+          {item.address1 + ', ' + item.address2}
+          {item.state && `, ${item.state}`}
+          {item.city && `, ${item.city}`}
+          {item.pincode && `, Pincode - ${item.pincode}`}
+          {item.landmark}
         </Text>
       </View>
-      <Pressable style={{alignSelf: 'flex-end'}}>
+      <Pressable style={{ alignSelf: 'flex-end' }}>
         {item.is_default &&
           (isLoading ? (
             <ActivityIndicator
@@ -250,14 +255,14 @@ export const AddressScreen = ({navigation}) => {
             <Text
               style={[
                 styles.addressTitle,
-                {textAlign: 'center', marginVertical: 30},
+                { textAlign: 'center', marginVertical: 30 },
               ]}>
               NO DATA
             </Text>
           )}
           <Pressable
             onPress={() =>
-              navigation.navigate('MapScreen', {addressDetails: null})
+              navigation.navigate('MapScreen', { addressDetails: null })
             }
             style={styles.fab}>
             <Ionicons name="add-outline" size={24} color="white" />
