@@ -213,7 +213,6 @@ export const RestaurantScreen = ({navigation, route}) => {
           setQtyLoader(false);
         } catch (e) {
           setError(e.message);
-          console.log('1', e.message);
         }
       }
       setQtyLoader(false);
@@ -261,6 +260,7 @@ export const RestaurantScreen = ({navigation, route}) => {
       const res = await dispatch(createCart()).unwrap();
       if (res) {
         setCartId(res);
+        console.log('res', res);
         try {
           await dispatch(
             addToCart({
@@ -286,13 +286,11 @@ export const RestaurantScreen = ({navigation, route}) => {
           setIsModalVisible(false);
         } catch (e) {
           setError(e.message);
-          console.log('2', e.message);
         }
         setCartLoading(false);
       }
     } catch (e) {
       setError(e.message);
-      console.log('3', e.message);
     }
   };
 
@@ -339,7 +337,6 @@ export const RestaurantScreen = ({navigation, route}) => {
           setIsModalVisible(false);
         } catch (e) {
           setError(e.message);
-          console.log('5', e.message);
         }
         setCartLoading(false);
       }
@@ -362,7 +359,6 @@ export const RestaurantScreen = ({navigation, route}) => {
       }
     } catch (e) {
       setError(e.message);
-      console.log('6', e.message);
     }
   };
 
