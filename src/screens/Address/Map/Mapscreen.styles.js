@@ -7,7 +7,9 @@ export const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: 'white'},
   centeredView: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.36)',
+    // backgroundColor: 'rgba(0,0,0,0.36)',
+    marginTop:'100%',
+    
   },
   modalView: {
     backgroundColor: 'white',
