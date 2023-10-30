@@ -1,9 +1,9 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import {ApiEndpoints} from '../ApiEndPoints';
-import {Axios} from '../../lib/Axios';
+import { ApiEndpoints } from '../ApiEndPoints';
+import { Axios } from '../../lib/Axios';
 import Config from '../../config';
-import {load, remove, save} from '../../utils/storage';
+import { load, remove, save } from '../../utils/storage';
 
 export const AUTH_LOGOUT = '/api/auth/logout';
 export const AUTH_RESTORE = '/api/auth/restore';
@@ -24,7 +24,7 @@ export const restoreSession = createAsyncThunk(AUTH_RESTORE, async () => {
 });
 
 export const logout = createAsyncThunk(AUTH_LOGOUT, async (_, thunkAPI) => {
-  const {userId} = thunkAPI.getState().auth;
+  const { userId } = thunkAPI.getState().auth;
   const result = await Axios.delete(
     ApiEndpoints.cart.deleteWholeCart.replace('USER_ID', String(userId)),
   );
@@ -37,7 +37,7 @@ export const logout = createAsyncThunk(AUTH_LOGOUT, async (_, thunkAPI) => {
 
 export const login = createAsyncThunk(
   LOGIN,
-  async ({phoneNumber, password}, {rejectWithValue, fulfillWithValue}) => {
+  async ({ phoneNumber, password }, { rejectWithValue, fulfillWithValue }) => {
     const result = await Axios.post(ApiEndpoints.auth.login, {
       phone_number: phoneNumber,
       password: password,
@@ -60,8 +60,8 @@ export const login = createAsyncThunk(
 export const register = createAsyncThunk(
   REGISTER,
   async (
-    {fullName, password, confirmPassword, email, phoneNumber},
-    {rejectWithValue, fulfillWithValue},
+    { fullName, password, confirmPassword, email, phoneNumber },
+    { rejectWithValue, fulfillWithValue },
   ) => {
     const result = await Axios.post(ApiEndpoints.auth.register, {
       name: fullName,
@@ -87,7 +87,7 @@ export const register = createAsyncThunk(
 
 export const registerOTP = createAsyncThunk(
   REGISTER_OTP,
-  async ({phoneNumber}, {rejectWithValue}) => {
+  async ({ phoneNumber }, { rejectWithValue }) => {
     const result = await Axios.post(ApiEndpoints.auth.registerOtp, {
       phone_number: phoneNumber,
     });
@@ -101,7 +101,7 @@ export const registerOTP = createAsyncThunk(
 
 export const otpVerify = createAsyncThunk(
   VERIFY_OTP,
-  async ({mobileNumber, code}, {rejectWithValue}) => {
+  async ({ mobileNumber, code }, { rejectWithValue }) => {
     const result = await Axios.post(ApiEndpoints.auth.otpVerify, {
       phone_number: mobileNumber,
       otp: code,
@@ -156,6 +156,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const {} = authSlice.actions;
+export const { } = authSlice.actions;
 
 export default authSlice.reducer;
