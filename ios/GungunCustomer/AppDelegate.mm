@@ -12,6 +12,7 @@
   self.initialProps = @{};
 
   [GMSServices provideAPIKey:@"AIzaSyDCeXMCNnsG4WjEBjiHXwFuF4fZQJILAlk"];
+  [FIRApp configure];
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

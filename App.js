@@ -5,15 +5,75 @@ import {MD3LightTheme as DefaultTheme} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Provider as PaperProvider} from 'react-native-paper';
+import notifee, {
+  AndroidColor,
+  AndroidImportance,
+  EventType,
+} from '@notifee/react-native';
+import messaging, {firebase} from '@react-native-firebase/messaging';
+import FlashMessage from 'react-native-flash-message';
 
 import Navigation from './src/navigation';
 import WithAxios from './src/lib/WithAxios';
 import {ErrorContextProvider} from './src/context/ErrorProvider';
 import {MsgContextProvider} from './src/context/MessageProvider';
 import {store} from './src/store';
-import FlashMessage from 'react-native-flash-message';
 
 const App = () => {
+  useEffect(() => {
+    (async () => {
+      await notifee.requestPermission();
+      const channelId = await notifee.createChannel({
+        id: 'default',
+        name: 'Default Channel',
+        vibration: true,
+        vibrationPattern: [300, 500],
+        lights: true,
+        lightColor: AndroidColor.AQUA,
+      });
+    })();
+
+    return notifee.onForegroundEvent(({type, detail}) => {
+      switch (type) {
+        case EventType.DISMISSED:
+          console.log('User dismissed notification', detail.notification);
+          break;
+        case EventType.PRESS:
+          console.log('User pressed notification', detail.notification);
+          break;
+      }
+    });
+  }, []);
+
+  async function onMessageReceived(message) {
+    await notifee.displayNotification({
+      title: message.notification.title,
+      body: message.notification.body,
+      android: {
+        channelId: 'default',
+        importance: AndroidImportance.HIGH,
+      },
+    });
+  }
+
+  useEffect(() => {
+    messaging().onMessage(onMessageReceived);
+    // messaging().setBackgroundMessageHandler(onMessageReceived);
+  }, []);
+
+  const firebaseConfig = {
+    apiKey: 'AIzaSyAE362bctWaRVDuymOBAD2iHgd7qOUaTUg',
+    authDomain: 'gungun-ded16.firebaseapp.com',
+    projectId: 'gungun-ded16',
+    storageBucket: 'gungun-ded16.appspot.com',
+    messagingSenderId: '1048895477759',
+    appId: '1:1048895477759:ios:bdd59facedc91cb45379ca',
+  };
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+
   useEffect(() => {
     const timer = setTimeout(() => {
       SplashScreen.hide();

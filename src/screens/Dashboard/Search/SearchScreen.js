@@ -87,6 +87,7 @@ export const SearchScreen = ({route, navigation}) => {
     <View style={styles.container}>
       <TextInput
         style={styles.inputStyles}
+        autoFocus={true}
         value={search}
         onChangeText={text => searchFilterFunction(text)}
         placeholder="Search here"

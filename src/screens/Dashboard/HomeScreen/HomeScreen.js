@@ -13,12 +13,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TextInput} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
-// import notifee, {
-//   AndroidColor,
-//   AndroidImportance,
-//   EventType,
-// } from '@notifee/react-native';
-// import messaging from '@react-native-firebase/messaging';
 
 import {images} from '../../../utils/Images';
 import {styles} from './HomeScreen.styles';
@@ -47,51 +41,6 @@ export const HomeScreen = ({navigation}) => {
   const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
   const {restaurantList, loader} = useGetRestaurantList();
   const {lat, long, loader: load} = useGetUserCurrentLocation();
-
-  // useEffect(() => {
-  //   (async () => {
-  //     await notifee.requestPermission();
-  //     const channelId = await notifee.createChannel({
-  //       id: 'default',
-  //       name: 'Default Channel',
-  //       vibration: true,
-  //       vibrationPattern: [300, 500],
-  //       lights: true,
-  //       lightColor: AndroidColor.AQUA,
-  //     });
-  //     await messaging().registerDeviceForRemoteMessages();
-  //     const token = await messaging().getToken();
-  //     // console.log('token======>', token);
-  //   })();
-  //
-  //   return notifee.onForegroundEvent(({type, detail}) => {
-  //     switch (type) {
-  //       case EventType.DISMISSED:
-  //         // console.log('User dismissed notification', detail.notification);
-  //         break;
-  //       case EventType.PRESS:
-  //         // console.log('User pressed notification', detail.notification);
-  //         break;
-  //     }
-  //   });
-  // }, []);
-  //
-  // async function onMessageReceived(message) {
-  //   console.log('message==>', message);
-  //   await notifee.displayNotification({
-  //     title: message.notification.title,
-  //     body: message.notification.body,
-  //     android: {
-  //       channelId: 'default',
-  //       importance: AndroidImportance.HIGH,
-  //     },
-  //   });
-  // }
-  //
-  // useEffect(() => {
-  //   messaging().onMessage(onMessageReceived);
-  //   // messaging().setBackgroundMessageHandler(onMessageReceived);
-  // }, []);
 
   function getAddressFromCoordinates({latitude, longitude}) {
     return new Promise((resolve, reject) => {

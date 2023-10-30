@@ -56,6 +56,7 @@ export const getSearchResults = createAsyncThunk(
     const result = await Axios.get(ApiEndpoints.home.searchQuery, {
       params: {q: text},
     });
+    console.log('result.data', result.data);
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue(result.data.stores);
     } else {
