@@ -40,6 +40,7 @@ export const createCart = createAsyncThunk(CREATE_CART, async (_, thunkAPI) => {
   });
   if (res.data.status === 'ok') {
     await save(Config.CART_ID, res.data.response.id);
+    console.log('res.data.response.id', res.data.response.id);
     return thunkAPI.fulfillWithValue(res.data.response.id);
   } else {
     return thunkAPI.rejectWithValue(new Error(res.data.msg));
@@ -96,18 +97,22 @@ export const getDataCartItems = createAsyncThunk(
     const result = await Axios.get(
       ApiEndpoints.cart.getCartItems.replace('USER_ID', String(userId)),
     );
-    if (result.data.status === 'ok') {
-      return thunkAPI.fulfillWithValue(result.data.response.items);
+    if (Object.keys(result?.data).length > 0) {
+      if (result?.data?.status === 'ok') {
+        return thunkAPI.fulfillWithValue(result.data.response.items);
+      } else {
+        return thunkAPI.rejectWithValue(new Error(result.data.msg));
+      }
     } else {
-      return thunkAPI.rejectWithValue(new Error(result.data.msg));
+      return thunkAPI.rejectWithValue('no data');
     }
   },
 );
 
 export const deleteCart = createAsyncThunk(DELETE_CART, async (_, thunkAPI) => {
-  const cartId = await load(Config.CART_ID);
+  const {userId} = thunkAPI.getState().auth;
   const result = await Axios.delete(
-    ApiEndpoints.cart.deleteCart.replace('CART_ID', String(cartId)),
+    ApiEndpoints.cart.deleteWholeCart.replace('USER_ID', String(userId)),
   );
   if (result.data.status === 'ok') {
     await remove(Config.CART_ID);
@@ -203,8 +208,7 @@ export const cartSlice = createSlice({
       state.cartId = action.payload;
     });
     builder.addCase(getDataCartItems.fulfilled, (state, action) => {
-      const a = action.payload.map(m => m.items);
-      state.cartList = a.flat();
+      state.cartList = action.payload;
     });
     builder.addCase(increaseItemQuantity.fulfilled, (state, action) => {
       const {itemId, cartItemId, itemCategoryName} = action.payload;

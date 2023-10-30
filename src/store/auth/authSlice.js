@@ -23,9 +23,16 @@ export const restoreSession = createAsyncThunk(AUTH_RESTORE, async () => {
   }
 });
 
-export const logout = createAsyncThunk(AUTH_LOGOUT, async () => {
-  await remove(Config.USER_SESSION);
-  return true;
+export const logout = createAsyncThunk(AUTH_LOGOUT, async (_, thunkAPI) => {
+  const {userId} = thunkAPI.getState().auth;
+  const result = await Axios.delete(
+    ApiEndpoints.cart.deleteWholeCart.replace('USER_ID', String(userId)),
+  );
+  if (result.data.status === 'ok') {
+    await remove(Config.CART_ID);
+    await remove(Config.USER_SESSION);
+    return true;
+  }
 });
 
 export const login = createAsyncThunk(

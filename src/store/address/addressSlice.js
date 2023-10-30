@@ -63,9 +63,9 @@ export const addAddress = createAsyncThunk(
       addressType,
       lat,
       long,
-      pincode,
-      city,
-      state,
+      // pincode,
+      // city,
+      // state,
     },
     thunkAPI,
   ) => {
@@ -77,9 +77,9 @@ export const addAddress = createAsyncThunk(
       address1: address1,
       address2: address2,
       landmark: landmark,
-      pincode: pincode,
-      city: city,
-      state: state,
+      // pincode: pincode,
+      // city: city,
+      // state: state,
       user: userId,
     });
     if (result.data.status === 'ok') {

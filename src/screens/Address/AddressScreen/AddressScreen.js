@@ -213,11 +213,10 @@ export const AddressScreen = ({ navigation }) => {
       </View>
       <View style={styles.titleStyles}>
         <Text style={[styles.addressText, { width: '90%' }]}>
-          {console.log('item---', item)}
           {item.address1 + ', ' + item.address2}
           {item.state && `, ${item.state}`}
           {item.city && `, ${item.city}`}
-          {item.pincode && `, Pincode - ${item.pincode}`}
+          {item.pincode && `, Pincode - ${item.pincode}, `}
           {item.landmark}
         </Text>
       </View>
@@ -262,7 +261,7 @@ export const AddressScreen = ({ navigation }) => {
           )}
           <Pressable
             onPress={() =>
-              navigation.navigate('MapScreen', { addressDetails: null })
+            navigation.navigate('MapScreen', { addressDetails: null })
             }
             style={styles.fab}>
             <Ionicons name="add-outline" size={24} color="white" />

@@ -143,7 +143,8 @@ export const MapScreen = ({ route, navigation }) => {
             setCompleteAddress(data.description);
           }}
           // onPress={(data, details = null) => {
-          //   console.log('---Address---',data, details);
+          //   console.log('---Address- data--',data);
+          //   console.log('---Address-details--', details);
           // }}
           fetchDetails={true}
           styles={{
@@ -163,7 +164,7 @@ export const MapScreen = ({ route, navigation }) => {
             key: Config.googleMapsAPIkey,
             language: 'en',
             components: 'country:in',
-            strictbounds: true,
+            // strictbounds: true,
             radius: 1500,
             location: `${userLocation.lat}, ${userLocation.long}`,
             rankby: 'distance',
