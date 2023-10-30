@@ -1,7 +1,7 @@
-import {Platform, StyleSheet} from 'react-native';
-import {Font_Family} from '../../../utils/Fontfamily';
-import {FONT_SIZES} from '../../../utils/FontSize';
-import {Colors} from '../../../utils/Colors';
+import { Platform, StyleSheet } from 'react-native';
+import { Font_Family } from '../../../utils/Fontfamily';
+import { FONT_SIZES } from '../../../utils/FontSize';
+import { Colors } from '../../../utils/Colors';
 
 export const styles = StyleSheet.create({
   mainContainer: {
@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 3},
+    shadowOffset: { width: -2, height: 3 },
     shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 4,
@@ -87,6 +87,7 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.semiBold,
     color: '#000000',
     textAlign: 'center',
+    textTransform: 'capitalize'
   },
   subItemtitle: {
     bottom: '25%',
@@ -94,19 +95,22 @@ export const styles = StyleSheet.create({
     fontFamily: Font_Family.medium,
     color: '#005C79',
     textAlign: 'center',
+    textTransform: 'capitalize'
   },
 
   popularitems: {
     backgroundColor: '#FFFFFF',
     // backgroundColor:'red',
     // width: '50%',
-    // width: '40%',
+    marginTop: 40,
+    width: 130,
     marginVertical: '25%',
+    height: '60%',
     paddingHorizontal: 10,
     marginHorizontal: 8,
     borderRadius: 10,
     shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 4},
+    shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 4,
@@ -118,6 +122,13 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     bottom: 40,
   },
+  popularImg: {
+    height: '100%', width: '100%', borderRadius: 100, shadowColor: '#171717',
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4,
+  },
   pricetitle: {
     bottom: '20%',
     fontSize: FONT_SIZES.fifteen,
@@ -125,7 +136,7 @@ export const styles = StyleSheet.create({
     color: '#000000',
     textAlign: 'center',
   },
-  bannerImg: {height: '100%', width: '100%', borderRadius: 20},
+  bannerImg: { height: '100%', width: '100%', borderRadius: 20 },
   textImg: {
     position: 'absolute',
     textAlign: 'center',

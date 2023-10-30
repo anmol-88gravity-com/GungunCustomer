@@ -24,6 +24,7 @@ import {
   getSearchResults,
 } from '../../../store/home/homeSlice';
 import Config from '../../../config';
+import { useGetPopularItems } from '../../../hooks';
 
 export const SearchScreen = ({route, navigation}) => {
   const [search, setSearch] = useState('');
@@ -32,6 +33,7 @@ export const SearchScreen = ({route, navigation}) => {
   const [loading, setLoading] = useState(false);
   const [selectedChip, setSelectedChip] = useState(null);
   const {recentSearch} = useSelector(state => state.home);
+  const { allPopularItems } = useGetPopularItems();
 
   const inputKey = route.params.searchKey;
 
@@ -87,6 +89,7 @@ export const SearchScreen = ({route, navigation}) => {
     <View style={styles.container}>
       <TextInput
         style={styles.inputStyles}
+        autoFocus={true}
         value={search}
         onChangeText={text => searchFilterFunction(text)}
         placeholder="Search here"
@@ -152,10 +155,11 @@ export const SearchScreen = ({route, navigation}) => {
           <Divider />
           <Text style={styles.popularItems}>Our Popular Items</Text>
           <PopularItems
-            source={images.kadaiPaneer}
-            title="Chole Bhatoore"
-            subTitle="Prem Di hatti"
-            price="₹ 249"
+          popularItems={allPopularItems}
+            // source={images.kadaiPaneer}
+            // title="Chole Bhatoore"
+            // subTitle="Prem Di hatti"
+            // price="₹ 249"
           />
         </View>
       ) : (

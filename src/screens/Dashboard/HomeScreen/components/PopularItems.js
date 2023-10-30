@@ -1,33 +1,38 @@
-import React, {useState} from 'react';
-import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
-import {ModalComponent} from './ModalComponent';
-import {styles} from '../HomeScreen.styles';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
+import { ModalComponent } from './ModalComponent';
+import { styles } from '../HomeScreen.styles';
+import Config from '../../../../config';
 
-export const PopularItems = ({source, title, subTitle, price}) => {
+export const PopularItems = ({ popularItems, source }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [dataAllPopularItems, setDataAllPopularItems] = useState([]);
+  const [popularitemDetails, setPopularitemDetails] = useState(null);
+  
 
-  const data = [
-    {id: '1', title: 'Item 1'},
-    {id: '2', title: 'Item 2'},
-    {id: '3', title: 'Item 3'},
-    {id: '4', title: 'Item 2'},
-    {id: '5', title: 'Item 3'},
-  ];
+  useEffect(() => {
+    if (popularItems && popularItems.length > 0) {
+      setDataAllPopularItems(popularItems);
+    }
+  }, [popularItems]);
 
-  const renderItem = () => {
+  const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
         style={styles.popularitems}
-        onPress={() => setIsModalVisible(true)}>
+        onPress={() => {
+          setPopularitemDetails(item)
+          setIsModalVisible(true)
+        }}>
         <View style={styles.imgView}>
-          <Image source={source} style={{height: '100%', width: '100%'}} />
+          <Image source={{ uri: Config.API_URL + item?.dish_image }} style={styles.popularImg} />
         </View>
         <Text style={styles.Itemtitle}>
-          {title}
+          {item?.category_name}
           {'\n'}
         </Text>
-        <Text style={styles.subItemtitle}>{subTitle}</Text>
-        <Text style={styles.pricetitle}>{price}</Text>
+        <Text style={styles.subItemtitle}>{item?.dish_name}</Text>
+        <Text style={styles.pricetitle}>₹ {item?.dish_price}</Text>
       </TouchableOpacity>
     );
   };
@@ -35,11 +40,12 @@ export const PopularItems = ({source, title, subTitle, price}) => {
   return (
     <View>
       <ModalComponent
+        popularitemDetails={popularitemDetails}
         isVisible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
       />
       <FlatList
-        data={data}
+        data={dataAllPopularItems}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         horizontal={true}

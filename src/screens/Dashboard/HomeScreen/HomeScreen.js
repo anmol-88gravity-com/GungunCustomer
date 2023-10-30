@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -11,97 +11,49 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {TextInput} from 'react-native-paper';
-import {useDispatch} from 'react-redux';
-// import notifee, {
-//   AndroidColor,
-//   AndroidImportance,
-//   EventType,
-// } from '@notifee/react-native';
-// import messaging from '@react-native-firebase/messaging';
+import { TextInput } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
 
-import {images} from '../../../utils/Images';
-import {styles} from './HomeScreen.styles';
+import { images } from '../../../utils/Images';
+import { styles } from './HomeScreen.styles';
 import ScreenHeader from '../../../components/header/ScreenHeader';
-import {Colors} from '../../../utils/Colors';
-import {useGetProfileData, useGetCategorizedFoodtype} from '../../../hooks';
-import {Loader} from '../../../components/common/Loader';
+import { Colors } from '../../../utils/Colors';
+import { useGetProfileData, useGetCategorizedFoodtype, useGetPopularItems } from '../../../hooks';
+import { Loader } from '../../../components/common/Loader';
 import {
   PopularItems,
   RecommendedItems,
   RestaurantTopPlaces,
 } from './components';
-import {useGetRestaurantList} from '../../../hooks/home/dashBoard/useGetRestaurantList';
-import {useError} from '../../../context/ErrorProvider';
+import { useGetRestaurantList } from '../../../hooks/home/dashBoard/useGetRestaurantList';
+import { useError } from '../../../context/ErrorProvider';
 import Config from '../../../config';
-import {useGetUserCurrentLocation} from '../../../hooks/user/useGetUserCurrentLocation';
-import {addUserLocation} from '../../../store/home/homeSlice';
+import { useGetUserCurrentLocation } from '../../../hooks/user/useGetUserCurrentLocation';
+import { addUserLocation } from '../../../store/home/homeSlice';
 
-export const HomeScreen = ({navigation}) => {
+
+
+export const HomeScreen = ({ navigation }) => {
   const [addressData, setAddressData] = useState('');
   const [loading, setLoading] = useState(false);
   const setError = useError();
   const dispatch = useDispatch();
 
-  const {profileData, loading: userLoading} = useGetProfileData();
-  const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
-  const {restaurantList, loader} = useGetRestaurantList();
-  const {lat, long, loader: load} = useGetUserCurrentLocation();
+  const { profileData, loading: userLoading } = useGetProfileData();
+  const { foodType, loading: isLoading } = useGetCategorizedFoodtype();
+  const { allPopularItems } = useGetPopularItems();
+  const { restaurantList, loader } = useGetRestaurantList();
+  const { lat, long, loader: load } = useGetUserCurrentLocation();
 
-  // useEffect(() => {
-  //   (async () => {
-  //     await notifee.requestPermission();
-  //     const channelId = await notifee.createChannel({
-  //       id: 'default',
-  //       name: 'Default Channel',
-  //       vibration: true,
-  //       vibrationPattern: [300, 500],
-  //       lights: true,
-  //       lightColor: AndroidColor.AQUA,
-  //     });
-  //     await messaging().registerDeviceForRemoteMessages();
-  //     const token = await messaging().getToken();
-  //     // console.log('token======>', token);
-  //   })();
-  //
-  //   return notifee.onForegroundEvent(({type, detail}) => {
-  //     switch (type) {
-  //       case EventType.DISMISSED:
-  //         // console.log('User dismissed notification', detail.notification);
-  //         break;
-  //       case EventType.PRESS:
-  //         // console.log('User pressed notification', detail.notification);
-  //         break;
-  //     }
-  //   });
-  // }, []);
-  //
-  // async function onMessageReceived(message) {
-  //   console.log('message==>', message);
-  //   await notifee.displayNotification({
-  //     title: message.notification.title,
-  //     body: message.notification.body,
-  //     android: {
-  //       channelId: 'default',
-  //       importance: AndroidImportance.HIGH,
-  //     },
-  //   });
-  // }
-  //
-  // useEffect(() => {
-  //   messaging().onMessage(onMessageReceived);
-  //   // messaging().setBackgroundMessageHandler(onMessageReceived);
-  // }, []);
-
-  function getAddressFromCoordinates({latitude, longitude}) {
+  function getAddressFromCoordinates({ latitude, longitude }) {
     return new Promise((resolve, reject) => {
       fetch(
         Config.googleGetAddress +
-          latitude +
-          ',' +
-          longitude +
-          '&key=' +
-          Config.googleMapsAPIkey,
+        latitude +
+        ',' +
+        longitude +
+        '&key=' +
+        Config.googleMapsAPIkey,
       )
         .then(response => response.json())
         .then(responseJson => {
@@ -139,7 +91,7 @@ export const HomeScreen = ({navigation}) => {
       }
     })();
 
-    return () => {};
+    return () => { };
   }, [dispatch, lat, long, setError]);
 
   return (
@@ -151,7 +103,7 @@ export const HomeScreen = ({navigation}) => {
         <>
           <Pressable
             onPress={() =>
-              navigation.navigate('AddressNavigator', {screen: 'Address'})
+              navigation.navigate('AddressNavigator', { screen: 'Address' })
             }
             style={{
               paddingHorizontal: 20,
@@ -163,7 +115,7 @@ export const HomeScreen = ({navigation}) => {
               name="location-on"
               size={28}
               color={Colors.red}
-              style={{width: '10%'}}
+              style={{ width: '10%' }}
             />
             <View
               style={{
@@ -177,7 +129,7 @@ export const HomeScreen = ({navigation}) => {
             <Ionicons name="chevron-down" size={24} color={Colors.primary} />
           </Pressable>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Search', {searchKey: ''})}>
+            onPress={() => navigation.navigate('Search', { searchKey: '' })}>
             <View pointerEvents={'none'} style={styles.searchView}>
               <TextInput
                 style={styles.input}
@@ -185,8 +137,8 @@ export const HomeScreen = ({navigation}) => {
                 placeholderTextColor="#808080"
                 editable={false}
                 mode={'outlined'}
-                theme={{roundness: 15}}
-                outlineStyle={{borderColor: '#cdcdcd'}}
+                theme={{ roundness: 15 }}
+                outlineStyle={{ borderColor: '#cdcdcd' }}
                 left={<TextInput.Icon icon="search1" color={Colors.primary} />}
               />
             </View>
@@ -195,7 +147,7 @@ export const HomeScreen = ({navigation}) => {
             style={styles.container}
             showsVerticalScrollIndicator={false}>
             <View style={styles.container}>
-              <View style={{marginHorizontal: 10}}>
+              <View style={{ marginHorizontal: 10 }}>
                 <View
                   style={{
                     height: 200,
@@ -208,7 +160,7 @@ export const HomeScreen = ({navigation}) => {
                     lowest delivery {'\n'} charges ever
                   </Text>
                   <TouchableOpacity style={styles.orderNowButton}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.orderText}>Order Now </Text>
                       <AntDesign
                         name="arrowright"
@@ -219,7 +171,7 @@ export const HomeScreen = ({navigation}) => {
                     </View>
                   </TouchableOpacity>
                 </View>
-                <Text style={[styles.title, {marginTop: 20}]}>
+                <Text style={[styles.title, { marginTop: 20 }]}>
                   Popular Items
                 </Text>
                 <View
@@ -228,23 +180,24 @@ export const HomeScreen = ({navigation}) => {
                     marginTop: 10,
                   }}>
                   <PopularItems
-                    source={images.kadaiPaneer}
-                    title="Chole Bhatoore"
-                    subTitle="Prem Di hatti"
-                    price="₹ 249"
+                    popularItems={allPopularItems}
+                    // source={images.kadaiPaneer}
+                    // title="Chole Bhatoore"
+                    // subTitle="Prem Di hatti"
+                    // price="₹ 249"
                   />
                 </View>
-                <Text style={[styles.title, {marginVertical: 0}]}>
+                <Text style={[styles.title, { marginVertical: 0 }]}>
                   What's on your mind ?
                 </Text>
                 <RecommendedItems
                   foodType={foodType}
                   onPressHandler={item =>
-                    navigation.navigate('Search', {searchKey: item})
+                    navigation.navigate('Search', { searchKey: item })
                   }
                 />
                 {restaurantList.length > 0 && (
-                  <View style={{flex: 1}}>
+                  <View style={{ flex: 1 }}>
                     <View
                       style={{
                         flexDirection: 'row',

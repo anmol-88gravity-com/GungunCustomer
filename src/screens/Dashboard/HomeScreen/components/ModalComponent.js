@@ -27,6 +27,7 @@ export const ModalComponent = ({
   dishDetails,
   onPressHandler,
   cartLoading,
+  popularitemDetails,
   increment,
   decrement,
   qtyLoader,
@@ -51,6 +52,28 @@ export const ModalComponent = ({
       setDetails(dishDetails);
     }
   }, [dishDetails]);
+
+
+  const [popularItemdetail, setPopularItemdetail] = useState({
+    dish_category: '',
+    dish_description: '',
+    dish_image: '',
+    dish_name: '',
+    dish_price: '',
+    dish_status: false,
+    dish_type: '',
+    id: '',
+    partner_user: '',
+    added_to_cart: false,
+    quantity_in_cart: 0,
+    category_name: '',
+  });
+  console.log('popularItemdetail--',popularItemdetail)
+  useEffect(() => {
+    if (popularitemDetails !== undefined && popularitemDetails !== null) {
+      setPopularItemdetail(popularitemDetails);
+    }
+  }, [popularitemDetails]);
 
   return (
     <Modal

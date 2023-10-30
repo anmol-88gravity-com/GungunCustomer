@@ -8,6 +8,7 @@ export const SEARCH_QUERY = '/api/search-query';
 export const GET_RESTAURANT_LISt = '/api/restaurant-list';
 export const DELETE_SUGGESTION = '/api/delete-suggestion';
 export const USER_LOCATION = '/api/user-location';
+export const GET_POPULAR_ITEMS = 'api/popular_items';
 
 export const addUserLocation = createAsyncThunk(
   USER_LOCATION,
@@ -38,6 +39,20 @@ export const getDataOnYourMind = createAsyncThunk(
   },
 );
 
+
+export const getAllPouplarItems = createAsyncThunk(
+  GET_POPULAR_ITEMS,
+  async (_, thunkAPI) => {
+    const result = await Axios.get(ApiEndpoints.categoryFoodType.popularItems);
+    if (result.data.status === 'ok') {
+      // console.log('result.data---popular,',result.data)
+      return thunkAPI.fulfillWithValue(result.data.response);
+    } else {
+      return thunkAPI.rejectWithValue(new Error(result.data.msg));
+    }
+  },
+);
+
 export const getRestaurantList = createAsyncThunk(
   GET_RESTAURANT_LISt,
   async (_, thunkAPI) => {
@@ -56,6 +71,7 @@ export const getSearchResults = createAsyncThunk(
     const result = await Axios.get(ApiEndpoints.home.searchQuery, {
       params: {q: text},
     });
+    console.log('result.data', result.data);
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue(result.data.stores);
     } else {

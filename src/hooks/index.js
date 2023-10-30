@@ -1,5 +1,7 @@
 export * from './home/category/useGetCategorizedFoodtype';
 
+export * from './home/category/useGetPopularItems';
+
 export * from './address/useGetAddressList';
 export * from './address/useGetSingleAddress';
 

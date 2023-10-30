@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import messaging from '@react-native-firebase/messaging';
 
 import { ApiEndpoints } from '../ApiEndPoints';
 import { Axios } from '../../lib/Axios';
@@ -37,10 +38,14 @@ export const logout = createAsyncThunk(AUTH_LOGOUT, async (_, thunkAPI) => {
 
 export const login = createAsyncThunk(
   LOGIN,
-  async ({ phoneNumber, password }, { rejectWithValue, fulfillWithValue }) => {
+  async ({phoneNumber, password}, {rejectWithValue, fulfillWithValue}) => {
+    // const token = await messaging().getToken();
+    let token;
+
     const result = await Axios.post(ApiEndpoints.auth.login, {
       phone_number: phoneNumber,
       password: password,
+      fcm_token: token,
     });
     if (result.data.status === 'ok') {
       const success = {
@@ -63,12 +68,17 @@ export const register = createAsyncThunk(
     { fullName, password, confirmPassword, email, phoneNumber },
     { rejectWithValue, fulfillWithValue },
   ) => {
+    // await messaging().registerDeviceForRemoteMessages();
+    // const token = await messaging().getToken();
+    let token;
+
     const result = await Axios.post(ApiEndpoints.auth.register, {
       name: fullName,
       password: password,
       password2: confirmPassword,
       email: email,
       phone_number: phoneNumber,
+      fcm_token: token,
     });
     if (result.data.status === 'ok') {
       const success = {

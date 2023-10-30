@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,28 +9,28 @@ import {
   Alert,
   Pressable,
 } from 'react-native';
-import { Button } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import {Button} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import GetLocation from 'react-native-get-location';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 
-import { Colors } from '../../../utils/Colors';
-import { styles } from './Mapscreen.styles';
-import { AddressModal } from './components/AddressModal';
+import {Colors} from '../../../utils/Colors';
+import {styles} from './Mapscreen.styles';
+import {AddressModal} from './components/AddressModal';
 import Config from '../../../config';
-import { useError } from '../../../context/ErrorProvider';
-import { FONT_SIZES } from '../../../utils/FontSize';
-import { Font_Family } from '../../../utils/Fontfamily';
+import {useError} from '../../../context/ErrorProvider';
+import {FONT_SIZES} from '../../../utils/FontSize';
+import {Font_Family} from '../../../utils/Fontfamily';
 
 const HEIGHT = Dimensions.get('screen').height;
 const WIDTH = Dimensions.get('screen').width;
 
-export const MapScreen = ({ route, navigation }) => {
+export const MapScreen = ({route, navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [userLocation, setUserLocation] = useState({ lat: 0, long: 0 });
+  const [userLocation, setUserLocation] = useState({lat: 0, long: 0});
   const [userCurrentLocation, setUserCurrentLocation] = useState({
     lat: 0,
     long: 0,
@@ -59,15 +59,15 @@ export const MapScreen = ({ route, navigation }) => {
 
   // console.log('secondaryLocation', secondaryLocation);
 
-  function getAddressFromCoordinates({ latitude, longitude }) {
+  function getAddressFromCoordinates({latitude, longitude}) {
     return new Promise((resolve, reject) => {
       fetch(
         'https://maps.googleapis.com/maps/api/geocode/json?address=' +
-        latitude +
-        ',' +
-        longitude +
-        '&key=' +
-        Config.googleMapsAPIkey,
+          latitude +
+          ',' +
+          longitude +
+          '&key=' +
+          Config.googleMapsAPIkey,
       )
         .then(response => response.json())
         .then(responseJson => {
@@ -107,7 +107,7 @@ export const MapScreen = ({ route, navigation }) => {
           setLoading(false);
         })
         .catch(error => {
-          const { code, message } = error;
+          const {code, message} = error;
           setError('Error : ' + code + ' ' + message);
         });
       setLoading(false);
@@ -127,7 +127,7 @@ export const MapScreen = ({ route, navigation }) => {
           name="arrow-back"
           size={24}
           color="black"
-          style={{ padding: 10 }}
+          style={{padding: 10}}
           onPress={() => navigation.goBack()}
         />
         <GooglePlacesAutocomplete
@@ -177,7 +177,6 @@ export const MapScreen = ({ route, navigation }) => {
             rightIcon: {type: 'font-awesome', name: 'chevron-right'},
           }}
         />
- 
       </View>
       <View
         style={{
@@ -188,7 +187,7 @@ export const MapScreen = ({ route, navigation }) => {
         }}>
         <MapView
           provider={PROVIDER_GOOGLE}
-          style={{ ...StyleSheet.absoluteFillObject }}
+          style={{...StyleSheet.absoluteFillObject}}
           region={{
             latitude: userLocation.lat,
             longitude: userLocation.long,
@@ -225,9 +224,9 @@ export const MapScreen = ({ route, navigation }) => {
         <Button
           onPress={() => setModalVisible(true)}
           buttonColor={Colors.primary}
-          theme={{ roundness: 0 }}
+          theme={{roundness: 0}}
           style={styles.buttonStyles}
-          contentStyle={{ height: 50 }}
+          contentStyle={{height: 50}}
           labelStyle={styles.buttonlabel}
           mode={'contained'}>
           Confirm Location

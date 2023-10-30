@@ -24,6 +24,7 @@ export const ApiEndpoints = {
   },
   categoryFoodType: {
     foodType: 'api/food-type/',
+    popularItems: 'api/popular_items/',
   },
   restaurantDetail: {
     restaurantDetails: 'api/restaurant/STORE_ID/',
