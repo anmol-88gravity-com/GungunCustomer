@@ -1,39 +1,44 @@
 import {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 
 import {useError} from '../../../context/ErrorProvider';
 import {getRestaurantList} from '../../../store/home/homeSlice';
+import {useGetUserCurrentLocation} from '../../user/useGetUserCurrentLocation';
 
 export const useGetRestaurantList = () => {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
   const setError = useError();
 
-  const [loader, setLoader] = useState(true);
+  const {lat, long, loader} = useGetUserCurrentLocation();
+
+  const [load, setLoad] = useState(true);
   const [restaurantList, setRestaurantList] = useState([]);
 
-  const getList = async () => {
-    try {
-      const res = await dispatch(getRestaurantList()).unwrap();
-      if (res) {
-        setRestaurantList(res);
-        setLoader(false);
-      }
-    } catch (e) {
-      setError(e.message);
-      setLoader(false);
-    }
-  };
-
   useEffect(() => {
-    return navigation.addListener('focus', () => {
-      getList();
-    });
-  }, [navigation]);
+    (async () => {
+      if (lat === 0 || long === 0) {
+        return;
+      } else {
+        try {
+          const res = await dispatch(getRestaurantList({lat, long})).unwrap();
+          if (res) {
+            setRestaurantList(res);
+          }
+        } catch (e) {
+          setError(e.message);
+        }
+        setLoad(false);
+      }
+    })();
+
+    return () => {};
+  }, [dispatch, lat, long, setError]);
 
   return {
     restaurantList,
+    lat,
+    long,
+    load,
     loader,
   };
 };

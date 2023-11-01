@@ -3,6 +3,8 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {ApiEndpoints} from '../ApiEndPoints';
 import {Axios} from '../../lib/Axios';
 import {Platform} from 'react-native';
+import {save} from '../../utils/storage';
+import Config from '../../config';
 
 export const CHANGE_PASSWORD = '/api/change-Password';
 export const USER_PROFILE = '/api/customer-profile';
@@ -31,6 +33,9 @@ export const getUserProfile = createAsyncThunk(
       ApiEndpoints.profile.getUserProfile.replace('USER_ID', String(userId)),
     );
     if (result.data.status === 'ok') {
+      if (result.data.response.card_id) {
+        await save(Config.CART_ID, result.data.response.card_id);
+      }
       return thunkAPI.fulfillWithValue(result.data.response.partner_profile);
     } else {
       return thunkAPI.rejectWithValue(new Error(result.data.msg));

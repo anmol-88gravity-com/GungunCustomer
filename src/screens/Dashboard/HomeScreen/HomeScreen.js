@@ -28,7 +28,6 @@ import {
 import {useGetRestaurantList} from '../../../hooks/home/dashBoard/useGetRestaurantList';
 import {useError} from '../../../context/ErrorProvider';
 import Config from '../../../config';
-import {useGetUserCurrentLocation} from '../../../hooks/user/useGetUserCurrentLocation';
 import {addUserLocation} from '../../../store/home/homeSlice';
 
 export const HomeScreen = ({navigation}) => {
@@ -39,8 +38,7 @@ export const HomeScreen = ({navigation}) => {
 
   const {profileData, loading: userLoading} = useGetProfileData();
   const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
-  const {restaurantList, loader} = useGetRestaurantList();
-  const {lat, long, loader: load} = useGetUserCurrentLocation();
+  const {restaurantList, lat, long, load, loader} = useGetRestaurantList();
 
   function getAddressFromCoordinates({latitude, longitude}) {
     return new Promise((resolve, reject) => {
