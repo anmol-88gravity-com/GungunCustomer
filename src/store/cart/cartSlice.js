@@ -128,7 +128,7 @@ export const increaseItemQuantity = createAsyncThunk(
     const result = await Axios.put(ApiEndpoints.cart.increaseQuantity, {
       card_item_id: cartItemId,
     });
-    console.log('result', result);
+    // console.log('result', result);
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue({
         itemId: itemId,
@@ -147,7 +147,7 @@ export const decreaseItemQuantity = createAsyncThunk(
     const result = await Axios.put(ApiEndpoints.cart.decreaseQuantity, {
       card_item_id: cartItemId,
     });
-    console.log('result', result);
+    // console.log('result', result);
     if (result.data.status === 'ok') {
       if (result.data.response.CartList.length === 0) {
         deleteCart();
