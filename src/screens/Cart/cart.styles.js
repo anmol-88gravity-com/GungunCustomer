@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
-import { FONT_SIZES } from '../../utils/FontSize';
-import { Font_Family } from '../../utils/Fontfamily';
-import { Colors } from '../../utils/Colors';
+import {StyleSheet} from 'react-native';
+import {FONT_SIZES} from '../../utils/FontSize';
+import {Font_Family} from '../../utils/Fontfamily';
+import {Colors} from '../../utils/Colors';
 
 export const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: 'white', paddingHorizontal: 15 },
+  container: {flex: 1, backgroundColor: 'white', paddingHorizontal: 15},
   heading: {
     paddingTop: 15,
     fontSize: FONT_SIZES.fifteen,
@@ -29,12 +29,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderBottomColor: Colors.grey,
-    borderBottomWidth: 1,
   },
   itemInnerRow: {
     flexDirection: 'row',
-    width: '45%',
+    width: '60%',
     alignItems: 'center',
   },
   itemName: {
@@ -50,8 +48,8 @@ export const styles = StyleSheet.create({
   },
   itemPrice: {
     fontFamily: Font_Family.medium,
-    fontSize: FONT_SIZES.fifteen,
-    color: Colors.black,
+    fontSize: FONT_SIZES.thirteen,
+    color: Colors.primary,
   },
   qtyBox: {
     width: '30%',
@@ -279,20 +277,82 @@ export const styles = StyleSheet.create({
   // RazorPay
 
   payView: {
-    backgroundColor: '#ffffff', 
+    backgroundColor: '#ffffff',
     width: '35%',
-    left:'15%',
-    borderRadius: 4, 
-    marginTop: -10, 
-    shadowColor: '#000', 
+    left: '15%',
+    borderRadius: 4,
+    marginTop: -10,
+    shadowColor: '#000',
     shadowOffset: {
-      width: 0, height: 2,
+      width: 0,
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 4,
-    bottom:10
+    bottom: 10,
   },
-  textLine: { height:1, width: '100%', borderWidth: 1, borderColor: Colors.primary },
-  payText: { fontFamily: Font_Family.bold, textAlign: 'center', padding: 5, marginTop: 10,color:Colors.black,paddingBottom:10 }
+  textLine: {
+    height: 1,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: Colors.primary,
+  },
+  payText: {
+    fontFamily: Font_Family.bold,
+    textAlign: 'center',
+    padding: 5,
+    marginTop: 10,
+    color: Colors.black,
+    paddingBottom: 10,
+  },
+  // modal styles
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.3)',
+  },
+  modalView: {
+    width: '100%',
+    // margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalHeadingText: {
+    marginBottom: 15,
+    textAlign: 'left',
+    fontSize: FONT_SIZES.fifteen,
+    color: Colors.black,
+    fontFamily: Font_Family.semiBold,
+  },
+  modalText: {
+    marginBottom: 15,
+    fontSize: FONT_SIZES.fifteen,
+    color: Colors.black,
+    fontFamily: Font_Family.regular,
+  },
+  buttonStyles: {
+    alignSelf: 'flex-end',
+    borderRadius: 5,
+  },
+  buttonLabel: {
+    fontFamily: Font_Family.medium,
+    fontSize: FONT_SIZES.fifteen,
+  },
 });

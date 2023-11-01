@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, ActivityIndicator} from 'react-native';
 import {Button} from 'react-native-paper';
 import * as Progress from 'react-native-progress';
 
@@ -14,7 +14,6 @@ export const PaymentScreen = ({navigation}) => {
   const [paymentSuccessful, setPaymentSuccessful] = useState(false);
 
   const handleProgressComplete = () => {
-    setPaymentSuccessful(true);
     navigation.navigate('OrderTracking');
   };
 
@@ -28,7 +27,7 @@ export const PaymentScreen = ({navigation}) => {
         }
         return prevProgress + 0.1;
       });
-    }, 1000);
+    }, 3000);
 
     return () => {
       clearInterval(timer);
@@ -37,62 +36,80 @@ export const PaymentScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.successImg}>
-        <Image
-          source={images.success}
-          style={{height: '100%', width: '100%'}}
-        />
-      </View>
-      {/*{paymentSuccessful && (*/}
-      <Text style={styles.paymentText}>Payment Successful</Text>
-      {/*)}*/}
-      <Text style={styles.orderIdText}>
-        Your Order of OrderId: GUNGUN0279802134 has been placed.
-      </Text>
-
-      {!paymentSuccessful && (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 25,
-            marginHorizontal: 10,
-            justifyContent: 'space-between',
-            position: 'absolute',
-            bottom: 10,
-            left: 5,
-            right: 5,
-          }}>
-          <View>
-            <Text
-              style={{
-                fontFamily: Font_Family.medium,
-                fontSize: FONT_SIZES.thirteen,
-                color: Colors.black,
-              }}>
-              You can cancel your order in 60 seconds.
-            </Text>
-            <View style={{marginTop: 15}}>
-              <Progress.Bar
-                progress={progress}
-                width={230}
-                animated={true}
-                color={Colors.primary}
-                height={5}
-                onComplete={handleProgressComplete}
-              />
-            </View>
+      {progress < 1 ? (
+        <>
+          <View
+            style={{
+              backgroundColor: '#fff',
+              flex: 0.9,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <ActivityIndicator size={'large'} color={Colors.secondary} />
+            <Text>Waiting...</Text>
           </View>
-          <Button
-            buttonColor={Colors.primary}
-            theme={{roundness: 0}}
-            style={styles.buttonStyles}
-            contentStyle={{height: 50}}
-            labelStyle={styles.buttonlabel}
-            mode={'contained'}>
-            Cancel
-          </Button>
-        </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingVertical: 15,
+              paddingHorizontal: 10,
+              justifyContent: 'space-between',
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              borderTopWidth: 1,
+              borderTopColor: '#cdc',
+            }}>
+            <View>
+              <Text
+                style={{
+                  fontFamily: Font_Family.medium,
+                  fontSize: FONT_SIZES.thirteen,
+                  color: Colors.black,
+                }}>
+                You can cancel your order in 30 seconds.
+              </Text>
+              <View style={{marginTop: 15}}>
+                <Progress.Bar
+                  progress={progress}
+                  width={230}
+                  animated={true}
+                  color={Colors.primary}
+                  height={5}
+                  onComplete={handleProgressComplete}
+                />
+              </View>
+            </View>
+            <Button
+              buttonColor={Colors.primary}
+              theme={{roundness: 0}}
+              style={styles.buttonStyles}
+              contentStyle={{height: 50}}
+              labelStyle={{
+                fontFamily: Font_Family.medium,
+                fontSize: FONT_SIZES.fifteen,
+                color: Colors.white,
+              }}
+              mode={'contained'}>
+              Cancel
+            </Button>
+          </View>
+        </>
+      ) : (
+        <>
+          <View style={styles.successImg}>
+            <Image
+              source={images.success}
+              style={{height: '100%', width: '100%'}}
+            />
+          </View>
+          <Text style={styles.paymentText}>Payment Successful</Text>
+          <Text style={styles.orderIdText}>
+            {'Your order has been placed with\nOrderId: GNG0279802134.'}
+          </Text>
+        </>
       )}
     </View>
   );

@@ -26,15 +26,13 @@ export const styles = StyleSheet.create({
   orderIdText: {
     textAlign: 'center',
     fontFamily: Font_Family.medium,
-    fontSize: FONT_SIZES.thirteen,
-    marginTop: '5%',
+    fontSize: FONT_SIZES.fifteen,
+    marginTop: 10,
     color: Colors.black,
+    lineHeight: 23,
   },
   buttonStyles: {
-    // width: '100%',
     alignSelf: 'center',
-    // marginTop: 15,
     borderRadius: 5,
-    // bottom: '-20%',
   },
 });
