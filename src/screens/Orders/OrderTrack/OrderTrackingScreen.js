@@ -63,8 +63,8 @@ export const OrderTrackingScreen = () => {
               apikey={Config.googleMapsAPIkey}
               mode={'DRIVING'}
               timePrecision={'now'}
-              strokeWidth={4}
-              strokeColor={'#1c1c1c'}
+              strokeWidth={2}
+              strokeColor={'rgba(0,92,121,0.5)'}
               optimizeWaypoints={true}
               onStart={params => {
                 console.log(

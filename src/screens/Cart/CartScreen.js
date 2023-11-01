@@ -8,10 +8,11 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
+  Modal,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {Button} from 'react-native-paper';
+import {Button, RadioButton} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -49,12 +50,9 @@ export const CartScreen = ({navigation}) => {
   const [decLoader, setDecLoader] = useState(false);
   const [selected, setSelected] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [value, setValue] = useState('offline');
 
   const setError = useError();
-
-  const handlePress = () => {
-    setIsOpen(!isOpen);
-  };
 
   useEffect(() => {
     setCartItemsData(cartItems);
@@ -136,65 +134,73 @@ export const CartScreen = ({navigation}) => {
       setDecLoader(false);
     };
 
-    const totalPrice = itemPrice * itemQuantity;
-
     return (
-      <View style={[styles.itemRowStyles, {paddingVertical: 10}]}>
-        <View style={styles.itemInnerRow}>
-          {dish_type === 'V' ? (
-            <MaterialCommunityIcons
-              name="square-circle"
-              size={18}
-              color={Colors.green}
-            />
-          ) : (
-            <MaterialCommunityIcons
-              name="square-circle"
-              size={18}
-              color={Colors.red}
-            />
-          )}
-          <Text
-            numberOfLines={3}
-            style={[styles.itemName, {textTransform: 'capitalize'}]}>
-            {itemName}
-          </Text>
-        </View>
-        <View style={styles.itemPriceBox}>
-          <Text numberOfLines={1} style={styles.itemPrice}>
-            Rs {totalPrice}
-          </Text>
-        </View>
-        <View style={styles.qtyBox}>
-          <View style={styles.qtyContainer}>
-            <Pressable
-              style={{padding: 5}}
-              onPress={() =>
-                decreaseQuantityHandler(dish_id, item_id, category_name)
-              }>
-              <AntDesign name="minus" size={22} color={Colors.primary} />
-            </Pressable>
-            {(incLoader || decLoader) && item_id === selected ? (
-              <ActivityIndicator
-                size={'small'}
-                color={Colors.primary}
-                style={{
-                  alignSelf: 'center',
-                  paddingVertical: 5,
-                  paddingHorizontal: 10,
-                }}
+      <View
+        style={{
+          borderBottomColor: Colors.grey,
+          borderBottomWidth: 1,
+          paddingVertical: 8,
+        }}>
+        <View style={styles.itemRowStyles}>
+          <View style={styles.itemInnerRow}>
+            {dish_type === 'V' ? (
+              <MaterialCommunityIcons
+                name="square-circle"
+                size={18}
+                color={Colors.green}
               />
             ) : (
-              <Text style={styles.qty}>{itemQuantity}</Text>
+              <MaterialCommunityIcons
+                name="square-circle"
+                size={18}
+                color={Colors.red}
+              />
             )}
-            <Pressable
-              style={{padding: 5}}
-              onPress={() =>
-                increaseQuantityHandler(dish_id, item_id, category_name)
-              }>
-              <Ionicons name="add" size={20} color={Colors.primary} />
-            </Pressable>
+            <Text
+              numberOfLines={3}
+              style={[styles.itemName, {textTransform: 'capitalize'}]}>
+              {itemName}
+            </Text>
           </View>
+          <View style={styles.qtyBox}>
+            <View style={styles.qtyContainer}>
+              <Pressable
+                style={{padding: 5}}
+                onPress={() =>
+                  decreaseQuantityHandler(dish_id, item_id, category_name)
+                }>
+                <AntDesign name="minus" size={22} color={Colors.primary} />
+              </Pressable>
+              {(incLoader || decLoader) && item_id === selected ? (
+                <ActivityIndicator
+                  size={'small'}
+                  color={Colors.primary}
+                  style={{
+                    alignSelf: 'center',
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                  }}
+                />
+              ) : (
+                <Text style={styles.qty}>{itemQuantity}</Text>
+              )}
+              <Pressable
+                style={{padding: 5}}
+                onPress={() =>
+                  increaseQuantityHandler(dish_id, item_id, category_name)
+                }>
+                <Ionicons name="add" size={20} color={Colors.primary} />
+              </Pressable>
+            </View>
+          </View>
+        </View>
+        <View style={[styles.itemRowStyles, {marginTop: 5}]}>
+          <Text numberOfLines={1} style={[styles.itemPrice, {marginLeft: 25}]}>
+            Rs {itemPrice}
+          </Text>
+          <Text numberOfLines={1} style={styles.itemPrice}>
+            Rs {itemPrice * itemQuantity}
+          </Text>
         </View>
       </View>
     );
@@ -240,7 +246,11 @@ export const CartScreen = ({navigation}) => {
   };
 
   return (
-    <>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: Colors.white,
+      }}>
       {loading || isLoading || loadBill ? (
         <Loader />
       ) : cartItems?.length === 0 ? (
@@ -275,163 +285,222 @@ export const CartScreen = ({navigation}) => {
           </Text>
         </View>
       ) : (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.container}>
-          <Text style={styles.heading}>Items Added</Text>
-          <View style={styles.cardContainer}>
-            <View>
-              {cartItemsData?.length > 0 &&
-                cartItemsData?.map((item, index) => (
-                  <CartItem
-                    key={index}
-                    item_id={item?.item_id}
-                    itemName={item?.dish_name}
-                    itemPrice={item?.price}
-                    itemQuantity={item?.quantity}
-                    dish_type={item?.dish_type}
-                    dish_id={item?.dish_id}
-                    category_name={item?.category_name}
-                  />
-                ))}
-            </View>
-            <Pressable style={styles.addMoreRow} onPress={handleAddMoreItems}>
-              <View style={styles.rowStyles}>
-                <MaterialIcons name="add-box" size={24} color="black" />
-                <Text style={styles.addMoreItemsText}>Add more Items</Text>
+        <View style={{flex: 1, backgroundColor: 'white'}}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.container}>
+            <Text style={styles.heading}>Items Added</Text>
+            <View style={styles.cardContainer}>
+              <View>
+                {cartItemsData?.length > 0 &&
+                  cartItemsData?.map((item, index) => (
+                    <CartItem
+                      key={index}
+                      item_id={item?.item_id}
+                      itemName={item?.dish_name}
+                      itemPrice={item?.price}
+                      itemQuantity={item?.quantity}
+                      dish_type={item?.dish_type}
+                      dish_id={item?.dish_id}
+                      category_name={item?.category_name}
+                    />
+                  ))}
               </View>
-              <Entypo name="chevron-small-right" size={24} color="black" />
-            </Pressable>
-          </View>
-          {/*<Pressable style={styles.shadowCard}>*/}
-          {/*<View style={styles.rowStyles}>*/}
-          {/*  <MaterialCommunityIcons*/}
-          {/*    name="brightness-percent"*/}
-          {/*    size={24}*/}
-          {/*    color={Colors.secondary}*/}
-          {/*  />*/}
-          {/*  <View>*/}
-          {/*    <Text style={styles.couponHeading}>*/}
-          {/*      /!*Apply Coupon*!/*/}
-          {/*      Coupon Applied*/}
-          {/*    </Text>*/}
-          {/*    <Text style={styles.couponText}>EXTRA200</Text>*/}
-          {/*  </View>*/}
-          {/*</View>*/}
-          {/*  <View style={styles.rowStyles}>*/}
-          {/*    <Text style={styles.viewAllText}>View All</Text>*/}
-          {/*    <Entypo*/}
-          {/*      name="chevron-small-right"*/}
-          {/*      size={24}*/}
-          {/*      color={Colors.grey}*/}
-          {/*    />*/}
-          {/*  </View>*/}
-          {/*</Pressable>*/}
-          {/*<FlatList*/}
-          {/*  data={DATA}*/}
-          {/*  renderItem={({item}) => (*/}
-          {/*    <Item title={item.title} imageSource={item.imageSource} />*/}
-          {/*  )}*/}
-          {/*  keyExtractor={item => item.id}*/}
-          {/*  horizontal={true}*/}
-          {/*  showsHorizontalScrollIndicator={false}*/}
-          {/*/>*/}
-          <Pressable style={styles.deliveryBox}>
-            <Pressable style={styles.deliveryInnerContainer}>
-              <View style={[styles.rowStyles, {width: '70%'}]}>
-                <Ionicons name="location" size={20} color={Colors.secondary} />
-                <View>
-                  <Text style={styles.deliveryText}>Delivery Location</Text>
+              <Pressable style={styles.addMoreRow} onPress={handleAddMoreItems}>
+                <View style={styles.rowStyles}>
+                  <MaterialIcons name="add-box" size={24} color="black" />
+                  <Text style={styles.addMoreItemsText}>Add more Items</Text>
                 </View>
-              </View>
-
-              <View style={styles.rowStyles}>
-                <Pressable onPress={() => navigation.navigate('CartAddresses')}>
-                  <Text style={styles.changeText}>Change</Text>
-                </Pressable>
-                <Entypo
-                  name="chevron-small-right"
-                  size={24}
-                  color={Colors.grey}
-                />
-              </View>
-            </Pressable>
-            <Text numberOfLines={3} style={styles.addressText}>
-              {addressData?.address1 +
-                ', ' +
-                addressData?.address2 +
-                ', ' +
-                addressData?.city +
-                ', ' +
-                addressData?.state}
-            </Text>
-          </Pressable>
-          <Text style={styles.billSummary}>Bill Summary</Text>
-          <View style={styles.billBox}>
-            <View style={styles.billRow}>
-              <Text style={styles.amountTitle}>Sub Total</Text>
-              <Text style={styles.amount}>Rs. {billData.subtotal}</Text>
+                <Entypo name="chevron-small-right" size={24} color="black" />
+              </Pressable>
             </View>
-            <View style={styles.billRow}>
-              <Text style={styles.amountTitle}>GST</Text>
-              <Text style={styles.amount}>Rs. {billData.gst}</Text>
-            </View>
-            {/*<View style={styles.billRow}>*/}
-            {/*  <Text style={styles.amountTitle}>Applied Cupon</Text>*/}
-            {/*  <Text style={styles.amount}>(-) Rs. 35.00</Text>*/}
+            {/*<Pressable style={styles.shadowCard}>*/}
+            {/*<View style={styles.rowStyles}>*/}
+            {/*  <MaterialCommunityIcons*/}
+            {/*    name="brightness-percent"*/}
+            {/*    size={24}*/}
+            {/*    color={Colors.secondary}*/}
+            {/*  />*/}
+            {/*  <View>*/}
+            {/*    <Text style={styles.couponHeading}>*/}
+            {/*      /!*Apply Coupon*!/*/}
+            {/*      Coupon Applied*/}
+            {/*    </Text>*/}
+            {/*    <Text style={styles.couponText}>EXTRA200</Text>*/}
+            {/*  </View>*/}
             {/*</View>*/}
-            <View style={styles.grandTotalRow}>
-              <Text style={styles.grandTotalText}>Grand Total</Text>
-              <Text style={styles.grandTotal}>Rs. {billData.net_payable}</Text>
-            </View>
-          </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <View>
-              <Button
-                onPress={handlePress}
-                mode={'contained'}
-                theme={{roundness: 0}}
-                labelStyle={styles.btnLabelStyles}
-                style={{marginVertical: 20, borderRadius: 15}}
-                contentStyle={{height: 50}}>
-                Pay
-                <Pressable onPress={handlePress}>
-                  <Icon
-                    name="chevron-right"
-                    size={25}
-                    color="white"
-                    style={{}}
+            {/*  <View style={styles.rowStyles}>*/}
+            {/*    <Text style={styles.viewAllText}>View All</Text>*/}
+            {/*    <Entypo*/}
+            {/*      name="chevron-small-right"*/}
+            {/*      size={24}*/}
+            {/*      color={Colors.grey}*/}
+            {/*    />*/}
+            {/*  </View>*/}
+            {/*</Pressable>*/}
+            {/*<FlatList*/}
+            {/*  data={DATA}*/}
+            {/*  renderItem={({item}) => (*/}
+            {/*    <Item title={item.title} imageSource={item.imageSource} />*/}
+            {/*  )}*/}
+            {/*  keyExtractor={item => item.id}*/}
+            {/*  horizontal={true}*/}
+            {/*  showsHorizontalScrollIndicator={false}*/}
+            {/*/>*/}
+            <Pressable style={styles.deliveryBox}>
+              <Pressable style={styles.deliveryInnerContainer}>
+                <View style={[styles.rowStyles, {width: '70%'}]}>
+                  <Ionicons
+                    name="location"
+                    size={20}
+                    color={Colors.secondary}
                   />
-                </Pressable>
-              </Button>
-            </View>
+                  <View>
+                    <Text style={styles.deliveryText}>Delivery Location</Text>
+                  </View>
+                </View>
 
-            <View>
-              <Button
-                // onPress={() => navigation.navigate('Payment')}
-                onPress={handleProceedToPayment}
-                mode={'contained'}
-                theme={{roundness: 0}}
-                labelStyle={styles.btnLabelStyles}
-                style={{marginVertical: 20, borderRadius: 15}}
-                contentStyle={{height: 50}}>
-                Proceed
-              </Button>
+                <View style={styles.rowStyles}>
+                  <Pressable
+                    onPress={() => navigation.navigate('CartAddresses')}>
+                    <Text style={styles.changeText}>Change</Text>
+                  </Pressable>
+                  <Entypo
+                    name="chevron-small-right"
+                    size={24}
+                    color={Colors.grey}
+                  />
+                </View>
+              </Pressable>
+              <Text numberOfLines={3} style={styles.addressText}>
+                {addressData?.address1 +
+                  ', ' +
+                  addressData?.address2 +
+                  ', ' +
+                  addressData?.city +
+                  ', ' +
+                  addressData?.state}
+              </Text>
+            </Pressable>
+            <Text style={styles.billSummary}>Bill Summary</Text>
+            <View style={styles.billBox}>
+              <View style={styles.billRow}>
+                <Text style={styles.amountTitle}>Sub Total</Text>
+                <Text style={styles.amount}>Rs. {billData.subtotal}</Text>
+              </View>
+              <View style={styles.billRow}>
+                <Text style={styles.amountTitle}>GST</Text>
+                <Text style={styles.amount}>Rs. {billData.gst}</Text>
+              </View>
+              {/*<View style={styles.billRow}>*/}
+              {/*  <Text style={styles.amountTitle}>Applied Cupon</Text>*/}
+              {/*  <Text style={styles.amount}>(-) Rs. 35.00</Text>*/}
+              {/*</View>*/}
+              <View style={styles.grandTotalRow}>
+                <Text style={styles.grandTotalText}>Grand Total</Text>
+                <Text style={styles.grandTotal}>
+                  Rs. {billData.net_payable}
+                </Text>
+              </View>
             </View>
+          </ScrollView>
+          <View
+            style={[
+              styles.itemRowStyles,
+              {
+                backgroundColor: 'white',
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                padding: 10,
+                borderTopWidth: 1,
+                borderTopColor: '#cdc',
+              },
+            ]}>
+            <View
+              style={{
+                alignItems: 'center',
+                width: '35%',
+                alignSelf: 'flex-start',
+              }}>
+              <Text style={styles.amountTitle}>Rs. {billData.net_payable}</Text>
+              <Text style={[styles.amountTitle, {color: Colors.secondary}]}>
+                See Price Details
+              </Text>
+            </View>
+            <Button
+              onPress={() => setIsOpen(true)}
+              mode={'contained'}
+              style={{width: '58%'}}
+              theme={{roundness: 2}}
+              labelStyle={styles.btnLabelStyles}>
+              Continue
+            </Button>
           </View>
-          {isOpen && (
-            <View style={styles.payView}>
-              <Pressable onPress={handleProceedToPayment}>
-                <Text style={styles.payText}>Pay online</Text>
-              </Pressable>
-              <View style={styles.textLine}></View>
-              <Pressable onPress={() => navigation.navigate('Payment')}>
-                <Text style={[styles.payText]}>Pay COD</Text>
-              </Pressable>
-            </View>
-          )}
-        </ScrollView>
+        </View>
       )}
-    </>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isOpen}
+        onRequestClose={() => setIsOpen(false)}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Pressable
+              style={{
+                position: 'absolute',
+                top: 5,
+                right: 5,
+                padding: 10,
+              }}
+              onPress={() => setIsOpen(false)}>
+              <AntDesign name="closecircle" size={20} color="black" />
+            </Pressable>
+            <Text
+              style={{
+                fontFamily: Font_Family.medium,
+                fontSize: FONT_SIZES.eighteen,
+                color: Colors.secondary,
+                marginBottom: 8,
+              }}>
+              Choose Payment Method:-
+            </Text>
+            <RadioButton.Group
+              onValueChange={value => setValue(value)}
+              value={value}>
+              <RadioButton.Item
+                label="Pay Online"
+                value="online"
+                labelStyle={{
+                  fontFamily: Font_Family.medium,
+                  fontSize: FONT_SIZES.fifteen,
+                }}
+              />
+              <RadioButton.Item
+                label="Cash On Delivery"
+                value="offline"
+                labelStyle={{
+                  fontFamily: Font_Family.medium,
+                  fontSize: FONT_SIZES.fifteen,
+                }}
+              />
+            </RadioButton.Group>
+            <Button
+              mode={'contained'}
+              onPress={() =>
+                value === 'offline' ? navigation.navigate('Payment') : ''
+              }
+              style={{width: '100%', marginTop: 10}}
+              theme={{roundness: 2}}
+              labelStyle={styles.btnLabelStyles}>
+              {value === 'offline'
+                ? 'Place Order'
+                : `Pay Rs.${billData.net_payable} `}
+            </Button>
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 };
