@@ -9,24 +9,24 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* GungunCustomerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GungunCustomerTests.m */; };
 		016D1C65A7B64638866B0AFD /* Metropolis-ExtraLightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FD9D0C243B6F48CB98F49F5B /* Metropolis-ExtraLightItalic.otf */; };
-		0C80B921A6F3F58F76C31292 /* libPods-GungunCustomer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-GungunCustomer.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		362A81673B4E41E020C8A1C5 /* libPods-GungunCustomer-GungunCustomerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A08CC6C84AA9D227EE0C8320 /* libPods-GungunCustomer-GungunCustomerTests.a */; };
 		3802F9A61A8A4EC7BF2B772A /* Metropolis-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F0C7AA15502741379C9B2939 /* Metropolis-Medium.otf */; };
 		4970DE35B6E44496BE50E85F /* Metropolis-ExtraBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 50DC7BA85E794699ABFF21A9 /* Metropolis-ExtraBoldItalic.otf */; };
 		4F123F6E7BEE436BAA91029F /* Metropolis-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CE136B315CE54D4B937B9231 /* Metropolis-BoldItalic.otf */; };
 		562E07ED555C445B9159BCF3 /* Metropolis-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1F5C3B7EF5B940EBB2A011A0 /* Metropolis-Black.otf */; };
 		5D301CCAEB3E4EAA80F1D70A /* Metropolis-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6CFC03A998644557815F77A4 /* Metropolis-Regular.otf */; };
-		7699B88040F8A987B510C191 /* libPods-GungunCustomer-GungunCustomerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-GungunCustomer-GungunCustomerTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		837D9CFCBF14439E9B472E65 /* Metropolis-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EFC461751C4147599E0B781D /* Metropolis-ExtraBold.otf */; };
-		84782FBD2AEF982F007D6856 /* Downloads in Resources */ = {isa = PBXBuildFile; fileRef = 84782FBC2AEF982E007D6856 /* Downloads */; };
+		844E0CA12AF22B2600A1D6C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 844E0CA02AF22B2600A1D6C7 /* GoogleService-Info.plist */; };
+		8466B6C82AF2620200C87836 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8466B6C72AF2620200C87836 /* main.m */; };
 		9E4CD2D1661647BE88A1B401 /* Metropolis-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AC8E38BF03A0403FA41A847B /* Metropolis-SemiBold.otf */; };
 		A0D25C71AC47459FB80C123E /* Metropolis-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E5920E5222943A09784543F /* Metropolis-Bold.otf */; };
 		D3B673809B0F4C889FBC62FA /* Metropolis-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 22983AD5CBF14E08B2092E16 /* Metropolis-Light.otf */; };
 		D8278976592A43BCBA3EFBB6 /* Metropolis-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 89D2DE63562D44D9A851ADBE /* Metropolis-BlackItalic.otf */; };
 		DA872A58BC154AAEB05CE968 /* Metropolis-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = E38D7880A841450D8491B69E /* Metropolis-LightItalic.otf */; };
+		E20D79AA0520F6824C37694F /* libPods-GungunCustomer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7726F862757B1591F42AA50F /* libPods-GungunCustomer.a */; };
 		E401F59327284C16A0C5387D /* Metropolis-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 121CE2BD976D467F9225F704 /* Metropolis-MediumItalic.otf */; };
 		E744D9DDA99941D78AD4D31D /* Metropolis-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = AD10587390A34545ADBF06BA /* Metropolis-RegularItalic.otf */; };
 		EE2D3B33B386480DA9433D5C /* Metropolis-SemiBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 033EBA9434984FD0A0293A40 /* Metropolis-SemiBoldItalic.otf */; };
@@ -57,8 +57,6 @@
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = GungunCustomer/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = GungunCustomer/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = GungunCustomer/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = GungunCustomer/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-GungunCustomer-GungunCustomerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GungunCustomer-GungunCustomerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F5C3B7EF5B940EBB2A011A0 /* Metropolis-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Metropolis-Black.otf"; path = "../assets/fonts/Metropolis-Black.otf"; sourceTree = "<group>"; };
 		22983AD5CBF14E08B2092E16 /* Metropolis-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Metropolis-Light.otf"; path = "../assets/fonts/Metropolis-Light.otf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-GungunCustomer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GungunCustomer.debug.xcconfig"; path = "Target Support Files/Pods-GungunCustomer/Pods-GungunCustomer.debug.xcconfig"; sourceTree = "<group>"; };
@@ -66,15 +64,17 @@
 		51D765A58D5A4C89814AFB4A /* Metropolis-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Metropolis-Thin.otf"; path = "../assets/fonts/Metropolis-Thin.otf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-GungunCustomer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GungunCustomer.release.xcconfig"; path = "Target Support Files/Pods-GungunCustomer/Pods-GungunCustomer.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-GungunCustomer-GungunCustomerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GungunCustomer-GungunCustomerTests.debug.xcconfig"; path = "Target Support Files/Pods-GungunCustomer-GungunCustomerTests/Pods-GungunCustomer-GungunCustomerTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-GungunCustomer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GungunCustomer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CFC03A998644557815F77A4 /* Metropolis-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Metropolis-Regular.otf"; path = "../assets/fonts/Metropolis-Regular.otf"; sourceTree = "<group>"; };
+		7726F862757B1591F42AA50F /* libPods-GungunCustomer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GungunCustomer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = GungunCustomer/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		84782FBC2AEF982E007D6856 /* Downloads */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = folder; name = Downloads; path = ../../../Downloads; sourceTree = "<group>"; };
-		84782FBE2AEF9A14007D6856 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "../../../../Users/admin/Documents/GungunCustomer/ios/GoogleService-Info.plist"; sourceTree = DEVELOPER_DIR; };
+		844E0CA02AF22B2600A1D6C7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8466B6C32AF2325200C87836 /* hermes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = hermes.xcframework; path = "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework"; sourceTree = "<group>"; };
+		8466B6C72AF2620200C87836 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		84E98F7F2AEFB915007AF0FE /* GungunCustomer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = GungunCustomer.entitlements; path = GungunCustomer/GungunCustomer.entitlements; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-GungunCustomer-GungunCustomerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GungunCustomer-GungunCustomerTests.release.xcconfig"; path = "Target Support Files/Pods-GungunCustomer-GungunCustomerTests/Pods-GungunCustomer-GungunCustomerTests.release.xcconfig"; sourceTree = "<group>"; };
 		89D2DE63562D44D9A851ADBE /* Metropolis-BlackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Metropolis-BlackItalic.otf"; path = "../assets/fonts/Metropolis-BlackItalic.otf"; sourceTree = "<group>"; };
 		9E5920E5222943A09784543F /* Metropolis-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Metropolis-Bold.otf"; path = "../assets/fonts/Metropolis-Bold.otf"; sourceTree = "<group>"; };
+		A08CC6C84AA9D227EE0C8320 /* libPods-GungunCustomer-GungunCustomerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GungunCustomer-GungunCustomerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC8E38BF03A0403FA41A847B /* Metropolis-SemiBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Metropolis-SemiBold.otf"; path = "../assets/fonts/Metropolis-SemiBold.otf"; sourceTree = "<group>"; };
 		AD10587390A34545ADBF06BA /* Metropolis-RegularItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Metropolis-RegularItalic.otf"; path = "../assets/fonts/Metropolis-RegularItalic.otf"; sourceTree = "<group>"; };
 		CE136B315CE54D4B937B9231 /* Metropolis-BoldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Metropolis-BoldItalic.otf"; path = "../assets/fonts/Metropolis-BoldItalic.otf"; sourceTree = "<group>"; };
@@ -91,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-GungunCustomer-GungunCustomerTests.a in Frameworks */,
+				362A81673B4E41E020C8A1C5 /* libPods-GungunCustomer-GungunCustomerTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,7 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-GungunCustomer.a in Frameworks */,
+				E20D79AA0520F6824C37694F /* libPods-GungunCustomer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,14 +126,14 @@
 		13B07FAE1A68108700A75B9A /* GungunCustomer */ = {
 			isa = PBXGroup;
 			children = (
+				844E0CA02AF22B2600A1D6C7 /* GoogleService-Info.plist */,
 				84E98F7F2AEFB915007AF0FE /* GungunCustomer.entitlements */,
-				84782FBE2AEF9A14007D6856 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
-				13B07FB71A68108700A75B9A /* main.m */,
+				8466B6C72AF2620200C87836 /* main.m */,
 			);
 			name = GungunCustomer;
 			sourceTree = "<group>";
@@ -141,9 +141,10 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8466B6C32AF2325200C87836 /* hermes.xcframework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-GungunCustomer.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-GungunCustomer-GungunCustomerTests.a */,
+				7726F862757B1591F42AA50F /* libPods-GungunCustomer.a */,
+				A08CC6C84AA9D227EE0C8320 /* libPods-GungunCustomer-GungunCustomerTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -183,7 +184,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				84782FBC2AEF982E007D6856 /* Downloads */,
 				13B07FAE1A68108700A75B9A /* GungunCustomer */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* GungunCustomerTests */,
@@ -332,7 +332,7 @@
 				EE2D3B33B386480DA9433D5C /* Metropolis-SemiBoldItalic.otf in Resources */,
 				EE2ED755442A4BE7825B984E /* Metropolis-Thin.otf in Resources */,
 				FC5E8628789442D09A0ED852 /* Metropolis-ThinItalic.otf in Resources */,
-				84782FBD2AEF982F007D6856 /* Downloads in Resources */,
+				844E0CA12AF22B2600A1D6C7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,8 +514,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8466B6C82AF2620200C87836 /* main.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
-				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -691,6 +691,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
@@ -766,6 +774,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,

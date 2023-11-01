@@ -123,11 +123,12 @@ export const styles = StyleSheet.create({
     bottom: 40,
   },
   popularImg: {
-    height: '100%', width: '100%', borderRadius: 100, shadowColor: '#171717',
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 4,
+    height: '100%', width: '100%', borderRadius: 100,
+    //  shadowColor: '#171717',
+    // shadowOffset: { width: -2, height: 4 },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 3,
+    // elevation: 4,
   },
   pricetitle: {
     bottom: '20%',
@@ -284,6 +285,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   itemsName: {
+    textTransform:'capitalize',
     fontFamily: Font_Family.medium,
     fontSize: FONT_SIZES.fifteen,
     color: Colors.black,
