@@ -61,17 +61,19 @@ export function CustomDrawerContent(props) {
 
   const logoutHandler = async () => {
     try {
-      await dispatch(logout());
-      showMessage({
-        message: 'Logout Successfully.',
-        type: 'default',
-        backgroundColor: Colors.secondary,
-        color: Colors.white,
-        textStyle: {
-          fontSize: FONT_SIZES.fifteen,
-          fontFamily: Font_Family.medium,
-        },
-      });
+      const result = await dispatch(logout());
+      if (result) {
+        showMessage({
+          message: 'Logout Successfully.',
+          type: 'default',
+          backgroundColor: Colors.secondary,
+          color: Colors.white,
+          textStyle: {
+            fontSize: FONT_SIZES.fifteen,
+            fontFamily: Font_Family.medium,
+          },
+        });
+      }
     } catch (e) {
       setError(e.message);
     }

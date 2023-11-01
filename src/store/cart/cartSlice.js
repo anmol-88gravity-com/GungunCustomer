@@ -128,6 +128,7 @@ export const increaseItemQuantity = createAsyncThunk(
     const result = await Axios.put(ApiEndpoints.cart.increaseQuantity, {
       card_item_id: cartItemId,
     });
+    console.log('result', result);
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue({
         itemId: itemId,
@@ -146,6 +147,7 @@ export const decreaseItemQuantity = createAsyncThunk(
     const result = await Axios.put(ApiEndpoints.cart.decreaseQuantity, {
       card_item_id: cartItemId,
     });
+    console.log('result', result);
     if (result.data.status === 'ok') {
       if (result.data.response.CartList.length === 0) {
         deleteCart();
@@ -206,6 +208,11 @@ export const cartSlice = createSlice({
     });
     builder.addCase(createCart.fulfilled, (state, action) => {
       state.cartId = action.payload;
+    });
+    builder.addCase(deleteCart.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.cartList = [];
+      }
     });
     builder.addCase(getDataCartItems.fulfilled, (state, action) => {
       state.cartList = action.payload;

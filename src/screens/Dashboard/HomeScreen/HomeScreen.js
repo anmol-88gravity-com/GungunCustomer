@@ -28,8 +28,7 @@ import {
 import { useGetRestaurantList } from '../../../hooks/home/dashBoard/useGetRestaurantList';
 import { useError } from '../../../context/ErrorProvider';
 import Config from '../../../config';
-import { useGetUserCurrentLocation } from '../../../hooks/user/useGetUserCurrentLocation';
-import { addUserLocation } from '../../../store/home/homeSlice';
+import {addUserLocation} from '../../../store/home/homeSlice';
 
 
 
@@ -39,11 +38,10 @@ export const HomeScreen = ({ navigation }) => {
   const setError = useError();
   const dispatch = useDispatch();
 
-  const { profileData, loading: userLoading } = useGetProfileData();
-  const { foodType, loading: isLoading } = useGetCategorizedFoodtype();
-  const { allPopularItems } = useGetPopularItems();
-  const { restaurantList, loader } = useGetRestaurantList();
-  const { lat, long, loader: load } = useGetUserCurrentLocation();
+  const {profileData, loading: userLoading} = useGetProfileData();
+  const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
+  const {allPopularItems} =useGetPopularItems()
+  const {restaurantList, lat, long, load, loader} = useGetRestaurantList();
 
   function getAddressFromCoordinates({ latitude, longitude }) {
     return new Promise((resolve, reject) => {

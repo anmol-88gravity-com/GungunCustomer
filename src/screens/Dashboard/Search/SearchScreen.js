@@ -47,7 +47,7 @@ export const SearchScreen = ({route, navigation}) => {
   }, [inputKey, route]);
 
   useEffect(() => {
-    if (recentSearch.length > 0) {
+    if (recentSearch !== undefined) {
       setRecentSearchList(recentSearch);
     }
   }, [recentSearch]);
@@ -92,6 +92,7 @@ export const SearchScreen = ({route, navigation}) => {
         autoFocus={true}
         value={search}
         onChangeText={text => searchFilterFunction(text)}
+        // onBlur={text => searchFilterFunction(text)}
         placeholder="Search here"
         placeholderTextColor="#808080"
         mode={'outlined'}
@@ -134,9 +135,10 @@ export const SearchScreen = ({route, navigation}) => {
                   </Chip>
                 ))}
               </View>
+              <Divider />
             </>
           )}
-          <Divider />
+
           <Text style={styles.recommended}>Recommended</Text>
           <View style={styles.chipRow}>
             <Chip

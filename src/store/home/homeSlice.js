@@ -5,7 +5,7 @@ import {Axios} from '../../lib/Axios';
 
 export const GET_FOOD_TYPE = '/api/customer-profile';
 export const SEARCH_QUERY = '/api/search-query';
-export const GET_RESTAURANT_LISt = '/api/restaurant-list';
+export const GET_RESTAURANT_LIST = '/api/restaurant-list';
 export const DELETE_SUGGESTION = '/api/delete-suggestion';
 export const USER_LOCATION = '/api/user-location';
 export const GET_POPULAR_ITEMS = 'api/popular_items';
@@ -54,9 +54,11 @@ export const getAllPouplarItems = createAsyncThunk(
 );
 
 export const getRestaurantList = createAsyncThunk(
-  GET_RESTAURANT_LISt,
-  async (_, thunkAPI) => {
-    const result = await Axios.get(ApiEndpoints.home.restaurantList);
+  GET_RESTAURANT_LIST,
+  async ({lat, long}, thunkAPI) => {
+    const result = await Axios.get(
+      `/api/nearby-stores/?latitude=${lat}&longitude=${long}`,
+    );
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue(result.data.response);
     } else {
@@ -71,7 +73,6 @@ export const getSearchResults = createAsyncThunk(
     const result = await Axios.get(ApiEndpoints.home.searchQuery, {
       params: {q: text},
     });
-    console.log('result.data', result.data);
     if (result.data.status === 'ok') {
       return thunkAPI.fulfillWithValue(result.data.stores);
     } else {

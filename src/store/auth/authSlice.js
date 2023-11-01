@@ -4,7 +4,8 @@ import messaging from '@react-native-firebase/messaging';
 import { ApiEndpoints } from '../ApiEndPoints';
 import { Axios } from '../../lib/Axios';
 import Config from '../../config';
-import { load, remove, save } from '../../utils/storage';
+import {load, remove, save} from '../../utils/storage';
+import {Platform} from 'react-native';
 
 export const AUTH_LOGOUT = '/api/auth/logout';
 export const AUTH_RESTORE = '/api/auth/restore';
@@ -25,22 +26,17 @@ export const restoreSession = createAsyncThunk(AUTH_RESTORE, async () => {
 });
 
 export const logout = createAsyncThunk(AUTH_LOGOUT, async (_, thunkAPI) => {
-  const { userId } = thunkAPI.getState().auth;
-  const result = await Axios.delete(
-    ApiEndpoints.cart.deleteWholeCart.replace('USER_ID', String(userId)),
-  );
-  if (result.data.status === 'ok') {
-    await remove(Config.CART_ID);
-    await remove(Config.USER_SESSION);
-    return true;
-  }
+  await remove(Config.USER_SESSION);
+  return true;
 });
 
 export const login = createAsyncThunk(
   LOGIN,
   async ({phoneNumber, password}, {rejectWithValue, fulfillWithValue}) => {
-    // const token = await messaging().getToken();
     let token;
+    if (Platform.OS !== 'ios') {
+      token = await messaging().getToken();
+    }
 
     const result = await Axios.post(ApiEndpoints.auth.login, {
       phone_number: phoneNumber,
@@ -68,9 +64,11 @@ export const register = createAsyncThunk(
     { fullName, password, confirmPassword, email, phoneNumber },
     { rejectWithValue, fulfillWithValue },
   ) => {
-    // await messaging().registerDeviceForRemoteMessages();
-    // const token = await messaging().getToken();
     let token;
+    if (Platform.OS !== 'ios') {
+      await messaging().registerDeviceForRemoteMessages();
+      token = await messaging().getToken();
+    }
 
     const result = await Axios.post(ApiEndpoints.auth.register, {
       name: fullName,

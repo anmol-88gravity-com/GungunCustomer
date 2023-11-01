@@ -24,6 +24,7 @@ function DrawerNavigation() {
   };
   return (
     <Drawer.Navigator
+      initialRouteName={'DashboardNavigator'}
       drawerContent={drawerContent}
       screenOptions={{
         drawerLabelStyle: {
