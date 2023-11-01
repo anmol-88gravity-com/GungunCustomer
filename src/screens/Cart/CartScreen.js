@@ -36,6 +36,7 @@ import {useError} from '../../context/ErrorProvider';
 import {useGetBillSummary} from '../../hooks/cart/useGetBillSummary';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Config from '../../config';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const CartScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -246,7 +247,8 @@ export const CartScreen = ({navigation}) => {
   };
 
   return (
-    <View
+    <SafeAreaView
+      edges={['bottom']}
       style={{
         flex: 1,
         backgroundColor: Colors.white,
@@ -452,10 +454,15 @@ export const CartScreen = ({navigation}) => {
                 position: 'absolute',
                 top: 5,
                 right: 5,
-                padding: 10,
               }}
               onPress={() => setIsOpen(false)}>
-              <AntDesign name="closecircle" size={20} color="black" />
+              <AntDesign
+                name="closecircle"
+                size={20}
+                color="black"
+                style={{padding: 10}}
+                onPress={() => setIsOpen(false)}
+              />
             </Pressable>
             <Text
               style={{
@@ -501,6 +508,6 @@ export const CartScreen = ({navigation}) => {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
