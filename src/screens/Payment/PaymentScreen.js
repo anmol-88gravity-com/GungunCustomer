@@ -8,6 +8,7 @@ import {images} from '../../utils/Images';
 import {Colors} from '../../utils/Colors';
 import {Font_Family} from '../../utils/Fontfamily';
 import {FONT_SIZES} from '../../utils/FontSize';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const PaymentScreen = ({navigation}) => {
   const [progress, setProgress] = useState(0);
@@ -35,7 +36,7 @@ export const PaymentScreen = ({navigation}) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView edges={['bottom']} style={styles.container}>
       {progress < 1 ? (
         <>
           <View
@@ -111,6 +112,6 @@ export const PaymentScreen = ({navigation}) => {
           </Text>
         </>
       )}
-    </View>
+    </SafeAreaView>
   );
 };

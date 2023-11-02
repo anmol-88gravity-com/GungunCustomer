@@ -66,7 +66,16 @@ export function DashboardNavigator() {
       <Stack.Screen
         name="OrderTracking"
         component={OrderTrackingScreen}
-        options={{title: 'Order Tracking', headerBackTitle: ''}}
+        options={{headerShown:false
+          // title: 'Order Tracking', headerBackTitle: ''
+        }}
+      />
+       <Stack.Screen
+        name="OrderDetail"
+        component={OrderDetailScreen}
+        options={{
+          title: 'Order Summary', headerBackTitle: ''
+        }}
       />
     </Stack.Navigator>
   );

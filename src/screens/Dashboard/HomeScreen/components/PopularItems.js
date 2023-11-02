@@ -7,6 +7,10 @@ import { addToCart, createCart } from '../../../../store/cart/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useError } from '../../../../context/ErrorProvider';
 import { load } from '../../../../utils/storage';
+import { showMessage } from 'react-native-flash-message';
+import { Colors } from '../../../../utils/Colors';
+import { FONT_SIZES } from '../../../../utils/FontSize';
+import { Font_Family } from '../../../../utils/Fontfamily';
 
 export const PopularItems = ({ popularItems, source }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);

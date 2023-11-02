@@ -1,12 +1,12 @@
-import {Dimensions, StyleSheet} from 'react-native';
-import {Colors} from '../../../utils/Colors';
-import {Font_Family} from '../../../utils/Fontfamily';
-import {FONT_SIZES} from '../../../utils/FontSize';
+import { Dimensions, StyleSheet } from 'react-native';
+import { Colors } from '../../../utils/Colors';
+import { Font_Family } from '../../../utils/Fontfamily';
+import { FONT_SIZES } from '../../../utils/FontSize';
 
 const HEIGHT = Dimensions.get('screen').height;
 
 export const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: 'white'},
+  container: { flex: 1, backgroundColor: 'white' },
   centeredView: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.36)',
@@ -14,7 +14,8 @@ export const styles = StyleSheet.create({
 
   myLocation: {
     position: 'absolute',
-    bottom: HEIGHT - (HEIGHT - HEIGHT / 3.5),
+    // bottom: HEIGHT - (HEIGHT - HEIGHT / 3.5),
+    bottom: HEIGHT - (HEIGHT - HEIGHT / 3),
     width: '50%',
     alignSelf: 'center',
     backgroundColor: Colors.white,
@@ -41,13 +42,35 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
   },
-
+  bottomView: {
+    flex: 2,
+    backgroundColor: 'white',
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+     shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 4,
+  },
   bottomCard: {
     //  margin: 15,
     padding: 20,
     // flex: 1,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
+    // backgroundColor:'white',
+    // borderTopStartRadius: 20,
+    // borderTopEndRadius: 20,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 4,
+    // elevation: 5,
   },
   areaText: {
     fontFamily: Font_Family.bold,
@@ -110,7 +133,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.thirteen,
     fontFamily: Font_Family.regular,
   },
-  outlineStyles: {borderRadius: 8},
+  outlineStyles: { borderRadius: 8 },
   modalButton: {
     width: '100%',
     alignSelf: 'center',
