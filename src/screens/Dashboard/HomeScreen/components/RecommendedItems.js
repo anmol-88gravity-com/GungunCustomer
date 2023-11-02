@@ -28,7 +28,6 @@ export const RecommendedItems = ({onPressHandler, foodType}) => {
         ItemSeparatorComponent={({highlighted}) => (
           <View style={[highlighted && {marginLeft: 0}]} />
         )}
-        // numColumns={Math.ceil(foodTypeData.length / 2)}
         numColumns={5}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}

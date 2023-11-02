@@ -31,7 +31,6 @@ export const RestaurantTopPlaces = ({
         <View style={{flexDirection: 'row'}}>
           <View
             style={{
-              height: 100,
               width: '65%',
             }}>
             <View style={{justifyContent: 'center', padding: 10}}>

@@ -6,8 +6,6 @@ import {
   ScrollView,
   ActivityIndicator,
   Image,
-  TouchableOpacity,
-  StyleSheet,
   Modal,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -19,6 +17,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {showMessage} from 'react-native-flash-message';
 import {useDispatch} from 'react-redux';
 import RazorpayCheckout from 'react-native-razorpay';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {Colors} from '../../utils/Colors';
 import {styles} from './cart.styles';
@@ -26,7 +25,6 @@ import {useGetAddressList, useGetProfileData} from '../../hooks';
 import {useGetCartItemsData} from '../../hooks/cart/useGetCartItemsData';
 import {
   decreaseItemQuantity,
-  deleteCart,
   increaseItemQuantity,
 } from '../../store/cart/cartSlice';
 import {FONT_SIZES} from '../../utils/FontSize';
@@ -34,9 +32,7 @@ import {Font_Family} from '../../utils/Fontfamily';
 import {Loader} from '../../components/common/Loader';
 import {useError} from '../../context/ErrorProvider';
 import {useGetBillSummary} from '../../hooks/cart/useGetBillSummary';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import Config from '../../config';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const CartScreen = ({navigation}) => {
   const dispatch = useDispatch();
