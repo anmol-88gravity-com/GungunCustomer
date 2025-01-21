@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Share
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -79,6 +80,29 @@ export const RestaurantScreen = ({navigation, route}) => {
       viewPosition: 0,
       itemIndex: 0,
     });
+  };
+
+
+  //share details of restuarant 
+
+  const shareRestaurantDetails = async () => {
+    try {
+      const result = await Share.share({
+        message: `Check out ${restaurantDetails?.store_name} at ${restaurantDetails?.address?.address1} ${restaurantDetails?.address?.address2}. It's just ${restaurantDetails?.distance} KM away and their estimated delivery time is ${restaurantDetails?.time} min!`,
+      });
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // Shared with activity type of result.activityType
+        } else {
+          // Shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // Dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   useEffect(() => {
@@ -580,7 +604,10 @@ export const RestaurantScreen = ({navigation, route}) => {
           </Pressable>
           <View style={styles.restaurantIcons}>
             <Ionicons name="heart-outline" size={24} color="black" />
-            <Ionicons name="share-social" size={24} color="black" />
+            {/* <Ionicons name="share-social" size={24} color="black" /> */}
+            <Pressable onPress={shareRestaurantDetails}>
+    <Ionicons name="share-social" size={24} color="black" />
+  </Pressable>
           </View>
         </View>
         <View style={styles.innerCard}>

@@ -70,6 +70,20 @@ export const HomeScreen = ({navigation}) => {
     });
   }
 
+  function removeDuplicateRestaurants(restaurants) {
+    const uniqueRestaurants = [];
+    const restaurantMap = new Map();
+
+    for (const restaurant of restaurants) {
+      if (!restaurantMap.has(restaurant.store_id)) {
+        restaurantMap.set(restaurant.store_id, true);
+        uniqueRestaurants.push(restaurant);
+      }
+    }
+
+    return uniqueRestaurants;
+  }
+
   useEffect(() => {
     (async () => {
       if (lat !== 0 && long !== 0) {
@@ -93,6 +107,8 @@ export const HomeScreen = ({navigation}) => {
 
     return () => {};
   }, [dispatch, lat, long, setError]);
+
+  const uniqueRestaurantList = removeDuplicateRestaurants(restaurantList);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -171,9 +187,7 @@ export const HomeScreen = ({navigation}) => {
                     </View>
                   </TouchableOpacity>
                 </View>
-                <Text style={[styles.title, {marginTop: 20}]}>
-                  Popular Items
-                </Text>
+                <Text style={[styles.title, {marginTop: 20}]}>Popular Items</Text>
                 <View
                   style={{
                     marginTop: 10,
@@ -189,7 +203,7 @@ export const HomeScreen = ({navigation}) => {
                     navigation.navigate('Search', {searchKey: item})
                   }
                 />
-                {restaurantList.length > 0 && (
+                {uniqueRestaurantList.length > 0 && (
                   <View style={{flex: 1}}>
                     <View
                       style={{
@@ -204,7 +218,7 @@ export const HomeScreen = ({navigation}) => {
                       />
                       <Text style={styles.title}>Top places near you</Text>
                     </View>
-                    {restaurantList.slice(0, 4).map((i, index) => (
+                    {/* {uniqueRestaurantList.slice(0, 4).map((i, index) => (
                       <RestaurantTopPlaces
                         key={Math.random().toString()}
                         source={i.profile_image}
@@ -231,7 +245,37 @@ export const HomeScreen = ({navigation}) => {
                           })
                         }
                       />
-                    ))}
+                    ))} */}
+                    {uniqueRestaurantList.slice(0, 4).map((i) => (
+  <RestaurantTopPlaces
+    key={i.store_id}  // Use the unique store_id here
+    
+    source={i.profile_image}
+    icon="cards-heart-outline"
+    restaurantName={i.store_name}
+    restaurantRating={
+      `${i.average_rating}` + 'K . ' + `${i.speed}` + 'mins'
+    }
+    restDishType={
+      i.category_names.length < 3
+        ? i.category_names.map(a => a)
+        : i.category_names.splice(0, 2).map(b => b)
+    }
+    restAddress={i.address.address1}
+    restDistance={' (' + `${i.distance}` + ' km)'}
+    restType=""
+    restaurantOffer=""
+    restaurantMaxOffer=""
+    onPressHandler={() =>
+      navigation.navigate('RestaurantScreen', {
+        restaurantId: i.store_id,
+        dishId: null,
+        categoryName: null,
+      })
+    }
+/>
+))}
+
                   </View>
                 )}
               </View>

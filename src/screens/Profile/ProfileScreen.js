@@ -45,6 +45,7 @@ import {Font_Family} from '../../utils/Fontfamily';
 import {Loader} from '../../components/common/Loader';
 import Config from '../../config';
 
+
 export const ProfileScreen = () => {
   const dispatch = useDispatch();
   const setError = useError();
