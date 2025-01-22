@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -11,52 +11,80 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {TextInput} from 'react-native-paper';
-import {useDispatch} from 'react-redux';
+import { TextInput } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
 
-import {images} from '../../../utils/Images';
-import {styles} from './HomeScreen.styles';
+import { images } from '../../../utils/Images';
+import { styles } from './HomeScreen.styles';
 import ScreenHeader from '../../../components/header/ScreenHeader';
-import {Colors} from '../../../utils/Colors';
+import { Colors } from '../../../utils/Colors';
 import {
   useGetProfileData,
   useGetCategorizedFoodtype,
   useGetPopularItems,
 } from '../../../hooks';
-import {Loader} from '../../../components/common/Loader';
+import { Loader } from '../../../components/common/Loader';
 import {
   PopularItems,
   RecommendedItems,
   RestaurantTopPlaces,
 } from './components';
-import {useGetRestaurantList} from '../../../hooks/home/dashBoard/useGetRestaurantList';
-import {useError} from '../../../context/ErrorProvider';
+import { useGetRestaurantList } from '../../../hooks/home/dashBoard/useGetRestaurantList';
+import { useError } from '../../../context/ErrorProvider';
 import Config from '../../../config';
-import {addUserLocation} from '../../../store/home/homeSlice';
+import { addUserLocation } from '../../../store/home/homeSlice';
 
-export const HomeScreen = ({navigation}) => {
+export const HomeScreen = ({ navigation }) => {
   const [addressData, setAddressData] = useState('');
   const [loading, setLoading] = useState(false);
   const setError = useError();
   const dispatch = useDispatch();
 
-  const {profileData, loading: userLoading} = useGetProfileData();
-  const {foodType, loading: isLoading} = useGetCategorizedFoodtype();
-  const {allPopularItems} = useGetPopularItems();
-  const {restaurantList, lat, long, load, loader} = useGetRestaurantList();
+  const { profileData, loading: userLoading } = useGetProfileData();
+  const { foodType, loading: isLoading } = useGetCategorizedFoodtype();
+  const { allPopularItems, error: popularItemsError } = useGetPopularItems();
+  const { restaurantList, lat, long, load, loader } = useGetRestaurantList();
 
-  function getAddressFromCoordinates({latitude, longitude}) {
+  console.log('Initial State:', { addressData, loading });
+
+  const logApiResponse = (url, response) => {
+    if (!response.ok) {
+      console.error(`API Error at ${url}: ${response.status} ${response.statusText}`);
+      setError(`Error fetching data from ${url}: ${response.status} ${response.statusText}`);
+    } else {
+      console.log(`API Success at ${url}:`, response);
+    }
+  };
+
+  function removeDuplicateRestaurants(restaurantList) {
+    const seen = new Set();
+    return restaurantList.filter((restaurant) => {
+      if (seen.has(restaurant.store_id)) {
+        return false;
+      }
+      seen.add(restaurant.store_id);
+      return true;
+    });
+  }
+  
+
+
+  function getAddressFromCoordinates({ latitude, longitude }) {
+    console.log('Fetching address for coordinates:', { latitude, longitude });
     return new Promise((resolve, reject) => {
       fetch(
-        Config.googleGetAddress +
-          latitude +
-          ',' +
-          longitude +
-          '&key=' +
-          Config.googleMapsAPIkey,
+        `${Config.googleGetAddress}${latitude},${longitude}&key=${Config.googleMapsAPIkey}`
       )
-        .then(response => response.json())
-        .then(responseJson => {
+        .then((response) => {
+          logApiResponse('Google Address API', response);
+          if (!response.ok) {
+            reject(`Error: ${response.status} ${response.statusText}`);
+            return;
+          }
+          return response.json();
+        })
+        .then((responseJson) => {
+          console.log('Address fetch response:', responseJson);
           if (responseJson.status === 'OK') {
             resolve(responseJson?.results?.[0]?.formatted_address);
             setAddressData(responseJson?.results?.[0]?.formatted_address);
@@ -64,27 +92,15 @@ export const HomeScreen = ({navigation}) => {
             reject('LOCATION NOT FOUND');
           }
         })
-        .catch(error => {
+        .catch((error) => {
+          console.error('Error fetching address:', error);
           reject(error);
         });
     });
   }
 
-  function removeDuplicateRestaurants(restaurants) {
-    const uniqueRestaurants = [];
-    const restaurantMap = new Map();
-
-    for (const restaurant of restaurants) {
-      if (!restaurantMap.has(restaurant.store_id)) {
-        restaurantMap.set(restaurant.store_id, true);
-        uniqueRestaurants.push(restaurant);
-      }
-    }
-
-    return uniqueRestaurants;
-  }
-
   useEffect(() => {
+    console.log('useEffect triggered with lat and long:', { lat, long });
     (async () => {
       if (lat !== 0 && long !== 0) {
         try {
@@ -96,19 +112,32 @@ export const HomeScreen = ({navigation}) => {
             addUserLocation({
               lat,
               long,
-            }),
+            })
           ).unwrap();
+          console.log('User location added to store:', { lat, long });
           setLoading(false);
         } catch (e) {
+          console.error('Error in useEffect:', e);
           setError(e.message);
         }
       }
     })();
 
-    return () => {};
+    return () => {
+      console.log('Cleanup on unmount');
+    };
   }, [dispatch, lat, long, setError]);
 
-  const uniqueRestaurantList = removeDuplicateRestaurants(restaurantList);
+  const uniqueRestaurantList = restaurantList?.length
+    ? removeDuplicateRestaurants(restaurantList)
+    : [];
+
+  console.log('Rendering HomeScreen with data:', {
+    profileData,
+    foodType,
+    allPopularItems,
+    uniqueRestaurantList,
+  });
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -118,9 +147,10 @@ export const HomeScreen = ({navigation}) => {
       ) : (
         <>
           <Pressable
-            onPress={() =>
-              navigation.navigate('AddressNavigator', {screen: 'Address'})
-            }
+            onPress={() => {
+              console.log('Navigating to AddressNavigator');
+              navigation.navigate('AddressNavigator', { screen: 'Address' });
+            }}
             style={{
               paddingHorizontal: 20,
               flexDirection: 'row',
@@ -131,7 +161,7 @@ export const HomeScreen = ({navigation}) => {
               name="location-on"
               size={28}
               color={Colors.red}
-              style={{width: '10%'}}
+              style={{ width: '10%' }}
             />
             <View
               style={{
@@ -145,7 +175,10 @@ export const HomeScreen = ({navigation}) => {
             <Ionicons name="chevron-down" size={24} color={Colors.primary} />
           </Pressable>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Search', {searchKey: ''})}>
+            onPress={() => {
+              console.log('Navigating to Search screen');
+              navigation.navigate('Search', { searchKey: '' });
+            }}>
             <View pointerEvents={'none'} style={styles.searchView}>
               <TextInput
                 style={styles.input}
@@ -153,8 +186,8 @@ export const HomeScreen = ({navigation}) => {
                 placeholderTextColor="#808080"
                 editable={false}
                 mode={'outlined'}
-                theme={{roundness: 15}}
-                outlineStyle={{borderColor: '#cdcdcd'}}
+                theme={{ roundness: 15 }}
+                outlineStyle={{ borderColor: '#cdcdcd' }}
                 left={<TextInput.Icon icon="search1" color={Colors.primary} />}
               />
             </View>
@@ -163,7 +196,7 @@ export const HomeScreen = ({navigation}) => {
             style={styles.container}
             showsVerticalScrollIndicator={false}>
             <View style={styles.container}>
-              <View style={{marginHorizontal: 10}}>
+              <View style={{ marginHorizontal: 10 }}>
                 <View
                   style={{
                     height: 200,
@@ -175,8 +208,10 @@ export const HomeScreen = ({navigation}) => {
                   <Text style={styles.textImg}>
                     lowest delivery {'\n'} charges ever
                   </Text>
-                  <TouchableOpacity style={styles.orderNowButton}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <TouchableOpacity
+                    style={styles.orderNowButton}
+                    onPress={() => console.log('Order Now button pressed')}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.orderText}>Order Now </Text>
                       <AntDesign
                         name="arrowright"
@@ -187,24 +222,31 @@ export const HomeScreen = ({navigation}) => {
                     </View>
                   </TouchableOpacity>
                 </View>
-                <Text style={[styles.title, {marginTop: 20}]}>Popular Items</Text>
+                <Text style={[styles.title, { marginTop: 20 }]}>
+                  Popular Items
+                </Text>
                 <View
                   style={{
                     marginTop: 10,
                   }}>
-                  <PopularItems popularItems={allPopularItems} />
+                  {allPopularItems ? (
+                    <PopularItems popularItems={allPopularItems} />
+                  ) : (
+                    <Text>No popular items found.</Text>
+                  )}
                 </View>
-                <Text style={[styles.title, {marginVertical: 0}]}>
+                <Text style={[styles.title, { marginVertical: 0 }]}>
                   What's on your mind ?
                 </Text>
                 <RecommendedItems
                   foodType={foodType}
-                  onPressHandler={item =>
-                    navigation.navigate('Search', {searchKey: item})
-                  }
+                  onPressHandler={(item) => {
+                    console.log('Recommended item pressed:', item);
+                    navigation.navigate('Search', { searchKey: item });
+                  }}
                 />
                 {uniqueRestaurantList.length > 0 && (
-                  <View style={{flex: 1}}>
+                  <View style={{ flex: 1 }}>
                     <View
                       style={{
                         flexDirection: 'row',
@@ -218,9 +260,9 @@ export const HomeScreen = ({navigation}) => {
                       />
                       <Text style={styles.title}>Top places near you</Text>
                     </View>
-                    {/* {uniqueRestaurantList.slice(0, 4).map((i, index) => (
+                    {uniqueRestaurantList.slice(0, 4).map((i) => (
                       <RestaurantTopPlaces
-                        key={Math.random().toString()}
+                        key={i.store_id}
                         source={i.profile_image}
                         icon="cards-heart-outline"
                         restaurantName={i.store_name}
@@ -229,53 +271,27 @@ export const HomeScreen = ({navigation}) => {
                         }
                         restDishType={
                           i.category_names.length < 3
-                            ? i.category_names.map(a => a)
-                            : i.category_names.splice(0, 2).map(b => b)
+                            ? i.category_names.map((a) => a)
+                            : i.category_names.splice(0, 2).map((b) => b)
                         }
                         restAddress={i.address.address1}
                         restDistance={' (' + `${i.distance}` + ' km)'}
                         restType=""
                         restaurantOffer=""
                         restaurantMaxOffer=""
-                        onPressHandler={() =>
+                        onPressHandler={() => {
+                          console.log(
+                            'Navigating to RestaurantScreen with store_id:',
+                            i.store_id
+                          );
                           navigation.navigate('RestaurantScreen', {
                             restaurantId: i.store_id,
                             dishId: null,
                             categoryName: null,
-                          })
-                        }
+                          });
+                        }}
                       />
-                    ))} */}
-                    {uniqueRestaurantList.slice(0, 4).map((i) => (
-  <RestaurantTopPlaces
-    key={i.store_id}  // Use the unique store_id here
-    
-    source={i.profile_image}
-    icon="cards-heart-outline"
-    restaurantName={i.store_name}
-    restaurantRating={
-      `${i.average_rating}` + 'K . ' + `${i.speed}` + 'mins'
-    }
-    restDishType={
-      i.category_names.length < 3
-        ? i.category_names.map(a => a)
-        : i.category_names.splice(0, 2).map(b => b)
-    }
-    restAddress={i.address.address1}
-    restDistance={' (' + `${i.distance}` + ' km)'}
-    restType=""
-    restaurantOffer=""
-    restaurantMaxOffer=""
-    onPressHandler={() =>
-      navigation.navigate('RestaurantScreen', {
-        restaurantId: i.store_id,
-        dishId: null,
-        categoryName: null,
-      })
-    }
-/>
-))}
-
+                    ))}
                   </View>
                 )}
               </View>

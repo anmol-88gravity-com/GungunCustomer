@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, Text, ImageBackground, Pressable} from 'react-native';
+import { View, Text, ImageBackground, Pressable } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 
-import {Colors} from '../../../../utils/Colors';
-import {FONT_SIZES} from '../../../../utils/FontSize';
-import {Font_Family} from '../../../../utils/Fontfamily';
-import {styles} from '../HomeScreen.styles';
+import { Colors } from '../../../../utils/Colors';
+import { FONT_SIZES } from '../../../../utils/FontSize';
+import { Font_Family } from '../../../../utils/Fontfamily';
+import { styles } from '../HomeScreen.styles';
 import Config from '../../../../config';
 
 export const RestaurantTopPlaces = ({
@@ -24,17 +24,17 @@ export const RestaurantTopPlaces = ({
 }) => {
   return (
     <Pressable
-      style={{marginHorizontal: 5}}
+      style={{ marginHorizontal: 5 }}
       onPress={onPressHandler}
       key={Math.random().toString()}>
       <View style={styles.resturantPlacesView}>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <View
             style={{
               width: '65%',
             }}>
-            <View style={{justifyContent: 'center', padding: 10}}>
-              <Text style={[styles.title, {marginVertical: 0}]}>
+            <View style={{ justifyContent: 'center', padding: 10 }}>
+              <Text style={[styles.title, { marginVertical: 0 }]}>
                 {restaurantName}
               </Text>
               <View
@@ -53,13 +53,15 @@ export const RestaurantTopPlaces = ({
                   {restaurantRating}
                 </Text>
               </View>
-              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                 {restDishType.length > 0 &&
-                  restDishType.map(a => (
-                    <Text style={styles.resturantPlaceTitle}>{a + ', '}</Text>
+                  restDishType.map((a, index) => (
+                    <Text key={index} style={styles.resturantPlaceTitle}>
+                      {a + ', '}
+                    </Text>
                   ))}
               </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text
                   numberOfLines={1}
                   style={{
@@ -85,15 +87,15 @@ export const RestaurantTopPlaces = ({
           {source && (
             <LinearGradient
               colors={['#000', '#000', '#000']}
-              style={{marginLeft: 10, width: '30%'}}>
+              style={{ marginLeft: 10, width: '30%' }}>
               <ImageBackground
-                source={{uri: Config.API_URL + source}}
+                source={{ uri: Config.API_URL + source }}
                 style={styles.resturentBackImg}>
                 <MaterialCommunityIcons
                   name={icon}
                   size={20}
                   color="#fff"
-                  style={{alignSelf: 'flex-end', padding: 5}}
+                  style={{ alignSelf: 'flex-end', padding: 5 }}
                 />
                 <View
                   style={{
