@@ -42,17 +42,25 @@ export const HomeScreen = ({ navigation }) => {
 
   const { profileData, loading: userLoading } = useGetProfileData();
   const { foodType, loading: isLoading } = useGetCategorizedFoodtype();
-  const { allPopularItems, error: popularItemsError } = useGetPopularItems();
-  const { restaurantList, lat, long, load, loader } = useGetRestaurantList();
+  // const { allPopularItems, error: popularItemsError } = useGetPopularItems(); // Comment out API call
 
-  console.log('Initial State:', { addressData, loading });
+  // Dummy data for popular items
+  const dummyPopularItems = [
+    { id: 1, name: 'Pizza', image: require('../../../assets/data/food.jpeg') },
+    { id: 2, name: 'Burger', image: require('../../../assets/data/food.jpeg') },
+    { id: 3, name: 'Pasta', image: require('../../../assets/data/food.jpeg') },
+    { id: 4, name: 'Sushi', image: require('../../../assets/data/food.jpeg') },
+  ];
+
+
+
+
+  const { restaurantList, lat, long, load, loader } = useGetRestaurantList();
 
   const logApiResponse = (url, response) => {
     if (!response.ok) {
       console.error(`API Error at ${url}: ${response.status} ${response.statusText}`);
       setError(`Error fetching data from ${url}: ${response.status} ${response.statusText}`);
-    } else {
-      console.log(`API Success at ${url}:`, response);
     }
   };
 
@@ -66,11 +74,8 @@ export const HomeScreen = ({ navigation }) => {
       return true;
     });
   }
-  
-
 
   function getAddressFromCoordinates({ latitude, longitude }) {
-    console.log('Fetching address for coordinates:', { latitude, longitude });
     return new Promise((resolve, reject) => {
       fetch(
         `${Config.googleGetAddress}${latitude},${longitude}&key=${Config.googleMapsAPIkey}`
@@ -84,7 +89,6 @@ export const HomeScreen = ({ navigation }) => {
           return response.json();
         })
         .then((responseJson) => {
-          console.log('Address fetch response:', responseJson);
           if (responseJson.status === 'OK') {
             resolve(responseJson?.results?.[0]?.formatted_address);
             setAddressData(responseJson?.results?.[0]?.formatted_address);
@@ -100,7 +104,6 @@ export const HomeScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
-    console.log('useEffect triggered with lat and long:', { lat, long });
     (async () => {
       if (lat !== 0 && long !== 0) {
         try {
@@ -114,7 +117,6 @@ export const HomeScreen = ({ navigation }) => {
               long,
             })
           ).unwrap();
-          console.log('User location added to store:', { lat, long });
           setLoading(false);
         } catch (e) {
           console.error('Error in useEffect:', e);
@@ -123,21 +125,12 @@ export const HomeScreen = ({ navigation }) => {
       }
     })();
 
-    return () => {
-      console.log('Cleanup on unmount');
-    };
+    return () => { };
   }, [dispatch, lat, long, setError]);
 
   const uniqueRestaurantList = restaurantList?.length
     ? removeDuplicateRestaurants(restaurantList)
     : [];
-
-  console.log('Rendering HomeScreen with data:', {
-    profileData,
-    foodType,
-    allPopularItems,
-    uniqueRestaurantList,
-  });
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -148,7 +141,6 @@ export const HomeScreen = ({ navigation }) => {
         <>
           <Pressable
             onPress={() => {
-              console.log('Navigating to AddressNavigator');
               navigation.navigate('AddressNavigator', { screen: 'Address' });
             }}
             style={{
@@ -176,7 +168,6 @@ export const HomeScreen = ({ navigation }) => {
           </Pressable>
           <TouchableOpacity
             onPress={() => {
-              console.log('Navigating to Search screen');
               navigation.navigate('Search', { searchKey: '' });
             }}>
             <View pointerEvents={'none'} style={styles.searchView}>
@@ -210,7 +201,7 @@ export const HomeScreen = ({ navigation }) => {
                   </Text>
                   <TouchableOpacity
                     style={styles.orderNowButton}
-                    onPress={() => console.log('Order Now button pressed')}>
+                    onPress={() => { }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.orderText}>Order Now </Text>
                       <AntDesign
@@ -222,26 +213,24 @@ export const HomeScreen = ({ navigation }) => {
                     </View>
                   </TouchableOpacity>
                 </View>
-                <Text style={[styles.title, { marginTop: 20 }]}>
-                  Popular Items
-                </Text>
+                <Text style={[styles.title, { marginTop: 20 }]}>Popular Items</Text>
                 <View
                   style={{
                     marginTop: 10,
                   }}>
-                  {allPopularItems ? (
-                    <PopularItems popularItems={allPopularItems} />
+                  {dummyPopularItems.length > 0 ? (
+                    <PopularItems popularItems={dummyPopularItems} />
                   ) : (
-                    <Text>No popular items found.</Text>
+                    <View style={styles.noItemsContainer}>
+                      <Text style={styles.noItemsText}>No popular items found.</Text>
+                    </View>
                   )}
+
                 </View>
-                <Text style={[styles.title, { marginVertical: 0 }]}>
-                  What's on your mind ?
-                </Text>
+                <Text style={[styles.title, { marginVertical: 0 }]}>What's on your mind ?</Text>
                 <RecommendedItems
                   foodType={foodType}
                   onPressHandler={(item) => {
-                    console.log('Recommended item pressed:', item);
                     navigation.navigate('Search', { searchKey: item });
                   }}
                 />
@@ -280,10 +269,6 @@ export const HomeScreen = ({ navigation }) => {
                         restaurantOffer=""
                         restaurantMaxOffer=""
                         onPressHandler={() => {
-                          console.log(
-                            'Navigating to RestaurantScreen with store_id:',
-                            i.store_id
-                          );
                           navigation.navigate('RestaurantScreen', {
                             restaurantId: i.store_id,
                             dishId: null,
@@ -302,3 +287,4 @@ export const HomeScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
