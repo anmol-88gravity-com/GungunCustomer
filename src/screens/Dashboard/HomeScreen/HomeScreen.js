@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Pressable,
+  RefreshControl,  // Import RefreshControl
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -37,6 +38,7 @@ import { addUserLocation } from '../../../store/home/homeSlice';
 export const HomeScreen = ({ navigation }) => {
   const [addressData, setAddressData] = useState('');
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false); // Add refreshing state
   const setError = useError();
   const dispatch = useDispatch();
 
@@ -51,9 +53,6 @@ export const HomeScreen = ({ navigation }) => {
     { id: 3, name: 'Pasta', image: require('../../../assets/data/food.jpeg') },
     { id: 4, name: 'Sushi', image: require('../../../assets/data/food.jpeg') },
   ];
-
-
-
 
   const { restaurantList, lat, long, load, loader } = useGetRestaurantList();
 
@@ -132,6 +131,20 @@ export const HomeScreen = ({ navigation }) => {
     ? removeDuplicateRestaurants(restaurantList)
     : [];
 
+  // Handle pull-to-refresh
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      // Refresh logic goes here, for example, re-fetch profile data or restaurant list
+      await dispatch(addUserLocation({ lat, long })).unwrap();
+    } catch (e) {
+      console.error('Error during refresh:', e);
+      setError(e.message);
+    } finally {
+      setRefreshing(false);  // Set refreshing to false after the refresh is complete
+    }
+  };
+
   return (
     <SafeAreaView style={styles.mainContainer}>
       <ScreenHeader headerTitle={profileData?.fullName} />
@@ -185,7 +198,10 @@ export const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <ScrollView
             style={styles.container}
-            showsVerticalScrollIndicator={false}>
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
             <View style={styles.container}>
               <View style={{ marginHorizontal: 10 }}>
                 <View
@@ -287,4 +303,3 @@ export const HomeScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
