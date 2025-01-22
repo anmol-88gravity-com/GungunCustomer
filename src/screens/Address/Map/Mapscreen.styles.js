@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: 'rgba(0,0,0,0.36)',
     marginTop:'100%',
-    
+    justifyContent: 'center',  // Ensure modal is centered vertically 
   },
   modalView: {
     backgroundColor: 'white',

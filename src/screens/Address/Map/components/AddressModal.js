@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { Modal, Pressable, Text, View, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button, TextInput } from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -15,7 +15,7 @@ import { Colors } from '../../../../utils/Colors';
 import { useError } from '../../../../context/ErrorProvider';
 import { FONT_SIZES } from '../../../../utils/FontSize';
 import { Font_Family } from '../../../../utils/Fontfamily';
-import { useGetSingleAddress, useKeyboard } from '../../../../hooks';
+import { useGetSingleAddress } from '../../../../hooks';
 import { Loader } from '../../../../components/common/Loader';
 import {
   addAddress,
@@ -37,15 +37,8 @@ export const AddressModal = ({
 
   const { addressDetails, loading } = useGetSingleAddress(addressId);
 
-  // console.log('address2', address2);
-
   useEffect(() => {
-    // if (addressDetails) {
-    //   setAddressTitle(addressDetails.address_type);
-    //   setAddress1(addressDetails.address1);
     setAddress2(address2);
-    //   setLandmark(addressDetails.landmark);
-    // }
   }, [address2]);
 
   const validationSchema = Yup.object().shape({
@@ -69,9 +62,6 @@ export const AddressModal = ({
           addressType,
           lat,
           long,
-          // pincode, // not required anymore
-          // city, // not required anymore
-          // state, // not required anymore
         }),
       ).unwrap();
       showMessage({
@@ -116,8 +106,6 @@ export const AddressModal = ({
     onClose();
   };
 
-  const keyboardHeight = useKeyboard();
-
   return (
     <Modal
       animationType="slide"
@@ -125,9 +113,15 @@ export const AddressModal = ({
       visible={open}
       onRequestClose={onClose}>
       <View style={styles.centeredView}>
-          <View style={[styles.modalView]}>
-            {/*<View style={[styles.modalView, {bottom: keyboardHeight}]}>*/}
-            <KeyboardAwareScrollView behavior={'padding'} scrollEnabled={false}>
+        <KeyboardAvoidingView
+          style={styles.modalView}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <KeyboardAwareScrollView
+              enableOnAndroid
+              enableAutomaticScroll
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={styles.modalContent}>
               <View style={styles.modalContainer}>
                 <Text style={styles.exactAddress}>Enter the Exact Address</Text>
                 <Pressable onPress={onClose}>
@@ -285,7 +279,8 @@ export const AddressModal = ({
                 </Formik>
               )}
             </KeyboardAwareScrollView>
-          </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
       </View>
     </Modal>
   );
