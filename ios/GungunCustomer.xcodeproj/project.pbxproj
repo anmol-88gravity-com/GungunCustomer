@@ -19,8 +19,8 @@
 		5D301CCAEB3E4EAA80F1D70A /* Metropolis-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6CFC03A998644557815F77A4 /* Metropolis-Regular.otf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		837D9CFCBF14439E9B472E65 /* Metropolis-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EFC461751C4147599E0B781D /* Metropolis-ExtraBold.otf */; };
-		844E0CA12AF22B2600A1D6C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 844E0CA02AF22B2600A1D6C7 /* GoogleService-Info.plist */; };
 		8466B6C82AF2620200C87836 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8466B6C72AF2620200C87836 /* main.m */; };
+		847543D62D41283A000B4BD3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 847543D52D41283A000B4BD3 /* GoogleService-Info.plist */; };
 		9E4CD2D1661647BE88A1B401 /* Metropolis-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AC8E38BF03A0403FA41A847B /* Metropolis-SemiBold.otf */; };
 		A0D25C71AC47459FB80C123E /* Metropolis-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E5920E5222943A09784543F /* Metropolis-Bold.otf */; };
 		D3B673809B0F4C889FBC62FA /* Metropolis-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 22983AD5CBF14E08B2092E16 /* Metropolis-Light.otf */; };
@@ -67,9 +67,10 @@
 		6CFC03A998644557815F77A4 /* Metropolis-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Metropolis-Regular.otf"; path = "../assets/fonts/Metropolis-Regular.otf"; sourceTree = "<group>"; };
 		7726F862757B1591F42AA50F /* libPods-GungunCustomer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GungunCustomer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = GungunCustomer/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		844E0CA02AF22B2600A1D6C7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		844E0CA02AF22B2600A1D6C7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8466B6C32AF2325200C87836 /* hermes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = hermes.xcframework; path = "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework"; sourceTree = "<group>"; };
 		8466B6C72AF2620200C87836 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		847543D52D41283A000B4BD3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "GungunCustomer/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		84E98F7F2AEFB915007AF0FE /* GungunCustomer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = GungunCustomer.entitlements; path = GungunCustomer/GungunCustomer.entitlements; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-GungunCustomer-GungunCustomerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GungunCustomer-GungunCustomerTests.release.xcconfig"; path = "Target Support Files/Pods-GungunCustomer-GungunCustomerTests/Pods-GungunCustomer-GungunCustomerTests.release.xcconfig"; sourceTree = "<group>"; };
 		89D2DE63562D44D9A851ADBE /* Metropolis-BlackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Metropolis-BlackItalic.otf"; path = "../assets/fonts/Metropolis-BlackItalic.otf"; sourceTree = "<group>"; };
@@ -126,10 +127,10 @@
 		13B07FAE1A68108700A75B9A /* GungunCustomer */ = {
 			isa = PBXGroup;
 			children = (
-				844E0CA02AF22B2600A1D6C7 /* GoogleService-Info.plist */,
 				84E98F7F2AEFB915007AF0FE /* GungunCustomer.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
+				844E0CA02AF22B2600A1D6C7 /* GoogleService-Info.plist */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
@@ -184,6 +185,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				847543D52D41283A000B4BD3 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* GungunCustomer */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* GungunCustomerTests */,
@@ -312,6 +314,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				847543D62D41283A000B4BD3 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				562E07ED555C445B9159BCF3 /* Metropolis-Black.otf in Resources */,
@@ -332,7 +335,6 @@
 				EE2D3B33B386480DA9433D5C /* Metropolis-SemiBoldItalic.otf in Resources */,
 				EE2ED755442A4BE7825B984E /* Metropolis-Thin.otf in Resources */,
 				FC5E8628789442D09A0ED852 /* Metropolis-ThinItalic.otf in Resources */,
-				844E0CA12AF22B2600A1D6C7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +343,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -482,6 +485,7 @@
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -593,7 +597,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = GungunCustomer/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Gungun;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -623,7 +627,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = GungunCustomer/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Gungun;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
