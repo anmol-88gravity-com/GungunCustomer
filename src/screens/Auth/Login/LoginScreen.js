@@ -18,31 +18,52 @@ import {showMessage} from 'react-native-flash-message';
 import {styles} from './LoginScreen.styles';
 import {images} from '../../../utils/Images';
 import {Font_Family} from '../../../utils/Fontfamily';
-import {login} from '../../../store/auth/authSlice';
+import {requestOTP, verifyOTP} from '../../../store/auth/authSlice';
 import {useError} from '../../../context/ErrorProvider';
 import {Colors} from '../../../utils/Colors';
 import {FONT_SIZES} from '../../../utils/FontSize';
 
 export const LoginScreen = ({navigation}) => {
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
-
-  const toggleSecureEntry = () => {
-    setSecureTextEntry(!secureTextEntry);
-  };
+  const [otpSent, setOtpSent] = useState(false); // Track if OTP is sent
 
   const validationSchema = Yup.object().shape({
-    phoneNumber: Yup.string().required('Phone number is required'),
-    password: Yup.string().required('Password is required'),
+    phoneNumber: Yup.string()
+      .required('Phone number is required')
+      .matches(/^[0-9]{10}$/, 'Enter a valid 10-digit phone number'),
+    otp: otpSent
+      ? Yup.string()
+          .required('OTP is required')
+          .length(6, 'OTP must be 6 digits')
+      : Yup.string(),
   });
 
   const dispatch = useDispatch();
   const setError = useError();
 
-  const handleLogin = async ({phoneNumber, password}) => {
+  const handleRequestOTP = async ({phoneNumber}) => {
     try {
-      await dispatch(login({phoneNumber, password})).unwrap();
+      await dispatch(requestOTP({phoneNumber})).unwrap(); // API call to request OTP
+      setOtpSent(true);
       showMessage({
-        message: 'Login Successfully.',
+        message: 'OTP sent successfully!',
+        type: 'default',
+        backgroundColor: Colors.secondary,
+        color: Colors.white,
+        textStyle: {
+          fontSize: FONT_SIZES.fifteen,
+          fontFamily: Font_Family.medium,
+        },
+      });
+    } catch (e) {
+      setError(e.message);
+    }
+  };
+
+  const handleVerifyOTP = async ({phoneNumber, otp}) => {
+    try {
+      await dispatch(verifyOTP({phoneNumber, otp})).unwrap(); // API call to verify OTP
+      showMessage({
+        message: 'Login Successful.',
         type: 'default',
         backgroundColor: Colors.secondary,
         color: Colors.white,
@@ -64,16 +85,16 @@ export const LoginScreen = ({navigation}) => {
           style={styles.backgroundImage}>
           <View style={styles.overlay}>
             <Text style={styles.text}>Hello, Customer!</Text>
-            <Text style={styles.subTitle}>Please Sign in to your Account</Text>
+            <Text style={styles.subTitle}>Sign in with OTP</Text>
           </View>
         </ImageBackground>
       </View>
       <View style={styles.loginView}>
         <ScrollView>
           <Formik
-            initialValues={{phoneNumber: '9595454581', password: '123456'}}
+            initialValues={{phoneNumber: '', otp: ''}}
             validationSchema={validationSchema}
-            onSubmit={handleLogin}>
+            onSubmit={otpSent ? handleVerifyOTP : handleRequestOTP}>
             {({
               handleChange,
               handleBlur,
@@ -107,45 +128,32 @@ export const LoginScreen = ({navigation}) => {
                 {touched.phoneNumber && errors.phoneNumber && (
                   <Text style={styles.errors}>{errors.phoneNumber}</Text>
                 )}
-                <View style={styles.inputContainer}>
-                  <FontAwesome
-                    name="lock"
-                    size={20}
-                    color="#DEA812"
-                    style={styles.imageIcon}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter Password"
-                    secureTextEntry={secureTextEntry}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                  />
-                  {secureTextEntry ? (
-                    <FontAwesome
-                      name="eye-slash"
-                      size={20}
-                      color="#ccc"
-                      onPress={toggleSecureEntry}
-                    />
-                  ) : (
-                    <FontAwesome
-                      name="eye"
-                      size={20}
-                      color="#ccc"
-                      onPress={toggleSecureEntry}
-                    />
-                  )}
-                </View>
-                {touched.password && errors.password && (
-                  <Text style={styles.errors}>{errors.password}</Text>
+
+                {otpSent && (
+                  <>
+                    <View style={styles.inputContainer}>
+                      <FontAwesome
+                        name="lock"
+                        size={20}
+                        color="#DEA812"
+                        style={styles.imageIcon}
+                      />
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Enter OTP"
+                        maxLength={6}
+                        keyboardType="number-pad"
+                        onChangeText={handleChange('otp')}
+                        onBlur={handleBlur('otp')}
+                        value={values.otp}
+                      />
+                    </View>
+                    {touched.otp && errors.otp && (
+                      <Text style={styles.errors}>{errors.otp}</Text>
+                    )}
+                  </>
                 )}
-                <Text
-                  style={styles.forgotText}
-                  onPress={() => navigation.navigate('ForgotPassword')}>
-                  Forgot Your Password?
-                </Text>
+
                 <Button
                   onPress={handleSubmit}
                   loading={isSubmitting}
@@ -157,7 +165,7 @@ export const LoginScreen = ({navigation}) => {
                   labelStyle={styles.buttonLabel}
                   uppercase={true}
                   mode={'contained'}>
-                  SIGN IN
+                  {otpSent ? 'Verify OTP' : 'Request OTP'}
                 </Button>
                 <View style={{marginTop: '10%'}}>
                   <Text style={styles.bottomtmtitledText}>
