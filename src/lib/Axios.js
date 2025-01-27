@@ -10,11 +10,13 @@ export const Axios = axios.create({
 const authRoutes = [
   ApiEndpoints.auth.login,
   ApiEndpoints.auth.register,
-  ApiEndpoints.auth.registerOtp,
-  ApiEndpoints.auth.uniqueCheck,
+  // ApiEndpoints.auth.registerOtp,
+  // ApiEndpoints.auth.uniqueCheck,
   ApiEndpoints.auth.otpGenerate,
   ApiEndpoints.auth.otpVerify,
   ApiEndpoints.auth.updatePassword,
+  ApiEndpoints.auth.generateOTP,
+  ApiEndpoints.auth.verifyOTP
 ];
 
 Axios.interceptors.request.use(
