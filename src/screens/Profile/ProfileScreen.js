@@ -309,7 +309,7 @@ export const ProfileScreen = () => {
                       onChangeText={handleChange('email')}
                       onBlur={handleBlur('email')}
                       value={values.email}
-                      editable={false}
+                      editable={true}
                     />
                   </View>
                   {errors.email && (
@@ -329,7 +329,7 @@ export const ProfileScreen = () => {
                       onChangeText={handleChange('phoneNumber')}
                       onBlur={handleBlur('phoneNumber')}
                       value={values.phoneNumber}
-                      editable={false}
+                      editable={true}
                     />
                   </View>
                   {errors.phoneNumber && (
